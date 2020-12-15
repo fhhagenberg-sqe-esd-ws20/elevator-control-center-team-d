@@ -24,7 +24,8 @@ public class App extends Application {
         layout.setBottom(button);
 
         var scene = new Scene(layout, 640, 480);
-
+		
+		// Set scene
         stage.setScene(scene);
         stage.show();
     }
