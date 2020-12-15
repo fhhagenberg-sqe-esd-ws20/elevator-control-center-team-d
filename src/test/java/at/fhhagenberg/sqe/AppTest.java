@@ -18,7 +18,7 @@ public class AppTest {
     /**
      * Will be called with {@code @Before} semantics, i. e. before each test method.
      *
-     * @param stage - Will be injected by the test runner.
+     * @param stage - Will be injected by the test runner.  
      */
     @Start
     public void start(Stage stage) {
@@ -44,5 +44,6 @@ public class AppTest {
 
         // or (lookup by css class):
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("Clicked!"));
+        // Test pull request
     }
 }
