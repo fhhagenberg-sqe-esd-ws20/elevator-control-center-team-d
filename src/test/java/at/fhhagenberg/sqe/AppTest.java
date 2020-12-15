@@ -44,5 +44,6 @@ public class AppTest {
 
         // or (lookup by css class):
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("Clicked!"));
+        // Test pull request
     }
 }
