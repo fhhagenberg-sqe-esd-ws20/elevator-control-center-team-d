@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 public class SystemInfoTest {
     @Test
     public void testJavaVersion() {
-        assertEquals("14.0.2", "14.0.2");
+        assertEquals("13", SystemInfo.javaVersion());
     }
 
     @Test
     public void testJavafxVersion() {
-        assertEquals("13", "13");
+        assertEquals("13", SystemInfo.javafxVersion());
     }
 }
