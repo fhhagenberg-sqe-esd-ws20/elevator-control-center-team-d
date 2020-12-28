@@ -1,5 +1,6 @@
 package at.fhhagenberg.sqe.gui;
 
+import at.fhhagenberg.sqe.controller.ElevatorController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -8,10 +9,13 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 	
+	private ElevatorController elevatorCtrl = new ElevatorController();
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
 		var label = new Label("Initial GUI");
+		label.textProperty().bind(elevatorCtrl.DoorStatus);
 		
 		var layout = new BorderPane(label);
 		
