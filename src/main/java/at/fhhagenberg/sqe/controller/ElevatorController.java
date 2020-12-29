@@ -3,14 +3,10 @@ package at.fhhagenberg.sqe.controller;
 import java.rmi.RemoteException;
 
 import at.fhhagenberg.sqe.model.*;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
 public class ElevatorController {
 
-	private Elevator elevatorModel;
-	
-	public IntegerProperty DoorStatus = new SimpleIntegerProperty();
+	public Elevator elevatorModel;
 	
 	// TODO: Refactoring -> new in constructor !!??
 	
@@ -30,7 +26,7 @@ public class ElevatorController {
 	// TODO: use Timer for updating values
 	public void updateModelValues() {
 		try {
-			DoorStatus.setValue(elevatorModel.getElevatorDoorStatus());			
+			elevatorModel.updateElevatorDoorStatus();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -19,7 +19,7 @@ public class App extends Application {
 		
 		var label = new Label("Initial GUI");
 		
-		elevatorCtrl.DoorStatus.addListener(new ChangeListener<Number>() {
+		elevatorCtrl.elevatorModel.DoorStatus.addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				// TODO Auto-generated method stub
@@ -32,7 +32,7 @@ public class App extends Application {
 		});
 		
 		// Test change listener
-		elevatorCtrl.DoorStatus.setValue(IElevator.ELEVATOR_DOORS_OPEN);
+		elevatorCtrl.elevatorModel.DoorStatus.setValue(IElevator.ELEVATOR_DOORS_OPEN);
 		
 		var layout = new BorderPane(label);
 		
