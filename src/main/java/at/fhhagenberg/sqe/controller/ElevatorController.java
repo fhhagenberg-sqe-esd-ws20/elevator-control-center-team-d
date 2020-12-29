@@ -6,12 +6,16 @@ import at.fhhagenberg.sqe.model.*;
 
 public class ElevatorController {
 
+	public Building buildingModel;
 	public Elevator elevatorModel;
 	
 	// TODO: Refactoring -> new in constructor !!??
 	
 	public ElevatorController() {
-		elevatorModel = new Elevator(new DummyElevator());
+		IWrapElevator testRemoteElevator = new DummyElevator();
+		
+		buildingModel = new Building(testRemoteElevator);
+		elevatorModel = new Elevator(testRemoteElevator);
 		
 		try {
 			elevatorModel.setElevatorNumber(1);
@@ -27,6 +31,11 @@ public class ElevatorController {
 	public void updateModelValues() {
 		try {
 			elevatorModel.updateElevatorDoorStatus();
+			
+			for (var floor : buildingModel.FloorList) {
+				floor.updateFloorButtonDown();
+				floor.updateFloorButtonUp();
+			}
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

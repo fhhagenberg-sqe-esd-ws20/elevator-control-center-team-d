@@ -28,6 +28,7 @@ public class Elevator {
 	
 	public Elevator(IWrapElevator remoteElevator) {
 		mRemoteElevator = remoteElevator;
+		mElevatorNumber = 0;
 	}
 
 	public int getElevatorNumber() {

@@ -61,13 +61,13 @@ public class DummyElevator implements IWrapElevator {
 	@Override
 	public boolean getFloorButtonUp(int floor) throws RemoteException {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public int getFloorNum() throws RemoteException {
 		// TODO Auto-generated method stub
-		return 0;
+		return 5;
 	}
 
 	@Override
