@@ -1,8 +1,17 @@
 package at.fhhagenberg.sqe.model;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class DummyElevator implements IWrapElevator {
+	
+	private List<Boolean> testValuesFloorButtonUp = new ArrayList<Boolean>(Arrays.asList(true, false));
+	private List<Boolean> testValuesFloorButtonDown = new ArrayList<Boolean>(Arrays.asList(false,false,true,true));
+	private int cntFloorButtonUp = -1;
+	private int cntFloorButtonDown = -1;
 
 	@Override
 	public boolean getElevatorPosIsTarget(int elevatorNumber) throws RemoteException {
@@ -54,14 +63,20 @@ public class DummyElevator implements IWrapElevator {
 
 	@Override
 	public boolean getFloorButtonDown(int floor) throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+		
+		cntFloorButtonDown++;		
+		cntFloorButtonDown = cntFloorButtonDown % testValuesFloorButtonDown.size();		
+		
+		return testValuesFloorButtonDown.get(cntFloorButtonDown);
 	}
 
 	@Override
 	public boolean getFloorButtonUp(int floor) throws RemoteException {
-		// TODO Auto-generated method stub
-		return true;
+		
+		cntFloorButtonUp++;
+		cntFloorButtonUp = cntFloorButtonUp % testValuesFloorButtonUp.size();
+		
+		return testValuesFloorButtonUp.get(cntFloorButtonUp);
 	}
 
 	@Override
@@ -73,7 +88,7 @@ public class DummyElevator implements IWrapElevator {
 	@Override
 	public boolean getServicesFloors(int elevatorNumber, int floor) throws RemoteException {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

@@ -1,27 +1,46 @@
 package at.fhhagenberg.sqe.gui;
 
+import java.util.Timer;
+
 import at.fhhagenberg.sqe.controller.ElevatorController;
+import at.fhhagenberg.sqe.model.DummyElevator;
 import at.fhhagenberg.sqe.model.Floor;
 import at.fhhagenberg.sqe.model.IElevator;
+import at.fhhagenberg.sqe.model.IWrapElevator;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.converter.BooleanStringConverter;
 
 // TODO: implementation -> now only prototype class
 public class App extends Application {
 	
-	private ElevatorController elevatorCtrl = new ElevatorController();
+	private final long updateDataIntervallMsec = 100;
+	
+	// DummyElevator only for debugging
+	private IWrapElevator testRemoteElevator = new DummyElevator();
+	private ElevatorController elevatorCtrl = new ElevatorController(testRemoteElevator);
+	private Timer updateDataTimer = new Timer();
+	
+	private void initElevatorController() {
+		updateDataTimer.scheduleAtFixedRate(elevatorCtrl, 0, updateDataIntervallMsec);
+	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		elevatorCtrl.setCurrViewElevatorNumber(1);
+		initElevatorController();
 		
 		/*
 		var label = new Label("Initial GUI");
@@ -50,8 +69,7 @@ public class App extends Application {
 		for (int i = 0; i < elevatorCtrl.buildingModel.FloorList.size(); i++) {
 			testFloorList.getItems().add("Floor " + String.valueOf(i));
 		}
-		*/
-		
+		*/	
 		
 		// Test binding on floor buttons
 		ListView<Floor> testFloorList = new ListView<Floor>(elevatorCtrl.buildingModel.FloorList);
@@ -77,9 +95,15 @@ public class App extends Application {
 			}
 		});
 		
-		// Test change floor button state
-		elevatorCtrl.buildingModel.FloorList.get(0).FloorButtonUp.setValue(Boolean.FALSE);
-		elevatorCtrl.buildingModel.FloorList.get(2).FloorButtonDown.setValue(Boolean.TRUE);
+		/*
+		// Test button switch automatic manual
+		Button selOperationBtn = new Button("Manual");
+		
+		selOperationBtn.setOnAction(e -> {
+			elevatorCtrl.switchOperationStatus();
+			selOperationBtn.setText(elevatorCtrl.getOperationStatus().toString());
+		});
+		*/
 		
 		
 		var layout = new BorderPane(testFloorList);
@@ -89,6 +113,14 @@ public class App extends Application {
 		// Set scene
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		// On cancel button cancel update timer
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
+			@Override
+			public void handle(WindowEvent event) {
+				updateDataTimer.cancel();
+			}
+		});
 	}
 
 	public static void main(String[] args) {
