@@ -41,8 +41,18 @@ public class Building {
 			ElevatorNumber.setValue(mRemoteElevator.getElevatorNum());
 		} catch (RemoteException e) {
 			// TODO: use AlarmManager for error messages
+			FloorNumber.setValue(0);
+			ElevatorNumber.setValue(0);
 			ErrorMsgBuilding.setValue("Error in initBuildingInformation: " + e.getMessage());
 		}	
+		
+		if (FloorNumber.getValue() < 0) {
+			FloorNumber.setValue(0);
+		}
+		
+		if (ElevatorNumber.getValue() < 0) {
+			ElevatorNumber.setValue(0);
+		}
 		
 		for (int i = 0; i < FloorNumber.getValue(); i++) {
 			FloorList.add(new Floor(mRemoteElevator, i));
