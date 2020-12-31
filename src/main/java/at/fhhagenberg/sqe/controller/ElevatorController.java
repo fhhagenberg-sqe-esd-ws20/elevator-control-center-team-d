@@ -5,7 +5,6 @@
 package at.fhhagenberg.sqe.controller;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.TimerTask;
 
 import at.fhhagenberg.sqe.model.*;
@@ -26,8 +25,8 @@ public class ElevatorController extends TimerTask {
 	public enum eOperationStatus { MANUAL, AUTOMATIC };
 	private eOperationStatus operationStatus;
 	
-	public Building buildingModel;
-	public Elevator elevatorModel;
+	public IModelBuilding buildingModel;
+	public IModelElevator elevatorModel;
 	public IAlarmManager ctrlAlarmManager;
 	
 	// Properties for GUI binding
@@ -35,11 +34,13 @@ public class ElevatorController extends TimerTask {
 	public ObservableList<Boolean> ServicesFloorList = FXCollections.observableArrayList();
 	
 	
-	public ElevatorController(IWrapElevator remoteElevator, IAlarmManager alarmManager) {		
-		buildingModel = new Building(remoteElevator, alarmManager);
-		elevatorModel = new Elevator(remoteElevator);
+	public ElevatorController(IWrapElevator remoteElevator, IModelElevator modelElevator, IModelBuilding modelBuilding, 
+			                  IAlarmManager alarmManager) {		
+		buildingModel = modelBuilding;
+		elevatorModel = modelElevator;
 		ctrlAlarmManager = alarmManager;
 		
+		updateModelValues();
 		initStatusLists();
 		
 		operationStatus = eOperationStatus.MANUAL;
@@ -47,8 +48,10 @@ public class ElevatorController extends TimerTask {
 	}
 	
 	private void initStatusLists() {
-		ElevatorButtonList.addAll(new ArrayList<Boolean>(buildingModel.FloorNumber.getValue()));
-		ServicesFloorList.addAll(new ArrayList<Boolean>(buildingModel.FloorNumber.getValue()));
+		for (int i = 0; i < buildingModel.getFloorNumber(); i++) {
+			ElevatorButtonList.add(Boolean.FALSE);
+			ServicesFloorList.add(Boolean.TRUE);
+		}
 	}
 	
 	/**
@@ -118,7 +121,7 @@ public class ElevatorController extends TimerTask {
 	}
 	
 	private void updateFloorButtons() throws RemoteException {
-		for (var floor : buildingModel.FloorList) {
+		for (var floor : buildingModel.getObservableFloorList()) {
 			floor.updateFloorButtonDown();
 			floor.updateFloorButtonUp();
 		}
@@ -167,23 +170,23 @@ public class ElevatorController extends TimerTask {
 		if (operationStatus == eOperationStatus.MANUAL) {
 			try {
 				// Only set next target when last target was reached				
-				if (!elevatorModel.getElevatorPosIsTarget() || elevatorModel.ElevatorSpeed.getValue() > 0) {
+				if (!elevatorModel.getElevatorPosIsTarget() || elevatorModel.getElevatorSpeed() > 0) {
 					ctrlAlarmManager.addWarningMessage("Warning (set next target): elevator not in previous target position");
 					return false;
 				}
 				
 				// Only set next target when door is open
-				if (elevatorModel.DoorStatus.getValue() != IElevator.ELEVATOR_DOORS_OPEN) {
+				if (elevatorModel.getDoorStatus() != IElevator.ELEVATOR_DOORS_OPEN) {
 					ctrlAlarmManager.addWarningMessage("Warning (set next target): elevator doors not open");
 					return false;
 				}
 				
-				if (nextTarget == elevatorModel.ElevatorCurrFloor.getValue()) {
+				if (nextTarget == elevatorModel.getElevatorCurrFloor()) {
 					ctrlAlarmManager.addWarningMessage("Warning (set next target): set target could not be current elevator position");
 					return false;
 				}
 				
-				if (nextTarget > elevatorModel.ElevatorCurrFloor.getValue()) {
+				if (nextTarget > elevatorModel.getElevatorCurrFloor()) {
 					elevatorModel.setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UP);
 				} else {
 					elevatorModel.setCommittedDirection(IElevator.ELEVATOR_DIRECTION_DOWN);

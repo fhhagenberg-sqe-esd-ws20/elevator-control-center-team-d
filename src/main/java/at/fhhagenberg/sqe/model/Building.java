@@ -18,7 +18,7 @@ import javafx.collections.ObservableList;
  * @author Dominic Zopf
  *
  */
-public class Building {
+public class Building implements IModelBuilding {
 	private IWrapElevator mRemoteElevator;
 	private IAlarmManager mAlarmManager;
 	
@@ -56,5 +56,30 @@ public class Building {
 		for (int i = 0; i < FloorNumber.getValue(); i++) {
 			FloorList.add(new Floor(mRemoteElevator, i));
 		}
-	}	
+	}
+	
+	@Override
+	public IntegerProperty getPropFloorNumber() {
+		return FloorNumber;
+	}
+	
+	@Override
+	public IntegerProperty getPropElevatorNumber() {
+		return ElevatorNumber;
+	}
+	
+	@Override
+	public ObservableList<Floor> getObservableFloorList() {
+		return FloorList;
+	}
+	
+	@Override
+	public int getFloorNumber() {
+		return FloorNumber.getValue();
+	}
+	
+	@Override
+	public int getElevatorNumber() {
+		return ElevatorNumber.getValue();
+	}
 }

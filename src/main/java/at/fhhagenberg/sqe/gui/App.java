@@ -4,7 +4,9 @@ import java.util.Timer;
 
 import at.fhhagenberg.sqe.controller.AlarmManager;
 import at.fhhagenberg.sqe.controller.ElevatorController;
+import at.fhhagenberg.sqe.model.Building;
 import at.fhhagenberg.sqe.model.DummyElevator;
+import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.Floor;
 import at.fhhagenberg.sqe.model.IElevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
@@ -31,7 +33,9 @@ public class App extends Application {
 	// DummyElevator only for debugging
 	private IWrapElevator testRemoteElevator = new DummyElevator();
 	private AlarmManager appAlarmManager = new AlarmManager();
-	private ElevatorController elevatorCtrl = new ElevatorController(testRemoteElevator, appAlarmManager);
+	private Elevator modelElevator = new Elevator(testRemoteElevator);
+	private Building modelBuilding = new Building(testRemoteElevator, appAlarmManager);
+	private ElevatorController elevatorCtrl = new ElevatorController(testRemoteElevator, modelElevator, modelBuilding, appAlarmManager);
 	private Timer updateDataTimer = new Timer();
 	
 	private void initElevatorController() {
@@ -74,7 +78,7 @@ public class App extends Application {
 		*/	
 		
 		// Test binding on floor buttons
-		ListView<Floor> testFloorList = new ListView<Floor>(elevatorCtrl.buildingModel.FloorList);
+		ListView<Floor> testFloorList = new ListView<Floor>(elevatorCtrl.buildingModel.getObservableFloorList());
 		
 		testFloorList.setCellFactory(param -> new ListCell<Floor>() {
 			@Override
