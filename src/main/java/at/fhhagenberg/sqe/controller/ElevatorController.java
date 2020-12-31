@@ -28,16 +28,17 @@ public class ElevatorController extends TimerTask {
 	
 	public Building buildingModel;
 	public Elevator elevatorModel;
+	public IAlarmManager ctrlAlarmManager;
 	
 	// Properties for GUI binding
 	public ObservableList<Boolean> ElevatorButtonList = FXCollections.observableArrayList();
 	public ObservableList<Boolean> ServicesFloorList = FXCollections.observableArrayList();
 	
-	// TODO: Refactoring -> Interface for building and elevator,
-	// use dependency injection
-	public ElevatorController(IWrapElevator remoteElevator) {		
-		buildingModel = new Building(remoteElevator);
+	
+	public ElevatorController(IWrapElevator remoteElevator, IAlarmManager alarmManager) {		
+		buildingModel = new Building(remoteElevator, alarmManager);
 		elevatorModel = new Elevator(remoteElevator);
+		ctrlAlarmManager = alarmManager;
 		
 		initStatusLists();
 		
@@ -58,15 +59,12 @@ public class ElevatorController extends TimerTask {
 	public void setCurrViewElevatorNumber(int elevatorNumber) {
 		try {
 			elevatorModel.setElevatorNumber(elevatorNumber);
-		} catch (RemoteException e) { 
-			// TODO: Use AlarmManager
-			System.out.print("Error: " + e.getMessage());
+		} catch (RemoteException e) {
+			ctrlAlarmManager.addErrorMessage("Remote error (set elevator number): " + e.getMessage());
 		} catch (IllegalArgumentException e) {
-			// TODO: Use AlarmManager	
-			System.out.print("Error: " + e.getMessage());
+			ctrlAlarmManager.addErrorMessage("Illegal argument (set elevator number): " + e.getMessage());
 		} catch (Exception e) {
-			// TODO: Use AlarmManager	
-			System.out.print("Error: " + e.getMessage());
+			ctrlAlarmManager.addErrorMessage("Exception (set elevator number): " + e.getMessage());
 		}
 	}
 	
@@ -96,17 +94,14 @@ public class ElevatorController extends TimerTask {
 			} while (diffClockTick != 0 && tryUpdateCounter < maxUpdateAttempts);
 			
 			if (diffClockTick != 0) {
-				throw new RuntimeException("Error in update model values: clock tick not equal!");
+				throw new RuntimeException("Error in update model values: clock tick not equal after attempts!");
 			}			
 		} catch (RemoteException e) {
-			// TODO: Use AlarmManager
-			System.out.print("Error: " + e.getMessage());
+			ctrlAlarmManager.addErrorMessage("Remote error (update model values): " + e.getMessage());
 		} catch (RuntimeException e) {
-			// TODO: Use AlarmManager
-			System.out.print("Error: " + e.getMessage());
+			ctrlAlarmManager.addErrorMessage("Clock tick error (update model values): " + e.getMessage());
 		} catch (Exception e) {
-			// TODO: Use AlarmManager
-			System.out.print("Error: " + e.getMessage());
+			ctrlAlarmManager.addErrorMessage("Exception (update model values): " + e.getMessage());
 		}			
 	}
 	
@@ -173,18 +168,18 @@ public class ElevatorController extends TimerTask {
 			try {
 				// Only set next target when last target was reached				
 				if (!elevatorModel.getElevatorPosIsTarget() || elevatorModel.ElevatorSpeed.getValue() > 0) {
-					// TODO: Add warning to AlarmManager
+					ctrlAlarmManager.addWarningMessage("Warning (set next target): elevator not in previous target position");
 					return false;
 				}
 				
 				// Only set next target when door is open
 				if (elevatorModel.DoorStatus.getValue() != IElevator.ELEVATOR_DOORS_OPEN) {
-					// TODO: Add warning to AlarmManager
+					ctrlAlarmManager.addWarningMessage("Warning (set next target): elevator doors not open");
 					return false;
 				}
 				
 				if (nextTarget == elevatorModel.ElevatorCurrFloor.getValue()) {
-					// TODO: Add warning to AlarmManager
+					ctrlAlarmManager.addWarningMessage("Warning (set next target): set target could not be current elevator position");
 					return false;
 				}
 				
@@ -196,15 +191,13 @@ public class ElevatorController extends TimerTask {
 				
 				elevatorModel.setTarget(nextTarget);
 			} catch (RemoteException e) {
-				// TODO: Use AlarmManager
-				System.out.print("Error: " + e.getMessage());
+				ctrlAlarmManager.addErrorMessage("Remote error (set next target): " + e.getMessage());
 			} catch (Exception e) {
-				// TODO: Use AlarmManager
-				System.out.print("Error: " + e.getMessage());
+				ctrlAlarmManager.addErrorMessage("Exception (set next target): " + e.getMessage());
 			}			
 		}
 		else {
-			// TODO: Add warning to AlarmManager
+			ctrlAlarmManager.addWarningMessage("Warning (set next target): next elevator target can only be set in manual operation mode");
 			return false;
 		}
 		

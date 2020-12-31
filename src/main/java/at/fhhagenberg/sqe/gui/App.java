@@ -2,6 +2,7 @@ package at.fhhagenberg.sqe.gui;
 
 import java.util.Timer;
 
+import at.fhhagenberg.sqe.controller.AlarmManager;
 import at.fhhagenberg.sqe.controller.ElevatorController;
 import at.fhhagenberg.sqe.model.DummyElevator;
 import at.fhhagenberg.sqe.model.Floor;
@@ -29,7 +30,8 @@ public class App extends Application {
 	
 	// DummyElevator only for debugging
 	private IWrapElevator testRemoteElevator = new DummyElevator();
-	private ElevatorController elevatorCtrl = new ElevatorController(testRemoteElevator);
+	private AlarmManager appAlarmManager = new AlarmManager();
+	private ElevatorController elevatorCtrl = new ElevatorController(testRemoteElevator, appAlarmManager);
 	private Timer updateDataTimer = new Timer();
 	
 	private void initElevatorController() {

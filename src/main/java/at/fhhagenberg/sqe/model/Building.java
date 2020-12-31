@@ -6,10 +6,9 @@ package at.fhhagenberg.sqe.model;
 
 import java.rmi.RemoteException;
 
+import at.fhhagenberg.sqe.controller.IAlarmManager;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -21,16 +20,17 @@ import javafx.collections.ObservableList;
  */
 public class Building {
 	private IWrapElevator mRemoteElevator;
+	private IAlarmManager mAlarmManager;
 	
 	// Model properties for GUI binding
 	public IntegerProperty FloorNumber = new SimpleIntegerProperty();
 	public IntegerProperty ElevatorNumber = new SimpleIntegerProperty();
-	public StringProperty ErrorMsgBuilding = new SimpleStringProperty();
 	public ObservableList<Floor> FloorList = FXCollections.observableArrayList(Floor.extractor());
 	
 	
-	public Building(IWrapElevator remoteElevator) {
+	public Building(IWrapElevator remoteElevator, IAlarmManager alarmManager) {
 		mRemoteElevator = remoteElevator;
+		mAlarmManager = alarmManager;
 		
 		initBuildingInformation();
 	}
@@ -40,10 +40,9 @@ public class Building {
 			FloorNumber.setValue(mRemoteElevator.getFloorNum());
 			ElevatorNumber.setValue(mRemoteElevator.getElevatorNum());
 		} catch (RemoteException e) {
-			// TODO: use AlarmManager for error messages
 			FloorNumber.setValue(0);
 			ElevatorNumber.setValue(0);
-			ErrorMsgBuilding.setValue("Error in initBuildingInformation: " + e.getMessage());
+			mAlarmManager.addErrorMessage("Remote error (init building information): " + e.getMessage());
 		}	
 		
 		if (FloorNumber.getValue() < 0) {

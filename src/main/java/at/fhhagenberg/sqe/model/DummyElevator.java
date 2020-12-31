@@ -1,118 +1,168 @@
+/**
+ * Name: Sajan Cherukad, Dominic Zopf
+ */
+
 package at.fhhagenberg.sqe.model;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-
+/**
+ * Test class to test one static GUI interface.
+ * Settings are equal to the GUI mockup.
+ * @author Dominic Zopf
+ *
+ */
 public class DummyElevator implements IWrapElevator {
-	
-	private List<Boolean> testValuesFloorButtonUp = new ArrayList<Boolean>(Arrays.asList(true, false));
-	private List<Boolean> testValuesFloorButtonDown = new ArrayList<Boolean>(Arrays.asList(false,false,true,true));
-	private int cntFloorButtonUp = -1;
-	private int cntFloorButtonDown = -1;
 
 	@Override
 	public boolean getElevatorPosIsTarget(int elevatorNumber) throws RemoteException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public int getCommittedDirection(int elevatorNumber) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return IElevator.ELEVATOR_DIRECTION_UP;
 	}
 
 	@Override
 	public boolean getElevatorButton(int elevatorNumber, int floor) throws RemoteException {
-		// TODO Auto-generated method stub
+		if (floor == 0) {
+			return false;
+		} else if (floor == 1) {
+			return false;
+		} else if (floor == 2) {
+			return false;
+		} else if (floor == 3) {
+			return false;
+		} else if (floor == 4) {
+			return false;
+		} else if (floor == 5) {
+			return true;
+		} else if (floor == 6) {
+			return false;
+		} else if (floor == 7) {
+			return true;
+		}
+		
 		return false;
 	}
 
 	@Override
 	public int getElevatorDoorStatus(int elevatorNumber) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 2;
+		return IElevator.ELEVATOR_DOORS_CLOSED;
 	}
 
 	@Override
 	public int getElevatorFloor(int elevatorNumber) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return 3;
 	}
 
 	@Override
 	public int getElevatorNum() throws RemoteException {
-		// TODO Auto-generated method stub
-		return 2;
+		return 4;
 	}
 
 	@Override
 	public int getElevatorSpeed(int elevatorNumber) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return 10;
 	}
 
 	@Override
 	public int getElevatorWeight(int elevatorNumber) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return 650;
 	}
 
 	@Override
 	public boolean getFloorButtonDown(int floor) throws RemoteException {
+		if (floor == 0) {
+			return false;
+		} else if (floor == 1) {
+			return false;
+		} else if (floor == 2) {
+			return false;
+		} else if (floor == 3) {
+			return false;
+		} else if (floor == 4) {
+			return false;
+		} else if (floor == 5) {
+			return false;
+		} else if (floor == 6) {
+			return false;
+		} else if (floor == 7) {
+			return true;
+		}
 		
-		cntFloorButtonDown++;		
-		cntFloorButtonDown = cntFloorButtonDown % testValuesFloorButtonDown.size();		
-		
-		return testValuesFloorButtonDown.get(cntFloorButtonDown);
+		return false;
 	}
 
 	@Override
 	public boolean getFloorButtonUp(int floor) throws RemoteException {
+		if (floor == 0) {
+			return true;
+		} else if (floor == 1) {
+			return false;
+		} else if (floor == 2) {
+			return false;
+		} else if (floor == 3) {
+			return false;
+		} else if (floor == 4) {
+			return false;
+		} else if (floor == 5) {
+			return false;
+		} else if (floor == 6) {
+			return false;
+		} else if (floor == 7) {
+			return false;
+		}
 		
-		cntFloorButtonUp++;
-		cntFloorButtonUp = cntFloorButtonUp % testValuesFloorButtonUp.size();
-		
-		return testValuesFloorButtonUp.get(cntFloorButtonUp);
+		return false;
 	}
 
 	@Override
 	public int getFloorNum() throws RemoteException {
-		// TODO Auto-generated method stub
-		return 5;
+		return 8;
 	}
 
 	@Override
 	public boolean getServicesFloors(int elevatorNumber, int floor) throws RemoteException {
-		// TODO Auto-generated method stub
-		return true;
+		if (floor == 0) {
+			return true;
+		} else if (floor == 1) {
+			return true;
+		} else if (floor == 2) {
+			return true;
+		} else if (floor == 3) {
+			return true;
+		} else if (floor == 4) {
+			return false;
+		} else if (floor == 5) {
+			return true;
+		} else if (floor == 6) {
+			return true;
+		} else if (floor == 7) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
 	public int getTarget(int elevatorNumber) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return 5;
 	}
 
 	@Override
 	public void setCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		// Do nothing. Dynamic behaviour will be simulated with test mock.
 	}
 
 	@Override
 	public void setTarget(int elevatorNumber, int target) throws RemoteException {
-		// TODO Auto-generated method stub
-
+		// Do nothing. Dynamic behaviour will be simulated with test mock.
 	}
 
 	@Override
 	public long getClockTick() throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return 120354;
 	}
-
 }

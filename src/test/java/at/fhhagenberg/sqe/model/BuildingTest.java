@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import at.fhhagenberg.sqe.controller.IAlarmManager;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -21,12 +23,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BuildingTest {
 	@Mock
 	private IWrapElevator mockedRmElevator;
+	@Mock
+	private IAlarmManager mockedAlarmManager;
 	
 	@Test
 	public void testGetFloorNumberOfBuilding() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(6);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 				
 		assertEquals(6, testBuilding.FloorNumber.getValue());
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).getFloorNum();
@@ -36,20 +40,20 @@ public class BuildingTest {
 	public void testGetElevatorNumberOfBuilding() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getElevatorNum()).thenReturn(2);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(2, testBuilding.ElevatorNumber.getValue());
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).getElevatorNum();
-		assertNull(testBuilding.ErrorMsgBuilding.getValue());
+		Mockito.verify(mockedAlarmManager, Mockito.never()).addErrorMessage(Mockito.anyString());
 	}
 	
 	@Test
 	public void testGetBuildingInformationWithRemoteError() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getElevatorNum()).thenThrow(new java.rmi.RemoteException("Error get elevator number"));
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
-		assertEquals("Error in initBuildingInformation: Error get elevator number", testBuilding.ErrorMsgBuilding.getValue());
+		Mockito.verify(mockedAlarmManager, Mockito.times(1)).addErrorMessage("Remote error (init building information): Error get elevator number");
 		assertEquals(0, testBuilding.FloorNumber.getValue());
 		assertEquals(0, testBuilding.ElevatorNumber.getValue());
 		assertEquals(0, testBuilding.FloorList.size());
@@ -61,7 +65,7 @@ public class BuildingTest {
 	public void testFloorListSizeWithFourAddedFloors() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(4);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(4, testBuilding.FloorList.size());
 	}
@@ -70,7 +74,7 @@ public class BuildingTest {
 	public void testFloorListFloorNumbersWithThreeAddedFloors() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(3);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(0, testBuilding.FloorList.get(0).getFloorNumber());
 		assertEquals(1, testBuilding.FloorList.get(1).getFloorNumber());
@@ -81,7 +85,7 @@ public class BuildingTest {
 	public void testFloorListEmpty() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(0);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(0, testBuilding.FloorList.size());
 	}
@@ -90,7 +94,7 @@ public class BuildingTest {
 	public void testFloorListWithNegativeFloorNumber() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(-1);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(0, testBuilding.FloorList.size());
 	}
@@ -99,7 +103,7 @@ public class BuildingTest {
 	public void testNegativeFloorNumber() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(-1);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(0, testBuilding.FloorNumber.getValue());
 	}
@@ -108,7 +112,7 @@ public class BuildingTest {
 	public void testNegativeElevatorNumber() throws java.rmi.RemoteException {
 		Mockito.when(mockedRmElevator.getElevatorNum()).thenReturn(-5);
 		
-		Building testBuilding = new Building(mockedRmElevator);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(0, testBuilding.ElevatorNumber.getValue());
 	}

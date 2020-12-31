@@ -1,3 +1,7 @@
+/**
+ * Name: Sajan Cherukad, Dominic Zopf
+ */
+
 package at.fhhagenberg.sqe.model;
 
 /**
