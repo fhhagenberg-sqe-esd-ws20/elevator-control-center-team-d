@@ -39,6 +39,11 @@
 			<version>4.0.16-alpha</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.5.13</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -66,7 +71,7 @@
 				<version>0.0.3</version>
 				<configuration>
 					<launcher>launcher</launcher>
-					<mainClass>at.fhhagenberg.sqe.App</mainClass>
+					<mainClass>at.fhhagenberg.sqe.gui.App</mainClass>
 				</configuration>
 			</plugin>
 		 <plugin>
