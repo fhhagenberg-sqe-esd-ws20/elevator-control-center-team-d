@@ -35,7 +35,7 @@ public class App extends Application {
 	private AlarmManager appAlarmManager = new AlarmManager();
 	private Elevator modelElevator = new Elevator(testRemoteElevator);
 	private Building modelBuilding = new Building(testRemoteElevator, appAlarmManager);
-	//private ElevatorController elevatorCtrl = new ElevatorController(testRemoteElevator, modelElevator, modelBuilding, appAlarmManager);
+	private ElevatorController elevatorCtrl = new ElevatorController(testRemoteElevator, modelElevator, modelBuilding, appAlarmManager);
 	private Timer updateDataTimer = new Timer();
 	
 	private void initElevatorController() {
@@ -45,14 +45,15 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		Elevator model = new Elevator(testRemoteElevator);
-		ElevatorController controller = new ElevatorController(testRemoteElevator, modelElevator, modelBuilding, appAlarmManager);
-		ElevatorView view = new ElevatorView(controller, primaryStage);
+		elevatorCtrl.setCurrViewElevatorNumber(1);
+		initElevatorController();
 		
-		primaryStage.show();
+		//ElevatorView view = new ElevatorView(elevatorCtrl, primaryStage);
 		
-//		elevatorCtrl.setCurrViewElevatorNumber(1);
-//		initElevatorController();
+		MainView view = new MainView(elevatorCtrl, primaryStage); 
+			
+		
+	
 //		
 //		/*
 //		var label = new Label("Initial GUI");

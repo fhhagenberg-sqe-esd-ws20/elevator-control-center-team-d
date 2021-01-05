@@ -13,50 +13,55 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * Class for the elevator controller which prepares the data for
- * the view. Update the model data and provide functions for the
- * elevator control.
+ * Class for the elevator controller which prepares the data for the view.
+ * Update the model data and provide functions for the elevator control.
+ * 
  * @author Dominic Zopf
  *
  */
 public class ElevatorController extends TimerTask {
 
 	private boolean updateModelData = false;
-	public enum eOperationStatus { MANUAL, AUTOMATIC };
+
+	public enum eOperationStatus {
+		MANUAL, AUTOMATIC
+	};
+
 	private eOperationStatus operationStatus;
-	
+
 	public IModelBuilding buildingModel;
 	public IModelElevator elevatorModel;
 	public IAlarmManager ctrlAlarmManager;
-	
+
 	// Properties for GUI binding
 	public ObservableList<Boolean> ElevatorButtonList = FXCollections.observableArrayList();
 	public ObservableList<Boolean> ServicesFloorList = FXCollections.observableArrayList();
-	
-	
-	public ElevatorController(IWrapElevator remoteElevator, IModelElevator modelElevator, IModelBuilding modelBuilding, 
-			                  IAlarmManager alarmManager) {		
+
+	public ElevatorController(IWrapElevator remoteElevator, IModelElevator modelElevator, IModelBuilding modelBuilding,
+			IAlarmManager alarmManager) {
 		buildingModel = modelBuilding;
 		elevatorModel = modelElevator;
 		ctrlAlarmManager = alarmManager;
 		
-		updateModelValues();
 		initStatusLists();
-		
+		updateModelValues();
+
 		operationStatus = eOperationStatus.MANUAL;
 		updateModelData = true;
 	}
-	
+
 	private void initStatusLists() {
 		for (int i = 0; i < buildingModel.getFloorNumber(); i++) {
 			ElevatorButtonList.add(Boolean.FALSE);
 			ServicesFloorList.add(Boolean.TRUE);
 		}
+
 	}
-	
+
 	/**
-	 * Set current viewed elevator number to get and set the correct
-	 * values in the models 
+	 * Set current viewed elevator number to get and set the correct values in the
+	 * models
+	 * 
 	 * @param elevatorNumber: current viewed elevator number
 	 */
 	public void setCurrViewElevatorNumber(int elevatorNumber) {
@@ -70,63 +75,63 @@ public class ElevatorController extends TimerTask {
 			ctrlAlarmManager.addErrorMessage("Exception (set elevator number): " + e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		if (updateModelData) {
 			// Update properties only in javafx thread
-			Platform.runLater(() ->	updateModelValues());
-		}		
-	}	
-	
+			Platform.runLater(() -> updateModelValues());
+		}
+	}
+
 	public void updateModelValues() {
 		try {
 			long startClockTick = 0;
 			long diffClockTick = 0;
 			int tryUpdateCounter = 0;
 			final int maxUpdateAttempts = 3;
-			
+
 			do {
 				startClockTick = elevatorModel.getClockTick();
 				updateElevatorModel();
-				updateElevatorButtonList();
+				updateElevatorButtonList();			
 				updateServicesFloorList();
-				updateFloorButtons();	
+				updateFloorButtons();
 				diffClockTick = elevatorModel.getClockTick() - startClockTick;
 				tryUpdateCounter++;
 			} while (diffClockTick != 0 && tryUpdateCounter < maxUpdateAttempts);
-			
+
 			if (diffClockTick != 0) {
 				throw new RuntimeException("Error in update model values: clock tick not equal after attempts!");
-			}			
+			}
 		} catch (RemoteException e) {
 			ctrlAlarmManager.addErrorMessage("Remote error (update model values): " + e.getMessage());
 		} catch (RuntimeException e) {
 			ctrlAlarmManager.addErrorMessage("Clock tick error (update model values): " + e.getMessage());
 		} catch (Exception e) {
 			ctrlAlarmManager.addErrorMessage("Exception (update model values): " + e.getMessage());
-		}			
+		}
 	}
-	
+
 	private void updateElevatorButtonList() throws RemoteException {
 		for (int i = 0; i < ElevatorButtonList.size(); i++) {
 			ElevatorButtonList.set(i, elevatorModel.getElevatorButton(i));
 		}
 	}
-	
+
 	private void updateServicesFloorList() throws RemoteException {
 		for (int i = 0; i < ServicesFloorList.size(); i++) {
 			ServicesFloorList.set(i, elevatorModel.getServicesFloors(i));
 		}
 	}
-	
+
 	private void updateFloorButtons() throws RemoteException {
 		for (var floor : buildingModel.getObservableFloorList()) {
 			floor.updateFloorButtonDown();
 			floor.updateFloorButtonUp();
 		}
 	}
-	
+
 	private void updateElevatorModel() throws RemoteException {
 		elevatorModel.updateCommittedDirection();
 		elevatorModel.updateElevatorDoorStatus();
@@ -147,63 +152,67 @@ public class ElevatorController extends TimerTask {
 	public eOperationStatus getOperationStatus() {
 		return operationStatus;
 	}
-	
+
 	/**
 	 * Button function to switch the operation status
 	 */
 	public void switchOperationStatus() {
 		if (operationStatus.equals(eOperationStatus.MANUAL)) {
 			// TODO: start automatic control -> run AutomaticHandler
-			operationStatus = eOperationStatus.AUTOMATIC;			
+			operationStatus = eOperationStatus.AUTOMATIC;
 		} else {
 			// TODO: stop automatic control -> stop AutomaticHandler
 			operationStatus = eOperationStatus.MANUAL;
 		}
 	}
-	
+
 	/**
 	 * Button function to set the next target in manual operation mode
+	 * 
 	 * @param nextTarget: floor number of next target
-	 * @return true: set next target was successful, false: not able to set next target
+	 * @return true: set next target was successful, false: not able to set next
+	 *         target
 	 */
 	public boolean setNextElevatorTarget(int nextTarget) {
 		if (operationStatus == eOperationStatus.MANUAL) {
 			try {
-				// Only set next target when last target was reached				
-				if (!elevatorModel.getElevatorPosIsTarget() || elevatorModel.getElevatorSpeed() > 0) {
-					ctrlAlarmManager.addWarningMessage("Warning (set next target): elevator not in previous target position");
+				// Only set next target when last target was reached
+				if (!elevatorModel.getElevatorPosIsTarget() || Integer.valueOf(elevatorModel.getElevatorSpeed()) > 0) {
+					ctrlAlarmManager
+							.addWarningMessage("Warning (set next target): elevator not in previous target position");
 					return false;
 				}
-				
+
 				// Only set next target when door is open
-				if (elevatorModel.getDoorStatus() != IElevator.ELEVATOR_DOORS_OPEN) {
+				if (Integer.valueOf(elevatorModel.getDoorStatus()) != IElevator.ELEVATOR_DOORS_OPEN) {
 					ctrlAlarmManager.addWarningMessage("Warning (set next target): elevator doors not open");
 					return false;
 				}
-				
+
 				if (nextTarget == elevatorModel.getElevatorCurrFloor()) {
-					ctrlAlarmManager.addWarningMessage("Warning (set next target): set target could not be current elevator position");
+					ctrlAlarmManager.addWarningMessage(
+							"Warning (set next target): set target could not be current elevator position");
 					return false;
 				}
-				
+
 				if (nextTarget > elevatorModel.getElevatorCurrFloor()) {
 					elevatorModel.setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UP);
 				} else {
 					elevatorModel.setCommittedDirection(IElevator.ELEVATOR_DIRECTION_DOWN);
-				}			
-				
+				}
+
 				elevatorModel.setTarget(nextTarget);
 			} catch (RemoteException e) {
 				ctrlAlarmManager.addErrorMessage("Remote error (set next target): " + e.getMessage());
 			} catch (Exception e) {
 				ctrlAlarmManager.addErrorMessage("Exception (set next target): " + e.getMessage());
-			}			
-		}
-		else {
-			ctrlAlarmManager.addWarningMessage("Warning (set next target): next elevator target can only be set in manual operation mode");
+			}
+		} else {
+			ctrlAlarmManager.addWarningMessage(
+					"Warning (set next target): next elevator target can only be set in manual operation mode");
 			return false;
 		}
-		
-		return true;		
+
+		return true;
 	}
 }

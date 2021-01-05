@@ -54,6 +54,9 @@ public class DummyElevator implements IWrapElevator {
 
 	@Override
 	public int getElevatorFloor(int elevatorNumber) throws RemoteException {
+		if(elevatorNumber == 1)
+			return 5;
+		
 		return 3;
 	}
 
@@ -145,9 +148,18 @@ public class DummyElevator implements IWrapElevator {
 		
 		return false;
 	}
+	
+	private Boolean testTarget = false;
 
 	@Override
 	public int getTarget(int elevatorNumber) throws RemoteException {
+//		if (testTarget) {
+//			testTarget = false;
+//			return 1;
+//		}else {
+//			testTarget = true;
+//			return 5;
+//		}		
 		return 5;
 	}
 
