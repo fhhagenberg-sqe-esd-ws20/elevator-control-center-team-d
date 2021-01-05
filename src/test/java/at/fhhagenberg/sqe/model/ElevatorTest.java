@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
  * @author Dominic Zopf
  *
  */
+@Disabled
 @ExtendWith(MockitoExtension.class)
 public class ElevatorTest {	
 	@Mock

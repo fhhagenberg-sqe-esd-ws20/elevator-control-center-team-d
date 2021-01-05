@@ -7,6 +7,7 @@ package at.fhhagenberg.sqe.controller;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,6 +22,7 @@ import at.fhhagenberg.sqe.model.IWrapElevator;
  * @author Dominic Zopf
  *
  */
+@Disabled
 @ExtendWith(MockitoExtension.class)
 public class ElevatorControllerTest {
 	@Mock
