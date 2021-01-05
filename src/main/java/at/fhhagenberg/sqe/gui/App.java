@@ -48,85 +48,92 @@ public class App extends Application {
 		elevatorCtrl.setCurrViewElevatorNumber(1);
 		initElevatorController();
 		
-		/*
-		var label = new Label("Initial GUI");
+		//ElevatorView view = new ElevatorView(elevatorCtrl, primaryStage);
 		
-		elevatorCtrl.elevatorModel.DoorStatus.addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				// TODO Auto-generated method stub
-				if (newValue.equals(IElevator.ELEVATOR_DOORS_OPEN)) {
-					label.setText("Open");
-				} else if (newValue.equals(IElevator.ELEVATOR_DOORS_CLOSED)) {
-					label.setText("Closed");
-				}
-			}
-		});
+		MainView view = new MainView(elevatorCtrl, primaryStage); 
+			
 		
-		// Test change listener
-		elevatorCtrl.elevatorModel.DoorStatus.setValue(IElevator.ELEVATOR_DOORS_OPEN);
-		*/
-		
-		
-		/*
-		// Test list of floors
-		ListView<String> testFloorList = new ListView<String>();
-		
-		for (int i = 0; i < elevatorCtrl.buildingModel.FloorList.size(); i++) {
-			testFloorList.getItems().add("Floor " + String.valueOf(i));
-		}
-		*/	
-		
-		// Test binding on floor buttons
-		ListView<Floor> testFloorList = new ListView<Floor>(elevatorCtrl.buildingModel.getObservableFloorList());
-		
-		testFloorList.setCellFactory(param -> new ListCell<Floor>() {
-			@Override
-			protected void updateItem(Floor floor, boolean empty) {
-				super.updateItem(floor, empty);
-								
-				if (empty || floor == null) {
-					setText(null);
-				} else {
-					if (floor.FloorButtonDown.getValue() && floor.FloorButtonUp.getValue()) {
-						setText("up/down");
-				    } else if (floor.FloorButtonDown.getValue()) {
-						setText("down");
-					} else if (floor.FloorButtonUp.getValue()) {
-						setText("up");
-					} else {
-						setText(null);
-					}
-				}				
-			}
-		});
-		
-		/*
-		// Test button switch automatic manual
-		Button selOperationBtn = new Button("Manual");
-		
-		selOperationBtn.setOnAction(e -> {
-			elevatorCtrl.switchOperationStatus();
-			selOperationBtn.setText(elevatorCtrl.getOperationStatus().toString());
-		});
-		*/
-		
-		
-		var layout = new BorderPane(testFloorList);
-		
-		var scene = new Scene(layout, 640, 480);
-		
-		// Set scene
-		primaryStage.setScene(scene);
-		primaryStage.show();
-		
-		// On cancel button cancel update timer
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
-			@Override
-			public void handle(WindowEvent event) {
-				updateDataTimer.cancel();
-			}
-		});
+	
+//		
+//		/*
+//		var label = new Label("Initial GUI");
+//		
+//		elevatorCtrl.elevatorModel.DoorStatus.addListener(new ChangeListener<Number>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//				// TODO Auto-generated method stub
+//				if (newValue.equals(IElevator.ELEVATOR_DOORS_OPEN)) {
+//					label.setText("Open");
+//				} else if (newValue.equals(IElevator.ELEVATOR_DOORS_CLOSED)) {
+//					label.setText("Closed");
+//				}
+//			}
+//		});
+//		
+//		// Test change listener
+//		elevatorCtrl.elevatorModel.DoorStatus.setValue(IElevator.ELEVATOR_DOORS_OPEN);
+//		*/
+//		
+//		
+//		/*
+//		// Test list of floors
+//		ListView<String> testFloorList = new ListView<String>();
+//		
+//		for (int i = 0; i < elevatorCtrl.buildingModel.FloorList.size(); i++) {
+//			testFloorList.getItems().add("Floor " + String.valueOf(i));
+//		}
+//		*/	
+//		
+//		// Test binding on floor buttons
+//		ListView<Floor> testFloorList = new ListView<Floor>(elevatorCtrl.buildingModel.getObservableFloorList());
+//		
+//		testFloorList.setCellFactory(param -> new ListCell<Floor>() {
+//			@Override
+//			protected void updateItem(Floor floor, boolean empty) {
+//				super.updateItem(floor, empty);
+//								
+//				if (empty || floor == null) {
+//					setText(null);
+//				} else {
+//					if (floor.FloorButtonDown.getValue() && floor.FloorButtonUp.getValue()) {
+//						setText("up/down");
+//				    } else if (floor.FloorButtonDown.getValue()) {
+//						setText("down");
+//					} else if (floor.FloorButtonUp.getValue()) {
+//						setText("up");
+//					} else {
+//						setText(null);
+//					}
+//				}				
+//			}
+//		});
+//		
+//		/*
+//		// Test button switch automatic manual
+//		Button selOperationBtn = new Button("Manual");
+//		
+//		selOperationBtn.setOnAction(e -> {
+//			elevatorCtrl.switchOperationStatus();
+//			selOperationBtn.setText(elevatorCtrl.getOperationStatus().toString());
+//		});
+//		*/
+//		
+//		
+//		var layout = new BorderPane(testFloorList);
+//		
+//		var scene = new Scene(layout, 640, 480);
+//		
+//		// Set scene
+//		primaryStage.setScene(scene);
+//		primaryStage.show();
+//		
+//		// On cancel button cancel update timer
+//		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
+//			@Override
+//			public void handle(WindowEvent event) {
+//				updateDataTimer.cancel();
+//			}
+//		});
 	}
 
 	public static void main(String[] args) {

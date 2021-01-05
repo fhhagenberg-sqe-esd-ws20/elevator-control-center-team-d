@@ -6,6 +6,8 @@ package at.fhhagenberg.sqe.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Class for the elevator model which gets the operating status from
@@ -19,10 +21,10 @@ public class Elevator implements IModelElevator {
 	
 	// Model properties for GUI binding
 	public IntegerProperty CommitedDirection = new SimpleIntegerProperty();
-	public IntegerProperty DoorStatus = new SimpleIntegerProperty();
+	public StringProperty DoorStatus = new SimpleStringProperty();
 	public IntegerProperty ElevatorCurrFloor = new SimpleIntegerProperty();
-	public IntegerProperty ElevatorSpeed = new SimpleIntegerProperty();
-	public IntegerProperty ElevatorWeight = new SimpleIntegerProperty();
+	public StringProperty ElevatorSpeed = new SimpleStringProperty();
+	public StringProperty ElevatorWeight = new SimpleStringProperty();
 	public IntegerProperty ElevatorCurrTarget = new SimpleIntegerProperty();
 	
 	
@@ -62,7 +64,15 @@ public class Elevator implements IModelElevator {
 	
 	@Override
 	public void updateElevatorDoorStatus() throws java.rmi.RemoteException {
-		DoorStatus.setValue(mRemoteElevator.getElevatorDoorStatus(mElevatorNumber));
+		int doorStatus = mRemoteElevator.getElevatorDoorStatus(mElevatorNumber);
+		
+		if (doorStatus == IElevator.ELEVATOR_DOORS_CLOSED) {
+			DoorStatus.setValue("closed");
+		} else if (doorStatus == IElevator.ELEVATOR_DOORS_OPEN) {
+			DoorStatus.setValue("open");
+		} else {
+			DoorStatus.setValue("undefined");
+		}
 	}
 	
 	@Override
@@ -71,13 +81,13 @@ public class Elevator implements IModelElevator {
 	}
 	
 	@Override
-	public void updateElevatorSpeed() throws java.rmi.RemoteException {
-		ElevatorSpeed.setValue(mRemoteElevator.getElevatorSpeed(mElevatorNumber));
+	public void updateElevatorSpeed() throws java.rmi.RemoteException {		
+		ElevatorSpeed.setValue(String.valueOf(mRemoteElevator.getElevatorSpeed(mElevatorNumber)) + " ft/s");
 	}
 	
 	@Override
 	public void updateElevatorWeight() throws java.rmi.RemoteException {
-		ElevatorWeight.setValue(mRemoteElevator.getElevatorWeight(mElevatorNumber));
+		ElevatorWeight.setValue(String.valueOf(mRemoteElevator.getElevatorWeight(mElevatorNumber)) + " lbs");
 	}
 	
 	@Override
@@ -111,7 +121,7 @@ public class Elevator implements IModelElevator {
 	}
 	
 	@Override
-	public IntegerProperty getPropDoorStatus() {
+	public StringProperty getPropDoorStatus() {
 		return DoorStatus;
 	}
 	
@@ -121,12 +131,12 @@ public class Elevator implements IModelElevator {
 	}
 	
 	@Override
-	public IntegerProperty getPropElevatorSpeed() {
+	public StringProperty getPropElevatorSpeed() {
 		return ElevatorSpeed;
 	}
 	
 	@Override
-	public IntegerProperty getPropElevatorWeight() {
+	public StringProperty getPropElevatorWeight() {
 		return ElevatorWeight;
 	}
 	
@@ -141,7 +151,7 @@ public class Elevator implements IModelElevator {
 	}
 	
 	@Override
-	public int getDoorStatus() {
+	public String getDoorStatus() {
 		return DoorStatus.getValue();
 	}
 	
@@ -151,12 +161,12 @@ public class Elevator implements IModelElevator {
 	}
 	
 	@Override
-	public int getElevatorSpeed() {
+	public String getElevatorSpeed() {
 		return ElevatorSpeed.getValue();
 	}
 	
 	@Override
-	public int getElevatorWeight() {
+	public String getElevatorWeight() {
 		return ElevatorWeight.getValue();
 	}
 	

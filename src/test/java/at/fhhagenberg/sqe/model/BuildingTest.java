@@ -14,11 +14,14 @@ import at.fhhagenberg.sqe.controller.IAlarmManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
+
 /**
  * Test class to verify the functionality of the building class.
  * @author Dominic Zopf
  *
  */
+@Disabled
 @ExtendWith(MockitoExtension.class)
 public class BuildingTest {
 	@Mock

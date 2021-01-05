@@ -54,7 +54,7 @@ public class Building implements IModelBuilding {
 		}
 		
 		for (int i = 0; i < FloorNumber.getValue(); i++) {
-			FloorList.add(new Floor(mRemoteElevator, i));
+			FloorList.add(0, new Floor(mRemoteElevator, i));
 		}
 	}
 	

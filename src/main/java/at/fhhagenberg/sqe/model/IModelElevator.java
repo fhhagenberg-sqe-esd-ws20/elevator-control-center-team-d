@@ -5,6 +5,7 @@
 package at.fhhagenberg.sqe.model;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * Interface for elevator model to handle the elevator
@@ -44,25 +45,25 @@ public interface IModelElevator {
 	
 	public IntegerProperty getPropCommitedDirection();
 	
-	public IntegerProperty getPropDoorStatus();
+	public StringProperty getPropDoorStatus();
 	
 	public IntegerProperty getPropElevatorCurrFloor();
 	
-	public IntegerProperty getPropElevatorSpeed();
+	public StringProperty getPropElevatorSpeed();
 	
-	public IntegerProperty getPropElevatorWeight();
+	public StringProperty getPropElevatorWeight();
 	
 	public IntegerProperty getPropElevatorCurrTarget();
 	
 	public int getCommitedDirection();
 	
-	public int getDoorStatus();
+	public String getDoorStatus();
 	
 	public int getElevatorCurrFloor();
 	
-	public int getElevatorSpeed();
+	public String getElevatorSpeed();
 	
-	public int getElevatorWeight();
+	public String getElevatorWeight();
 	
 	public int getElevatorCurrTarget();
 }
