@@ -27,6 +27,11 @@ public class Elevator implements IModelElevator {
 	public StringProperty ElevatorWeight = new SimpleStringProperty();
 	public IntegerProperty ElevatorCurrTarget = new SimpleIntegerProperty();
 	
+	// Save integers for string properties
+	private int iDoorStatus;
+	private int iElevatorSpeed;
+	private int iElevatorWeight;
+	
 	
 	public Elevator(IWrapElevator remoteElevator) {
 		mRemoteElevator = remoteElevator;
@@ -64,11 +69,11 @@ public class Elevator implements IModelElevator {
 	
 	@Override
 	public void updateElevatorDoorStatus() throws java.rmi.RemoteException {
-		int doorStatus = mRemoteElevator.getElevatorDoorStatus(mElevatorNumber);
+		iDoorStatus = mRemoteElevator.getElevatorDoorStatus(mElevatorNumber);
 		
-		if (doorStatus == IElevator.ELEVATOR_DOORS_CLOSED) {
+		if (iDoorStatus == IElevator.ELEVATOR_DOORS_CLOSED) {
 			DoorStatus.setValue("closed");
-		} else if (doorStatus == IElevator.ELEVATOR_DOORS_OPEN) {
+		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_OPEN) {
 			DoorStatus.setValue("open");
 		} else {
 			DoorStatus.setValue("undefined");
@@ -81,13 +86,15 @@ public class Elevator implements IModelElevator {
 	}
 	
 	@Override
-	public void updateElevatorSpeed() throws java.rmi.RemoteException {		
-		ElevatorSpeed.setValue(String.valueOf(mRemoteElevator.getElevatorSpeed(mElevatorNumber)) + " ft/s");
+	public void updateElevatorSpeed() throws java.rmi.RemoteException {	
+		iElevatorSpeed = mRemoteElevator.getElevatorSpeed(mElevatorNumber);
+		ElevatorSpeed.setValue(String.valueOf(iElevatorSpeed) + " ft/s");
 	}
 	
 	@Override
 	public void updateElevatorWeight() throws java.rmi.RemoteException {
-		ElevatorWeight.setValue(String.valueOf(mRemoteElevator.getElevatorWeight(mElevatorNumber)) + " lbs");
+		iElevatorWeight = mRemoteElevator.getElevatorWeight(mElevatorNumber);
+		ElevatorWeight.setValue(String.valueOf(iElevatorWeight) + " lbs");
 	}
 	
 	@Override
@@ -173,6 +180,21 @@ public class Elevator implements IModelElevator {
 	@Override
 	public int getElevatorCurrTarget() {
 		return ElevatorCurrTarget.getValue();
+	}
+	
+	@Override
+	public int getIDoorStatus() {
+		return iDoorStatus;
+	}
+	
+	@Override
+	public int getIElevatorSpeed() {
+		return iElevatorSpeed;
+	}
+	
+	@Override
+	public int getIElevatorWeight() {
+		return iElevatorWeight;
 	}
 }
 

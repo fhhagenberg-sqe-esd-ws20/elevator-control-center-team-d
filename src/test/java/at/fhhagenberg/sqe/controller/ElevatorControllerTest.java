@@ -7,7 +7,6 @@ package at.fhhagenberg.sqe.controller;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,7 +21,6 @@ import at.fhhagenberg.sqe.model.IWrapElevator;
  * @author Dominic Zopf
  *
  */
-@Disabled
 @ExtendWith(MockitoExtension.class)
 public class ElevatorControllerTest {
 	@Mock
@@ -49,9 +47,11 @@ public class ElevatorControllerTest {
 	@Test
 	public void testInitializeElevatorButtonListValuesAndSize() throws java.rmi.RemoteException {
 		Mockito.when(mockedBuilding.getFloorNumber()).thenReturn(2);
+		Mockito.when(mockedElevator.getElevatorButton(0)).thenReturn(true);
+		Mockito.when(mockedElevator.getElevatorButton(1)).thenReturn(false);
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedRmElevator, mockedElevator, mockedBuilding, mockedAlarmManager);
 		
-		assertFalse(testElevatorCtrl.ElevatorButtonList.get(0));
+		assertTrue(testElevatorCtrl.ElevatorButtonList.get(0));
 		assertFalse(testElevatorCtrl.ElevatorButtonList.get(1));
 		assertEquals(2, testElevatorCtrl.ElevatorButtonList.size());
 	}
@@ -59,9 +59,11 @@ public class ElevatorControllerTest {
 	@Test
 	public void testInitializeServiceFloorListValuesAndSize() throws java.rmi.RemoteException {
 		Mockito.when(mockedBuilding.getFloorNumber()).thenReturn(2);
+		Mockito.when(mockedElevator.getServicesFloors(0)).thenReturn(false);
+		Mockito.when(mockedElevator.getServicesFloors(1)).thenReturn(true);
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedRmElevator, mockedElevator, mockedBuilding, mockedAlarmManager);
 		
-		assertTrue(testElevatorCtrl.ServicesFloorList.get(0));
+		assertFalse(testElevatorCtrl.ServicesFloorList.get(0));
 		assertTrue(testElevatorCtrl.ServicesFloorList.get(1));
 		assertEquals(2, testElevatorCtrl.ServicesFloorList.size());
 	}

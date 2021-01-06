@@ -127,13 +127,13 @@ public class App extends Application {
 //		primaryStage.setScene(scene);
 //		primaryStage.show();
 //		
-//		// On cancel button cancel update timer
-//		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
-//			@Override
-//			public void handle(WindowEvent event) {
-//				updateDataTimer.cancel();
-//			}
-//		});
+		// On cancel button cancel update timer
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
+			@Override
+			public void handle(WindowEvent event) {
+				updateDataTimer.cancel();
+			}
+		});
 	}
 
 	public static void main(String[] args) {

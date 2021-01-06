@@ -14,14 +14,11 @@ import at.fhhagenberg.sqe.controller.IAlarmManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Disabled;
-
 /**
  * Test class to verify the functionality of the building class.
  * @author Dominic Zopf
  *
  */
-@Disabled
 @ExtendWith(MockitoExtension.class)
 public class BuildingTest {
 	@Mock
@@ -79,9 +76,9 @@ public class BuildingTest {
 		
 		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
-		assertEquals(0, testBuilding.FloorList.get(0).getFloorNumber());
+		assertEquals(0, testBuilding.FloorList.get(2).getFloorNumber());
 		assertEquals(1, testBuilding.FloorList.get(1).getFloorNumber());
-		assertEquals(2, testBuilding.FloorList.get(2).getFloorNumber());
+		assertEquals(2, testBuilding.FloorList.get(0).getFloorNumber());
 	}
 		
 	@Test
