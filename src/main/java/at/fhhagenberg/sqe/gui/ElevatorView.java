@@ -60,7 +60,7 @@ public class ElevatorView extends GridPane {
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
 	private int idNumber;
-		
+
 	EventHandler<ActionEvent> switchModeHandler = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
@@ -268,6 +268,7 @@ public class ElevatorView extends GridPane {
 		layoutGrid.add(statusButton, 1, 0);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		// Elevator direction label and Buttons:
 		elevDirectionLabel = new Label("Elevator Direction");
 

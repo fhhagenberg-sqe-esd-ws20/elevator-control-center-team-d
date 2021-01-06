@@ -1,9 +1,10 @@
 package at.fhhagenberg.sqe.gui;
 
+
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.Robot;
 import java.util.Timer;
 
 import static org.testfx.api.FxAssert.verifyThat;
@@ -15,7 +16,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.testfx.api.FxAssert;
+
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -28,6 +31,7 @@ import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.IElevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
 import javafx.event.EventHandler;
+
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -36,14 +40,19 @@ import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
 import org.testfx.matcher.base.NodeMatchers;
 
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import org.testfx.matcher.control.TextMatchers;
+
 
 
 @ExtendWith(ApplicationExtension.class)
 @ExtendWith(MockitoExtension.class)
 public class TestFxAutomatedElevatorGUITests 
 {
+
 	private MainView view;
-	
 	
 	private AlarmManager appAlarmManager; 
 	private Elevator modelElevator; 
@@ -51,6 +60,7 @@ public class TestFxAutomatedElevatorGUITests
 	private ElevatorController elevatorCtrl;
 	private Timer updateDataTimer;
     private IWrapElevator mockedRmElevator;
+
     private Stage stage;
 	
 	@Start
@@ -98,30 +108,28 @@ public class TestFxAutomatedElevatorGUITests
 		
 		// On cancel button cancel update timer
 		this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
+		
+
 			@Override
 			public void handle(WindowEvent event) {
 				updateDataTimer.cancel();
 			}
-		});
-		
-		
+		});	
 	}
 	
 	private void initElevatorController() {
 		updateDataTimer.scheduleAtFixedRate(elevatorCtrl, 0, 100);
 	}
 	
+@Disabled
 	@Test
 	public void testChangeManualToAutomatic(FxRobot robot)
 	{		
-		verifyThat("#5modeButton", hasText("Manual"));
+		verifyThat("#5modeButton", TextMatchers.hasText("Manual"));
 		
 		robot.clickOn("#5modeButton");
-		robot.clickOn("#5floorButton5");
-		wait(robot);	
-		
-	
-		//verifyThat("#5modeButton", LabeledMatchers.hasText("Automatic"));
+		wait(robot);
+		verifyThat("#5modeButton", TextMatchers.hasText("Automatic"));
 	}
 	
 	private void wait(FxRobot robot) {
@@ -136,6 +144,7 @@ public class TestFxAutomatedElevatorGUITests
 		verifyThat("#5currentPayloadLabel", hasText("Current Payload"));
 		verifyThat("#5payloadTxtField", TextMatchers.hasText("650 lbs"));	
 	}
+
 	@Disabled
 	@Test
 	public void testEndToEnd(FxRobot robot) throws Exception
@@ -159,7 +168,5 @@ public class TestFxAutomatedElevatorGUITests
 		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(5);
 		
 		//verifyThat("#5setButton5", NodeMatchers.isVisible());
-		
-		
 	}
 }

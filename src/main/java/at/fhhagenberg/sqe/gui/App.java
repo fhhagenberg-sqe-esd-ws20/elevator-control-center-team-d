@@ -49,7 +49,7 @@ public class App extends Application {
 		initElevatorController();		
 		
 		MainView view = new MainView(elevatorCtrl, primaryStage); 			
-
+		
 		// On cancel button cancel update timer
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
 			@Override
