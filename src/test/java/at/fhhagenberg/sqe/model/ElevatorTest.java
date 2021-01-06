@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  * Test class to verify the functionality of the elevator class.
  * @author Dominic Zopf
@@ -107,11 +110,24 @@ public class ElevatorTest {
 		
 		testElevator.updateElevatorDoorStatus();
 		assertEquals(IElevator.ELEVATOR_DOORS_OPEN, testElevator.getIDoorStatus());
+		assertEquals("open", testElevator.getDoorStatus());
 		
 		testElevator.updateElevatorDoorStatus();
 		assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, testElevator.getIDoorStatus());
+		assertEquals("closed", testElevator.getDoorStatus());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorDoorStatus(2);
+	}
+	
+	@Test
+	public void testDoorStatusInvalidState() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);				
+		testElevator.setElevatorNumber(2);
+		Mockito.when(mockedRmElevator.getElevatorDoorStatus(2)).thenReturn(10);
+		
+		testElevator.updateElevatorDoorStatus();
+		
+		assertEquals("undefined", testElevator.getDoorStatus());
 	}
 	
 	@Test
@@ -240,5 +256,86 @@ public class ElevatorTest {
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).getElevatorWeight(0);
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).getElevatorWeight(2);
+	}
+	
+	@Test
+	public void testGetterCommitedDirection() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);	
+		testElevator.setElevatorNumber(0);
+		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
+		
+		testElevator.updateCommittedDirection();
+		
+		assertEquals(SimpleIntegerProperty.class, testElevator.getPropCommitedDirection().getClass());
+		assertEquals(IElevator.ELEVATOR_DIRECTION_UP, testElevator.getPropCommitedDirection().getValue());
+		assertEquals(IElevator.ELEVATOR_DIRECTION_UP, testElevator.getCommitedDirection());
+	}
+	
+	@Test
+	public void testGetterDoorStatus() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);	
+		testElevator.setElevatorNumber(0);
+		Mockito.when(mockedRmElevator.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
+		
+		testElevator.updateElevatorDoorStatus();
+		
+		assertEquals(SimpleStringProperty.class, testElevator.getPropDoorStatus().getClass());
+		assertEquals("closed", testElevator.getPropDoorStatus().getValue());
+		assertEquals("closed", testElevator.getDoorStatus());
+		assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, testElevator.getIDoorStatus());
+	}
+	
+	@Test
+	public void testGetterElevatorCurrFloor() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);	
+		testElevator.setElevatorNumber(0);
+		Mockito.when(mockedRmElevator.getElevatorFloor(0)).thenReturn(5);
+		
+		testElevator.updateElevatorFloor();
+		
+		assertEquals(SimpleIntegerProperty.class, testElevator.getPropElevatorCurrFloor().getClass());
+		assertEquals(5, testElevator.getPropElevatorCurrFloor().getValue());
+		assertEquals(5, testElevator.getElevatorCurrFloor());
+	}
+	
+	@Test
+	public void testGetterElevatorSpeed() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);	
+		testElevator.setElevatorNumber(0);
+		Mockito.when(mockedRmElevator.getElevatorSpeed(0)).thenReturn(14);
+		
+		testElevator.updateElevatorSpeed();
+		
+		assertEquals(SimpleStringProperty.class, testElevator.getPropElevatorSpeed().getClass());
+		assertEquals("14 ft/s", testElevator.getPropElevatorSpeed().getValue());
+		assertEquals("14 ft/s", testElevator.getElevatorSpeed());
+		assertEquals(14, testElevator.getIElevatorSpeed());
+	}
+	
+	@Test
+	public void testGetterElevatorWeight() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);	
+		testElevator.setElevatorNumber(0);
+		Mockito.when(mockedRmElevator.getElevatorWeight(0)).thenReturn(412);
+		
+		testElevator.updateElevatorWeight();
+		
+		assertEquals(SimpleStringProperty.class, testElevator.getPropElevatorWeight().getClass());
+		assertEquals("412 lbs", testElevator.getPropElevatorWeight().getValue());
+		assertEquals("412 lbs", testElevator.getElevatorWeight());
+		assertEquals(412, testElevator.getIElevatorWeight());
+	}
+	
+	@Test
+	public void testGetterElevatorCurrTarget() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);	
+		testElevator.setElevatorNumber(0);
+		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(2);
+		
+		testElevator.updateTarget();
+		
+		assertEquals(SimpleIntegerProperty.class, testElevator.getPropElevatorCurrTarget().getClass());
+		assertEquals(2, testElevator.getPropElevatorCurrTarget().getValue());
+		assertEquals(2, testElevator.getElevatorCurrTarget());
 	}
 }

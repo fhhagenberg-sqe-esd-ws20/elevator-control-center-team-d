@@ -10,7 +10,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.sun.javafx.collections.ObservableListWrapper;
+
 import at.fhhagenberg.sqe.controller.IAlarmManager;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -115,5 +118,53 @@ public class BuildingTest {
 		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
 		
 		assertEquals(0, testBuilding.ElevatorNumber.getValue());
+	}
+	
+	@Test
+	public void testGetterPropertyFloorNumber() throws java.rmi.RemoteException {
+		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(2);
+		
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
+		
+		assertEquals(SimpleIntegerProperty.class, testBuilding.getPropFloorNumber().getClass());
+		assertEquals(2, testBuilding.getPropFloorNumber().getValue());
+	}
+	
+	@Test
+	public void testGetterPropertyElevatorNumber() throws java.rmi.RemoteException {
+		Mockito.when(mockedRmElevator.getElevatorNum()).thenReturn(4);
+		
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
+		
+		assertEquals(SimpleIntegerProperty.class, testBuilding.getPropElevatorNumber().getClass());
+		assertEquals(4, testBuilding.getPropElevatorNumber().getValue());
+	}
+	
+	@Test
+	public void testGetterObservableFloorList() throws java.rmi.RemoteException {
+		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(2);
+		
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
+		
+		assertEquals(ObservableListWrapper.class, testBuilding.getObservableFloorList().getClass());
+		assertEquals(2, testBuilding.getObservableFloorList().size());
+	}
+	
+	@Test
+	public void testGetterFloorNumber() throws java.rmi.RemoteException {
+		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(6);
+		
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
+		
+		assertEquals(6, testBuilding.getFloorNumber());
+	}
+	
+	@Test
+	public void testGetterElevatorNumber() throws java.rmi.RemoteException {
+		Mockito.when(mockedRmElevator.getElevatorNum()).thenReturn(3);
+		
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);
+		
+		assertEquals(3, testBuilding.getElevatorNumber());
 	}
 }
