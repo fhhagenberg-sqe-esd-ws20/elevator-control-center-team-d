@@ -34,14 +34,6 @@ import javafx.stage.Stage;
 
 public class ElevatorView extends GridPane {
 	private ElevatorController elevatorModel;
-
-	//private Stage stage;
-	// private Label label;
-	// private Button countButton;
-	// private Text sceneTitle;
-
-//	private Image uparrow;
-//	private Image downarrow;
 	private Label emptySpacingLabel;
 
 	private Button modeButton;
@@ -53,20 +45,17 @@ public class ElevatorView extends GridPane {
 	private Text speedTxtField;
 	private Label doorStatusLabel;
 	private Text doorStatusTxtField;
+	private Text payloadTxtField;
 
 	private ArrayList<Button> floorButtonList = new ArrayList<Button>();
 	private ArrayList<Button> setButtonList = new ArrayList<Button>();
 	private ArrayList<Button> requestButtonList = new ArrayList<Button>();
-	
-	
-	
+		
 	ListView<Floor> testFloorList;
 
 	private GridPane elevatorGrid;
-
 	private GridPane layoutGrid;
 	private int LabelSpacing = 70;
-
 	private String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
@@ -207,7 +196,7 @@ public class ElevatorView extends GridPane {
 			floorButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-				//	if (elevatorModel.setNextElevatorTarget(constantIndex))
+					if (elevatorModel.setNextElevatorTarget(constantIndex))
 					{
 						if (elevatorModel.getOperationStatus() == eOperationStatus.MANUAL) 
 						{
@@ -236,30 +225,24 @@ public class ElevatorView extends GridPane {
 		}
 		
 		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
-											+ LabelSpacing * 2 + "; -fx-background-radius: 0");
-		//elevatorModel.elevatorModel.getElevatorCurrFloor()
-
+											+ LabelSpacing * 2 + "; -fx-background-radius: 0");	
 		return floorPane;
 	}
 
 	public ElevatorView(ElevatorController model, Stage stage) 
 	{
 		super();
-		
-//		emptySpacingLabel = new Label();
-//		emptySpacingLabel.setPrefWidth(50);
 
 		this.elevatorModel = model;
+		
 		//this.stage = stage;
 		idNumber = model.buildingModel.getElevatorNumber();
-
-//		label = new Label("Countdown: ");
-//		countButton = new Button("Count");
-		// stage.setScene(new Scene(new VBox(label, countButton)));
 
 		modeButton = new Button("Manual");
 		modeButton.setStyle(
 				"-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0");
+		
+		
 		// set id
 		modeButton.addEventHandler(ActionEvent.ACTION, switchModeHandler);
 		modeButton.setPrefWidth(100);
@@ -279,35 +262,16 @@ public class ElevatorView extends GridPane {
 		layoutGrid.setHgap(20);
 		layoutGrid.setPadding(new Insets(20, 20, 20, 20));
 		layoutGrid.setAlignment(Pos.CENTER);
-
-		// layoutGrid.add(modeAndStatusHbox, 0, 0, 2, 1);
-		// -fx-pref-width: 100;
-
+		
 		GridPane.setFillWidth(modeButton, true);
 		layoutGrid.add(modeButton, 0, 0);
 		layoutGrid.add(statusButton, 1, 0);
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Elevator direction label and Arrows:
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// Elevator direction label and Buttons:
 		elevDirectionLabel = new Label("Elevator Direction");
 
-		// Passing FileInputStream object as a parameter
-
-		// https://www.flaticon.com/de/kostenloses-icon/dreieckiger-pfeil-nach-unten_20972
-//		uparrow = new Image(("../../../../../resources/images/arrowup.png").toString(), true);//new Image(new FileInputStream("D:\\ESD3\\SQE\\Eclipse_Workspace\\Assignments\\Projekt\\elevator-control-center-team-d\\src\\main\\resources\\images\\arrowup.png"));
-//		downarrow = new Image(("../../../../../resources/images/arrowdown.png").toString(), true);//new Image(new FileInputStream("D:\\ESD3\\SQE\\Eclipse_Workspace\\Assignments\\Projekt\\elevator-control-center-team-d\\src\\main\\resources\\images\\arrowdown.png"));
-
-//		uparrow = new Image(getClass().getClassLoader().getResource("arrowup.png").toString(), true);//new Image(new FileInputStream("D:\\ESD3\\SQE\\Eclipse_Workspace\\Assignments\\Projekt\\elevator-control-center-team-d\\src\\main\\resources\\images\\arrowup.png"));
-//		downarrow = new Image(getClass().getClassLoader().getResource("arrowdown.png").toString(), true);//new Image(new FileInputStream("D:\\ESD3\\SQE\\Eclipse_Workspace\\Assignments\\Projekt\\elevator-control-center-team-d\\src\\main\\resources\\images\\arrowdown.png"));
-//		
-//		ImageView imgViewUp = new ImageView(uparrow);
-//		ImageView imgViewDown = new ImageView(downarrow);
-//		imgViewUp.setFitWidth(50);
-//		imgViewDown.setFitWidth(50);
-//		imgViewDown.setPreserveRatio(true);
-//		imgViewUp.setPreserveRatio(true);
-//		
-//
 		arrowup = new Button("up");
 		arrowdown = new Button("down");
 		
@@ -352,9 +316,6 @@ public class ElevatorView extends GridPane {
 		});
 		
 		
-		//FF0000
-
-
 		arrowdown.setPrefSize(50, 50);		
 		arrowup.setPrefSize(50, 50);
 
@@ -363,18 +324,13 @@ public class ElevatorView extends GridPane {
 
 		VBox elevDirectionVbox = new VBox(elevDirectionLabel, arrowsHbox);
 		elevDirectionVbox.setAlignment(Pos.CENTER);
-		// elevDirectionVbox.setStyle(style);
-
-		// layoutGrid.add(elevDirectionVbox, 0, 1);
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Current Payload label and textfield		
 		currentPayloadLabel = new Label("Current Payload");
 		// currentPayloadLabel.setAlignment(Pos.CENTER);
 
-		Text payloadTxtField = new Text();
+		payloadTxtField = new Text();
 		// payloadTxtField.setTextAlignment(TextAlignment.CENTER);
 		
 		payloadTxtField.textProperty().bind(model.elevatorModel.getPropElevatorWeight());
@@ -385,7 +341,6 @@ public class ElevatorView extends GridPane {
 
 		// layoutGrid.add(payloadVbox, 0, 2);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 	    speed label and textfield		
@@ -400,12 +355,9 @@ public class ElevatorView extends GridPane {
 		speedVbox.setAlignment(Pos.CENTER);
 		speedVbox.setStyle(style);
 
-		// layoutGrid.add(speedVbox, 0, 3);
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //door status label and textfield		
+		
 		doorStatusLabel = new Label("Door Status");
 		doorStatusTxtField = new Text();
 		
@@ -497,8 +449,8 @@ public class ElevatorView extends GridPane {
 		speedTxtField.setId(String.valueOf(idNumber) + "speedTxtField");
 		doorStatusLabel.setId(String.valueOf(idNumber) + "doorStatusLabel");
 		doorStatusTxtField.setId(String.valueOf(idNumber) + "doorStatusTxtField");
+		payloadTxtField.setId(String.valueOf(idNumber)+"payloadTxtField");
 
 		add(layoutGrid, 0,0);
-		//stage.setScene(new Scene(layoutGrid));
 	}
 }
