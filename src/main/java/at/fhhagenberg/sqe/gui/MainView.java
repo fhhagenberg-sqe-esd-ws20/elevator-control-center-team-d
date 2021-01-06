@@ -15,39 +15,18 @@ import javafx.stage.Stage;
 public class MainView {
 	private ElevatorController elevController;
 	private Stage stage;
-	
-	
+		
 	public MainView(ElevatorController controller, Stage stg)
 	{
 		this.elevController = controller;
 		this.stage = stg;
 		
 		TabPane elevatorTabPane = new TabPane();
-		
-		
-		
-		//testButton.setMinSize(50, 50);
-		
-		//test.add(testButton, 0, 0);
-		
+							
 		for(int i = 0; i < elevController.buildingModel.getElevatorNumber(); i++)
-		{
-			//GridPane test = new GridPane();
-			//GridPane elevView = new GridPane(); 
+		{			
 			ElevatorView testelev = new ElevatorView(elevController, null);
-			
-			
-			//elevController.setCurrViewElevatorNumber(2);
-			
-			//elevView.add(testelev,0,0);
-					//new ElevatorView(elevController, stg);
-			//elevView.setPrefSize(500, 500);
-			//Tab elevatorTab = new Tab(("elevator"+ String.valueOf(i)), elevView);
-			
-			//Button testButton = new Button("testbutton");
-			
-			//test.add(testButton, 0, 0);
-			
+										
 			Tab elevatorTab = new Tab("Tab"+String.valueOf(i));
 			
 			final int constantIndex = i;
@@ -57,18 +36,12 @@ public class MainView {
 					if (elevatorTab.isSelected()) {
 						elevController.setCurrViewElevatorNumber(constantIndex);
 					}
-				});
-			
-			
+				});					
 			elevatorTabPane.getTabs().add(elevatorTab);
 		}
-		
-		
-		//VBox vBox = new VBox(elevatorTabPane);
+					
 		Scene scene = new Scene(elevatorTabPane);		
 		stage.setScene(scene);
 		stage.show();
-	}
-	
-	
+	}		
 }

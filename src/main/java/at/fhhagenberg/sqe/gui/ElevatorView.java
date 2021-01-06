@@ -34,14 +34,6 @@ import javafx.stage.Stage;
 
 public class ElevatorView extends GridPane {
 	private ElevatorController elevatorModel;
-
-	//private Stage stage;
-	// private Label label;
-	// private Button countButton;
-	// private Text sceneTitle;
-
-//	private Image uparrow;
-//	private Image downarrow;
 	private Label emptySpacingLabel;
 
 	private Button modeButton;
@@ -58,23 +50,17 @@ public class ElevatorView extends GridPane {
 	private ArrayList<Button> floorButtonList = new ArrayList<Button>();
 	private ArrayList<Button> setButtonList = new ArrayList<Button>();
 	private ArrayList<Button> requestButtonList = new ArrayList<Button>();
-	
-	
-	
+		
 	ListView<Floor> testFloorList;
 
 	private GridPane elevatorGrid;
-
 	private GridPane layoutGrid;
 	private int LabelSpacing = 70;
-
 	private String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
 	private int idNumber;
-	
-	
-
+		
 	EventHandler<ActionEvent> switchModeHandler = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
@@ -239,9 +225,7 @@ public class ElevatorView extends GridPane {
 		}
 		
 		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
-											+ LabelSpacing * 2 + "; -fx-background-radius: 0");
-		//elevatorModel.elevatorModel.getElevatorCurrFloor()
-
+											+ LabelSpacing * 2 + "; -fx-background-radius: 0");	
 		return floorPane;
 	}
 
@@ -278,15 +262,12 @@ public class ElevatorView extends GridPane {
 		layoutGrid.setHgap(20);
 		layoutGrid.setPadding(new Insets(20, 20, 20, 20));
 		layoutGrid.setAlignment(Pos.CENTER);
-
-		// layoutGrid.add(modeAndStatusHbox, 0, 0, 2, 1);
-		// -fx-pref-width: 100;
-
+		
 		GridPane.setFillWidth(modeButton, true);
 		layoutGrid.add(modeButton, 0, 0);
 		layoutGrid.add(statusButton, 1, 0);
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Elevator direction label and Buttons:
 		elevDirectionLabel = new Label("Elevator Direction");
 
@@ -334,9 +315,6 @@ public class ElevatorView extends GridPane {
 		});
 		
 		
-		//FF0000
-
-
 		arrowdown.setPrefSize(50, 50);		
 		arrowup.setPrefSize(50, 50);
 
@@ -345,11 +323,6 @@ public class ElevatorView extends GridPane {
 
 		VBox elevDirectionVbox = new VBox(elevDirectionLabel, arrowsHbox);
 		elevDirectionVbox.setAlignment(Pos.CENTER);
-		// elevDirectionVbox.setStyle(style);
-
-		// layoutGrid.add(elevDirectionVbox, 0, 1);
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Current Payload label and textfield		
@@ -367,7 +340,6 @@ public class ElevatorView extends GridPane {
 
 		// layoutGrid.add(payloadVbox, 0, 2);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 	    speed label and textfield		
@@ -382,12 +354,9 @@ public class ElevatorView extends GridPane {
 		speedVbox.setAlignment(Pos.CENTER);
 		speedVbox.setStyle(style);
 
-		// layoutGrid.add(speedVbox, 0, 3);
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //door status label and textfield		
+		
 		doorStatusLabel = new Label("Door Status");
 		doorStatusTxtField = new Text();
 		
@@ -482,6 +451,5 @@ public class ElevatorView extends GridPane {
 		payloadTxtField.setId(String.valueOf(idNumber)+"payloadTxtField");
 
 		add(layoutGrid, 0,0);
-		//stage.setScene(new Scene(layoutGrid));
 	}
 }
