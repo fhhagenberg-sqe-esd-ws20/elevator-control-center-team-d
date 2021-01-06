@@ -66,4 +66,10 @@ public interface IModelElevator {
 	public String getElevatorWeight();
 	
 	public int getElevatorCurrTarget();
+	
+	public int getIDoorStatus();
+	
+	public int getIElevatorSpeed();
+	
+	public int getIElevatorWeight();
 }

@@ -55,7 +55,6 @@ public class ElevatorController extends TimerTask {
 			ElevatorButtonList.add(Boolean.FALSE);
 			ServicesFloorList.add(Boolean.TRUE);
 		}
-
 	}
 
 	/**
@@ -177,14 +176,14 @@ public class ElevatorController extends TimerTask {
 		if (operationStatus == eOperationStatus.MANUAL) {
 			try {
 				// Only set next target when last target was reached
-				if (!elevatorModel.getElevatorPosIsTarget() || Integer.valueOf(elevatorModel.getElevatorSpeed()) > 0) {
+				if (!elevatorModel.getElevatorPosIsTarget() || elevatorModel.getIElevatorSpeed() > 0) {
 					ctrlAlarmManager
 							.addWarningMessage("Warning (set next target): elevator not in previous target position");
 					return false;
 				}
 
 				// Only set next target when door is open
-				if (Integer.valueOf(elevatorModel.getDoorStatus()) != IElevator.ELEVATOR_DOORS_OPEN) {
+				if (elevatorModel.getIDoorStatus() != IElevator.ELEVATOR_DOORS_OPEN) {
 					ctrlAlarmManager.addWarningMessage("Warning (set next target): elevator doors not open");
 					return false;
 				}

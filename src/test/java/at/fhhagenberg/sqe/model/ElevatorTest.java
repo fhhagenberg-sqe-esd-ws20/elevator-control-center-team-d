@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -19,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
  * @author Dominic Zopf
  *
  */
-@Disabled
 @ExtendWith(MockitoExtension.class)
 public class ElevatorTest {	
 	@Mock
@@ -108,10 +106,10 @@ public class ElevatorTest {
 									 .thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
 		
 		testElevator.updateElevatorDoorStatus();
-		assertEquals(IElevator.ELEVATOR_DOORS_OPEN, testElevator.DoorStatus.getValue());
+		assertEquals(IElevator.ELEVATOR_DOORS_OPEN, testElevator.getIDoorStatus());
 		
 		testElevator.updateElevatorDoorStatus();
-		assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, testElevator.DoorStatus.getValue());
+		assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, testElevator.getIDoorStatus());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorDoorStatus(2);
 	}
@@ -138,10 +136,10 @@ public class ElevatorTest {
 		Mockito.when(mockedRmElevator.getElevatorSpeed(2)).thenReturn(0).thenReturn(12);
 		
 		testElevator.updateElevatorSpeed();
-		assertEquals(0, testElevator.ElevatorSpeed.getValue());
+		assertEquals(0, testElevator.getIElevatorSpeed());
 		
 		testElevator.updateElevatorSpeed();
-		assertEquals(12, testElevator.ElevatorSpeed.getValue());
+		assertEquals(12, testElevator.getIElevatorSpeed());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorSpeed(2);
 	}
@@ -153,10 +151,10 @@ public class ElevatorTest {
 		Mockito.when(mockedRmElevator.getElevatorWeight(2)).thenReturn(210).thenReturn(102);
 		
 		testElevator.updateElevatorWeight();
-		assertEquals(210, testElevator.ElevatorWeight.getValue());
+		assertEquals(210, testElevator.getIElevatorWeight());
 		
 		testElevator.updateElevatorWeight();
-		assertEquals(102, testElevator.ElevatorWeight.getValue());
+		assertEquals(102, testElevator.getIElevatorWeight());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorWeight(2);
 	}
@@ -234,11 +232,11 @@ public class ElevatorTest {
 		Mockito.when(mockedRmElevator.getElevatorWeight(2)).thenReturn(412);
 		
 		testElevator.updateElevatorWeight();
-		assertEquals(75, testElevator.ElevatorWeight.getValue());
+		assertEquals(75, testElevator.getIElevatorWeight());
 		
 		testElevator.setElevatorNumber(2);
 		testElevator.updateElevatorWeight();
-		assertEquals(412, testElevator.ElevatorWeight.getValue());
+		assertEquals(412, testElevator.getIElevatorWeight());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).getElevatorWeight(0);
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).getElevatorWeight(2);
