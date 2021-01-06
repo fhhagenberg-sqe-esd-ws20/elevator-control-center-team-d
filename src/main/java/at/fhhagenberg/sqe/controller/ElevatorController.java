@@ -70,8 +70,6 @@ public class ElevatorController extends TimerTask {
 			ctrlAlarmManager.addErrorMessage("Remote error (set elevator number): " + e.getMessage());
 		} catch (IllegalArgumentException e) {
 			ctrlAlarmManager.addErrorMessage("Illegal argument (set elevator number): " + e.getMessage());
-		} catch (Exception e) {
-			ctrlAlarmManager.addErrorMessage("Exception (set elevator number): " + e.getMessage());
 		}
 	}
 
@@ -107,8 +105,6 @@ public class ElevatorController extends TimerTask {
 			ctrlAlarmManager.addErrorMessage("Remote error (update model values): " + e.getMessage());
 		} catch (RuntimeException e) {
 			ctrlAlarmManager.addErrorMessage("Clock tick error (update model values): " + e.getMessage());
-		} catch (Exception e) {
-			ctrlAlarmManager.addErrorMessage("Exception (update model values): " + e.getMessage());
 		}
 	}
 
@@ -203,8 +199,7 @@ public class ElevatorController extends TimerTask {
 				elevatorModel.setTarget(nextTarget);
 			} catch (RemoteException e) {
 				ctrlAlarmManager.addErrorMessage("Remote error (set next target): " + e.getMessage());
-			} catch (Exception e) {
-				ctrlAlarmManager.addErrorMessage("Exception (set next target): " + e.getMessage());
+				return false;
 			}
 		} else {
 			ctrlAlarmManager.addWarningMessage(
