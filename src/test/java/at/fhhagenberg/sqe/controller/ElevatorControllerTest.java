@@ -15,11 +15,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import at.fhhagenberg.sqe.controller.ElevatorController.eOperationStatus;
 import at.fhhagenberg.sqe.model.Floor;
-import at.fhhagenberg.sqe.model.IElevator;
 import at.fhhagenberg.sqe.model.IModelBuilding;
 import at.fhhagenberg.sqe.model.IModelElevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
 import javafx.collections.FXCollections;
+import sqelevator.IElevator;
 
 /**
  * Test class to verify the functionality of the ElevatorController class.

@@ -6,6 +6,8 @@ package at.fhhagenberg.sqe.model;
 
 import java.rmi.RemoteException;
 
+import sqelevator.IElevator;
+
 /**
  * Test class to test one static GUI interface.
  * Settings are equal to the GUI mockup.

@@ -8,7 +8,6 @@ import at.fhhagenberg.sqe.model.Building;
 import at.fhhagenberg.sqe.model.DummyElevator;
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.Floor;
-import at.fhhagenberg.sqe.model.IElevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -24,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.converter.BooleanStringConverter;
+import sqelevator.IElevator;
 
 // TODO: implementation -> now only prototype class
 public class App extends Application {

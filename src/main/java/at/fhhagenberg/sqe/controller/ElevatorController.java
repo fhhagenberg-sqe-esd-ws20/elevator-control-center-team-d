@@ -11,6 +11,7 @@ import at.fhhagenberg.sqe.model.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import sqelevator.IElevator;
 
 /**
  * Class for the elevator controller which prepares the data for the view.
