@@ -29,6 +29,10 @@ public class Floor {
 		mFloorNumber = floorNumber;
 	}
 	
+	public void setRemoteElevator(IWrapElevator remoteElevator) {
+		mRemoteElevator = remoteElevator;
+	}
+	
 	public int getFloorNumber() {
 		return mFloorNumber;
 	}

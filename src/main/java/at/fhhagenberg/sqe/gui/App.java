@@ -24,7 +24,7 @@ import sqelevator.IElevator;
 public class App extends Application {
 	
 	private final long updateDataIntervallMsec = 100;
-	private final boolean useElevatorSim = false;
+	public final boolean useElevatorSim = false;
 	
 	private IElevator controller;	
 	private IWrapElevator remoteElevator;
@@ -34,11 +34,11 @@ public class App extends Application {
 	private ElevatorController elevatorCtrl;
 	private Timer updateDataTimer;
 	
-	private void initElevatorController() {
+	
+	private void initElevatorControllerTimer() {		
 		updateDataTimer.scheduleAtFixedRate(elevatorCtrl, 0, updateDataIntervallMsec);
 	}
 	
-	// TODO: Test this code also!!
 	private void showConnectionAlert(String alertHeaderMsg, String alertContentMsg) {
 		Alert exeptionAlert = new Alert(AlertType.ERROR);
 		exeptionAlert.setTitle("Elevator Connect Error");
@@ -47,10 +47,11 @@ public class App extends Application {
 		exeptionAlert.showAndWait();
 	}
 	
+	// Connect to remote elevator first time
 	private boolean connectToElevator() {
 		if (useElevatorSim) {
 			try {
-				controller = (IElevator)Naming.lookup("rmi://localhost/ElevatorSim");
+				controller = (IElevator)Naming.lookup(ElevatorController.remoteAddress);
 			} catch (NotBoundException e) {
 				showConnectionAlert("Connection binding error!" ,e.getMessage());
 				return false;
@@ -84,8 +85,9 @@ public class App extends Application {
 		elevatorCtrl = new ElevatorController(remoteElevator, modelElevator, modelBuilding, appAlarmManager);
 		updateDataTimer = new Timer();		
 		
+		elevatorCtrl.setUseElevatorSim(useElevatorSim);
 		elevatorCtrl.setCurrViewElevatorNumber(0);
-		initElevatorController();		
+		initElevatorControllerTimer();		
 		
 		MainView view = new MainView(elevatorCtrl, primaryStage); 			
 		

@@ -15,6 +15,8 @@ import javafx.beans.property.StringProperty;
  */
 public interface IModelElevator {
 	
+	public void setRemoteElevator(IWrapElevator remoteElevator);
+	
 	public int getElevatorNumber();
 	
 	public void setElevatorNumber(int mElevatorNumber) throws java.rmi.RemoteException;

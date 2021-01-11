@@ -38,6 +38,11 @@ public class Elevator implements IModelElevator {
 		mRemoteElevator = remoteElevator;
 		mElevatorNumber = 0;
 	}
+	
+	@Override
+	public void setRemoteElevator(IWrapElevator remoteElevator) {
+		mRemoteElevator = remoteElevator;
+	}
 
 	@Override
 	public int getElevatorNumber() {

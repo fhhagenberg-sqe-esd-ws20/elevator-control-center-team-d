@@ -4,11 +4,16 @@
 
 package at.fhhagenberg.sqe.controller;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.TimerTask;
 
 import at.fhhagenberg.sqe.model.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sqelevator.IElevator;
@@ -22,6 +27,9 @@ import sqelevator.IElevator;
  */
 public class ElevatorController extends TimerTask {
 
+	static public final String remoteAddress = "rmi://localhost/ElevatorSim";
+	
+	private boolean useElevatorSim = false;
 	private boolean updateModelData = false;
 
 	public enum eOperationStatus {
@@ -45,6 +53,7 @@ public class ElevatorController extends TimerTask {
 		ctrlAlarmManager = alarmManager;
 		
 		initStatusLists();
+		initListenerConnectionLost();
 		updateModelValues();
 
 		operationStatus = eOperationStatus.MANUAL;
@@ -57,6 +66,56 @@ public class ElevatorController extends TimerTask {
 			ServicesFloorList.add(Boolean.TRUE);
 		}
 	}
+	
+	public void setUseElevatorSim(boolean useElevatorSim) {
+		this.useElevatorSim = useElevatorSim;
+	}
+	
+	// TODO: Test this code
+	private void initListenerConnectionLost() {
+		ctrlAlarmManager.getPropRemoteConnError().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (newValue) {
+					setUpdateModelData(false);
+					reconnectToElevator();
+					ctrlAlarmManager.addWarningMessage("Warning (Reconnect Handler): Try to reconnect to remote elevator!");
+					ctrlAlarmManager.resetRemoteConnectionError();
+					setUpdateModelData(true);
+				}
+			};
+		});
+	}
+	
+	private boolean reconnectToElevator() {
+		IWrapElevator remoteElevator;
+		if (useElevatorSim) {
+			IElevator controller;			
+			try {
+				controller = (IElevator)Naming.lookup(ElevatorController.remoteAddress);
+			} catch (NotBoundException e) {
+				ctrlAlarmManager.addErrorMessage("Connection binding error (reconnect to elevator): " + e.getMessage());
+				return false;
+			} catch (MalformedURLException e) {
+				ctrlAlarmManager.addErrorMessage("Malformed URL used for connection (reconnect to elevator): " + e.getMessage());
+				return false;
+			} catch (RemoteException e) {
+				ctrlAlarmManager.addErrorMessage("Remote error (reconnect to elevator): " + e.getMessage());
+				return false;
+			}
+			
+			remoteElevator = new ElevatorAdapter(controller);
+			elevatorModel.setRemoteElevator(remoteElevator);
+			buildingModel.setRemoteElevator(remoteElevator);
+		} else {
+			// DummyElevator only for debugging
+			remoteElevator = new DummyElevator();
+			elevatorModel.setRemoteElevator(remoteElevator);
+			buildingModel.setRemoteElevator(remoteElevator);
+		}	
+		
+		return true;
+	}	
 
 	/**
 	 * Set current viewed elevator number to get and set the correct values in the
@@ -69,6 +128,7 @@ public class ElevatorController extends TimerTask {
 			elevatorModel.setElevatorNumber(elevatorNumber);
 		} catch (RemoteException e) {
 			ctrlAlarmManager.addErrorMessage("Remote error (set elevator number): " + e.getMessage());
+			ctrlAlarmManager.setRemoteConnectionError();
 		} catch (IllegalArgumentException e) {
 			ctrlAlarmManager.addErrorMessage("Illegal argument (set elevator number): " + e.getMessage());
 		}
@@ -104,6 +164,7 @@ public class ElevatorController extends TimerTask {
 			}
 		} catch (RemoteException e) {
 			ctrlAlarmManager.addErrorMessage("Remote error (update model values): " + e.getMessage());
+			ctrlAlarmManager.setRemoteConnectionError();
 		} catch (RuntimeException e) {
 			ctrlAlarmManager.addErrorMessage("Clock tick error (update model values): " + e.getMessage());
 		}
@@ -200,6 +261,7 @@ public class ElevatorController extends TimerTask {
 				elevatorModel.setTarget(nextTarget);
 			} catch (RemoteException e) {
 				ctrlAlarmManager.addErrorMessage("Remote error (set next target): " + e.getMessage());
+				ctrlAlarmManager.setRemoteConnectionError();
 				return false;
 			}
 		} else {

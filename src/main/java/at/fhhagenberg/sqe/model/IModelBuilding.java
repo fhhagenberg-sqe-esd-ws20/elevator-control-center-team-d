@@ -15,6 +15,8 @@ import javafx.collections.ObservableList;
  */
 public interface IModelBuilding {
 
+	public void setRemoteElevator(IWrapElevator remoteElevator);
+	
 	public IntegerProperty getPropFloorNumber();
 	
 	public IntegerProperty getPropElevatorNumber();

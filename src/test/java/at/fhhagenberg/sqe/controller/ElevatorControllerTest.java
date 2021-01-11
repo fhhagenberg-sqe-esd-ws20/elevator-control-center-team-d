@@ -18,6 +18,7 @@ import at.fhhagenberg.sqe.model.Floor;
 import at.fhhagenberg.sqe.model.IModelBuilding;
 import at.fhhagenberg.sqe.model.IModelElevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import sqelevator.IElevator;
 
@@ -44,6 +45,7 @@ public class ElevatorControllerTest {
 	public void initMocks() throws java.rmi.RemoteException {
 		Mockito.when(mockedBuilding.getObservableFloorList()).thenReturn(FXCollections.observableArrayList(new Floor(mockedRmElevator, 0)));
 		Mockito.when(mockedBuilding.getFloorNumber()).thenReturn(5);
+		Mockito.when(mockedAlarmManager.getPropRemoteConnError()).thenReturn(new SimpleBooleanProperty());
 	}
 	
 	@Test
