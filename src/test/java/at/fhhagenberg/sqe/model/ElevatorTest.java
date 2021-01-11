@@ -121,6 +121,24 @@ public class ElevatorTest {
 	}
 	
 	@Test
+	public void testDoorStatusOpeningThenClosing() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);				
+		testElevator.setElevatorNumber(2);
+		Mockito.when(mockedRmElevator.getElevatorDoorStatus(2)).thenReturn(IElevator.ELEVATOR_DOORS_OPENING)
+									 .thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
+		
+		testElevator.updateElevatorDoorStatus();
+		assertEquals(IElevator.ELEVATOR_DOORS_OPENING, testElevator.getIDoorStatus());
+		assertEquals("opening", testElevator.getDoorStatus());
+		
+		testElevator.updateElevatorDoorStatus();
+		assertEquals(IElevator.ELEVATOR_DOORS_CLOSING, testElevator.getIDoorStatus());
+		assertEquals("closing", testElevator.getDoorStatus());
+		
+		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorDoorStatus(2);
+	}
+	
+	@Test
 	public void testDoorStatusInvalidState() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(2);

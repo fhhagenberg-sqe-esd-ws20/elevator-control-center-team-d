@@ -76,6 +76,10 @@ public class Elevator implements IModelElevator {
 			DoorStatus.setValue("closed");
 		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_OPEN) {
 			DoorStatus.setValue("open");
+		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_OPENING) {
+			DoorStatus.setValue("opening");
+		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_CLOSING) {
+			DoorStatus.setValue("closing");
 		} else {
 			DoorStatus.setValue("undefined");
 		}
