@@ -206,7 +206,7 @@ public class ElevatorView extends GridPane {
 			floorButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					//if (elevatorModel.setNextElevatorTarget(constantIndex))
+					if (elevatorModel.setNextElevatorTarget(constantIndex))
 					{
 						if (elevatorModel.getOperationStatus() == eOperationStatus.MANUAL) 
 						{

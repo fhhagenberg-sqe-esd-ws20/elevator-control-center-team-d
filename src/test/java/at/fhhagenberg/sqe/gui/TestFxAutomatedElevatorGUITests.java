@@ -19,11 +19,13 @@ import org.testfx.framework.junit5.Start;
 
 import at.fhhagenberg.sqe.controller.AlarmManager;
 import at.fhhagenberg.sqe.controller.ElevatorController;
+import at.fhhagenberg.sqe.controller.ElevatorController.eOperationStatus;
 import at.fhhagenberg.sqe.model.Building;
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sqelevator.IElevator;
@@ -107,16 +109,14 @@ public class TestFxAutomatedElevatorGUITests
 	@Test
 	public void testChangeManualToAutomatic(FxRobot robot)
 	{		
-		//verifyThat("#1modeButton", LabeledMatchers.hasText("Manual"));
 		Button button = (Button) stage.getScene().lookup("#1modeButton");
 		assertEquals(button.getText(), "Manual");
 		
-		robot.clickOn("#1modeButton");
+		robot.clickOn("#1modeButton");		
+		assertEquals(eOperationStatus.AUTOMATIC, elevatorCtrl.getOperationStatus());
 		
 		button = (Button) stage.getScene().lookup("#1modeButton");
 		assertEquals(button.getText(), "Automatic");
-		//wait(robot);
-		//verifyThat("#1modeButton", LabeledMatchers.hasText("Automatic"));
 	}
 	
 	private void wait(FxRobot robot) {
@@ -132,26 +132,33 @@ public class TestFxAutomatedElevatorGUITests
 	}
 
 	@Test
-	public void testEndToEnd(FxRobot robot) throws Exception
-	{
-		
-		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(5);
-		
-		
+	public void testEndToEndGUIToModel(FxRobot robot) throws Exception
+	{		
 		robot.clickOn("#1floorButton5");
+		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(5);
+		Thread.sleep(500);
+					
+		Mockito.verify(mockedRmElevator,Mockito.times(1)).setTarget(0, 5);
+		Mockito.verify(mockedRmElevator, Mockito.times(1)).setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
+
 		Button button = (Button) stage.getScene().lookup("#1setButton5");
 		assertTrue(button.isVisible());
-		
-		mockedRmElevator.setTarget(0, 5);
-//		Thread.sleep(10000);
-		
-//		robot.clickOn("#1floorButton5");
-//		
-//		Mockito.verify(mockedRmElevator,Mockito.times(1)).setTarget(0, 5);
-//		Mockito.verify(mockedRmElevator, Mockito.times(1)).setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
-//		
-//		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(5);
-				
-		//verifyThat("#5setButton5", NodeMatchers.isVisible());
 	}
+	
+	@Test
+	public void testEndToEndModelToGUIElevatorSpeed(FxRobot robot) throws Exception
+	{
+		Mockito.when(mockedRmElevator.getElevatorSpeed(0)).thenReturn(44);
+		Thread.sleep(500);
+		verifyThat("#1speedTxtField", TextMatchers.hasText("44 ft/s"));		
+	}
+	
+	@Test
+	public void testEndToEndModelToGUIElevatorWeight(FxRobot robot) throws Exception
+	{
+		Mockito.when(mockedRmElevator.getElevatorWeight(0)).thenReturn(100);
+		Thread.sleep(500);
+		verifyThat("#1payloadTxtField", TextMatchers.hasText("100 lbs"));			
+	}
+
 }
