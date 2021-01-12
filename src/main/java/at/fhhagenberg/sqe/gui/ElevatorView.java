@@ -59,6 +59,23 @@ public class ElevatorView extends GridPane {
 	private String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
+	private String  floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";							
+	private String floorButtonNotSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";	
+	private String floorButtonNotServiced = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #808080; -fx-stroke-width: 1; -fx-pref-width: "
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";		
+	
+	private String setButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+			+ LabelSpacing / 2 + "; -fx-background-radius: 0";
+	private String requestButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+			+ LabelSpacing + "; -fx-background-radius: 0";
+	private String floorButtonClickedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";	
+	private String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";	
+	private String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";	
+	private String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
+	
 	private int idNumber;
 
 	EventHandler<ActionEvent> switchModeHandler = new EventHandler<ActionEvent>() {
@@ -87,7 +104,7 @@ public class ElevatorView extends GridPane {
 	private GridPane CreateFloors() {
 		GridPane floorPane = new GridPane();
 
-		int positionInGrid = 1;
+		int positionInGrid = 2;
 
 		elevatorModel.ElevatorButtonList.addListener(new ListChangeListener<Boolean>() {
 			@Override
@@ -139,23 +156,16 @@ public class ElevatorView extends GridPane {
 			Button setButton = new Button("set");
 			Button requestButton = new Button("none");
 
+
 			if (elevatorModel.ServicesFloorList.get(i)) {
-				floorButton.setStyle(
-						"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
-								+ LabelSpacing * 2 + "; -fx-background-radius: 0");
+				floorButton.setStyle(floorButtonNotSelectedStyle);
 			} else {
-				floorButton.setStyle(
-						"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #808080; -fx-stroke-width: 1; -fx-pref-width: "
-								+ LabelSpacing * 2 + "; -fx-background-radius: 0");
+				floorButton.setStyle(floorButtonNotServiced);
 				floorButton.setDisable(true);
 			}
 
-			setButton.setStyle(
-					"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
-							+ LabelSpacing / 2 + "; -fx-background-radius: 0");
-			requestButton.setStyle(
-					"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
-							+ LabelSpacing + "; -fx-background-radius: 0");
+			setButton.setStyle(setButtonStyle);			
+			requestButton.setStyle(requestButtonStyle);
 
 			if (i == elevatorModel.elevatorModel.getElevatorCurrTarget()) {
 				setButton.setVisible(true);
@@ -205,18 +215,16 @@ public class ElevatorView extends GridPane {
 							{
 								if (!elem.isDisabled())
 									elem.setStyle(
-											"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
-													+ LabelSpacing * 2 + "; -fx-background-radius: 0");
+											floorButtonNotSelectedStyle);
 							}
 							floorButton.setStyle(
-									"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
-											+ LabelSpacing * 2 + "; -fx-background-radius: 0");
+									floorButtonClickedStyle);
 						}
 					}
 					event.consume();
 				}
 			});
-			modeButton.setId(String.valueOf(idNumber) + "modeButton");
+			//modeButton.setId(String.valueOf(idNumber) + "modeButton");
 
 			elevatorGrid.add(requestButton, 1, positionInGrid);
 			elevatorGrid.add(floorButton, 2, positionInGrid);
@@ -224,8 +232,7 @@ public class ElevatorView extends GridPane {
 			positionInGrid++;
 		}
 		
-		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
-											+ LabelSpacing * 2 + "; -fx-background-radius: 0");	
+		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle(floorButtonSelectedStyle);	
 		return floorPane;
 	}
 
@@ -239,9 +246,7 @@ public class ElevatorView extends GridPane {
 		idNumber = model.buildingModel.getElevatorNumber();
 
 		modeButton = new Button("Manual");
-		modeButton.setStyle(
-				"-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0");
-		
+		modeButton.setStyle(modeButtonStyle);
 		
 		// set id
 		modeButton.addEventHandler(ActionEvent.ACTION, switchModeHandler);
@@ -253,7 +258,6 @@ public class ElevatorView extends GridPane {
 		statusButton = new Button("Status");
 		VBox statusVbox = new VBox(statusButton);
 		statusVbox.setAlignment(Pos.BASELINE_CENTER);
-		// modeLabel.setBorder(2);
 
 		layoutGrid = new GridPane();
 
@@ -275,41 +279,32 @@ public class ElevatorView extends GridPane {
 		arrowup = new Button("up");
 		arrowdown = new Button("down");
 		
+		
 		if (elevatorModel.elevatorModel.getCommitedDirection() == IElevator.ELEVATOR_DIRECTION_DOWN) {
-			arrowdown.setStyle(
-					"-fx-border-width: 2; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0");
-			arrowup.setStyle(
-					"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
+			arrowdown.setStyle(directionActiveStyle);
+			arrowup.setStyle(directionInactiveStyle);
+			
 		} else if (elevatorModel.elevatorModel.getCommitedDirection() == IElevator.ELEVATOR_DIRECTION_UP) {
-			arrowdown.setStyle(
-					"-fx-border-width: 2; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
-			arrowup.setStyle(
-					"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0");
+			arrowdown.setStyle(directionInactiveStyle);
+			arrowup.setStyle(directionActiveStyle);
 		} else {
-			arrowdown.setStyle(
-					"-fx-border-width: 2; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
-			arrowup.setStyle(
-					"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
+			arrowdown.setStyle(directionInactiveStyle);
+			arrowup.setStyle(directionInactiveStyle);
 		}		
 		
 		elevatorModel.elevatorModel.getPropCommitedDirection().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				if ((Integer)newValue == IElevator.ELEVATOR_DIRECTION_DOWN) {
-					arrowdown.setStyle(
-							"-fx-border-width: 2; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0");
-					arrowup.setStyle(
-							"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
+					arrowdown.setStyle(directionActiveStyle);
+					arrowup.setStyle(directionInactiveStyle);
+					
 				} else if ((Integer)newValue == IElevator.ELEVATOR_DIRECTION_UP) {
-					arrowdown.setStyle(
-							"-fx-border-width: 2; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
-					arrowup.setStyle(
-							"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0");
+					arrowdown.setStyle(directionInactiveStyle);
+					arrowup.setStyle(directionActiveStyle);
 				} else {
-					arrowdown.setStyle(
-							"-fx-border-width: 2; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
-					arrowup.setStyle(
-							"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0");
+					arrowdown.setStyle(directionInactiveStyle);
+					arrowup.setStyle(directionInactiveStyle);
 				}
 			}
 							
