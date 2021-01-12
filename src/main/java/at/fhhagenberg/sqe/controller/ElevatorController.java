@@ -74,7 +74,6 @@ public class ElevatorController extends TimerTask {
 		return useElevatorSim;
 	}
 	
-	// TODO: Test this code
 	private void initListenerConnectionLost() {
 		ctrlAlarmManager.getPropRemoteConnError().addListener(new ChangeListener<Boolean>() {
 			@Override
