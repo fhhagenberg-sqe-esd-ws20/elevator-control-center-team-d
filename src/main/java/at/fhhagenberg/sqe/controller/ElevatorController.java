@@ -70,6 +70,10 @@ public class ElevatorController extends TimerTask {
 		this.useElevatorSim = useElevatorSim;
 	}
 	
+	public boolean isUseElevatorSim() {
+		return useElevatorSim;
+	}
+	
 	// TODO: Test this code
 	private void initListenerConnectionLost() {
 		ctrlAlarmManager.getPropRemoteConnError().addListener(new ChangeListener<Boolean>() {
