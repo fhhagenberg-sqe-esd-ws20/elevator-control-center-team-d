@@ -9,7 +9,6 @@ import at.fhhagenberg.sqe.controller.ElevatorController;
 import at.fhhagenberg.sqe.controller.ElevatorController.eOperationStatus;
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.Floor;
-import at.fhhagenberg.sqe.model.IElevator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -31,6 +30,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import sqelevator.IElevator;
 
 public class ElevatorView extends GridPane {
 	private ElevatorController elevatorModel;

@@ -4,6 +4,8 @@
 
 package at.fhhagenberg.sqe.controller;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -18,15 +20,37 @@ public class AlarmManager implements IAlarmManager {
 
 	public ObservableList<String> ErrorList = FXCollections.observableArrayList();
 	public ObservableList<String> WarningList = FXCollections.observableArrayList();
+	public BooleanProperty RemoteConnError = new SimpleBooleanProperty();
+	
+	public AlarmManager() {
+		RemoteConnError.set(false);
+	}
+	
+	@Override
+	public void setRemoteConnectionError() {
+		RemoteConnError.set(true);
+	}
+	
+	@Override
+	public void resetRemoteConnectionError() {
+		RemoteConnError.set(false);
+	}
+	
+	@Override
+	public BooleanProperty getPropRemoteConnError() {
+		return RemoteConnError;
+	}
 	
 	@Override
 	public void addErrorMessage(String errorMessage) {
 		ErrorList.add(errorMessage);
+		//System.out.print("Error: " + errorMessage + "\n");
 	}
 
 	@Override
 	public void addWarningMessage(String warningMessage) {
 		WarningList.add(warningMessage);
+		//System.out.print("Warning: " + warningMessage + "\n");
 	}
 
 	@Override

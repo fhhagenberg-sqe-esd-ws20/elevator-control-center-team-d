@@ -8,6 +8,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import sqelevator.IElevator;
 
 /**
  * Class for the elevator model which gets the operating status from
@@ -36,6 +37,11 @@ public class Elevator implements IModelElevator {
 	public Elevator(IWrapElevator remoteElevator) {
 		mRemoteElevator = remoteElevator;
 		mElevatorNumber = 0;
+	}
+	
+	@Override
+	public void setRemoteElevator(IWrapElevator remoteElevator) {
+		mRemoteElevator = remoteElevator;
 	}
 
 	@Override
@@ -75,6 +81,10 @@ public class Elevator implements IModelElevator {
 			DoorStatus.setValue("closed");
 		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_OPEN) {
 			DoorStatus.setValue("open");
+		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_OPENING) {
+			DoorStatus.setValue("opening");
+		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_CLOSING) {
+			DoorStatus.setValue("closing");
 		} else {
 			DoorStatus.setValue("undefined");
 		}

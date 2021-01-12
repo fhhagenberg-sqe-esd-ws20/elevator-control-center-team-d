@@ -35,6 +35,15 @@ public class Building implements IModelBuilding {
 		initBuildingInformation();
 	}
 	
+	@Override
+	public void setRemoteElevator(IWrapElevator remoteElevator) {
+		mRemoteElevator = remoteElevator;
+		
+		for (var floor : FloorList) {
+			floor.setRemoteElevator(remoteElevator);
+		}
+	}
+	
 	private void initBuildingInformation() {
 		try {
 			FloorNumber.setValue(mRemoteElevator.getFloorNum());
@@ -43,6 +52,7 @@ public class Building implements IModelBuilding {
 			FloorNumber.setValue(0);
 			ElevatorNumber.setValue(0);
 			mAlarmManager.addErrorMessage("Remote error (init building information): " + e.getMessage());
+			mAlarmManager.setRemoteConnectionError();
 		}	
 		
 		if (FloorNumber.getValue() < 0) {

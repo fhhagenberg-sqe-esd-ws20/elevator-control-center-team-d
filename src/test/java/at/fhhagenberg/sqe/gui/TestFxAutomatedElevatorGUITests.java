@@ -19,13 +19,14 @@ import at.fhhagenberg.sqe.controller.AlarmManager;
 import at.fhhagenberg.sqe.controller.ElevatorController;
 import at.fhhagenberg.sqe.model.Building;
 import at.fhhagenberg.sqe.model.Elevator;
-import at.fhhagenberg.sqe.model.IElevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
 import javafx.event.EventHandler;
 
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sqelevator.IElevator;
 
+import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
 
 
@@ -104,11 +105,18 @@ public class TestFxAutomatedElevatorGUITests
 	@Test
 	public void testChangeManualToAutomatic(FxRobot robot)
 	{		
-		verifyThat("#5modeButton", TextMatchers.hasText("Manual"));
+		verifyThat("#5modeButton", LabeledMatchers.hasText("Manual"));
 		
 		robot.clickOn("#5modeButton");
-		wait(robot);
-		verifyThat("#5modeButton", TextMatchers.hasText("Automatic"));
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		verifyThat("#5modeButton", LabeledMatchers.hasText("Automatic"));
 	}
 	
 	private void wait(FxRobot robot) {
@@ -117,8 +125,7 @@ public class TestFxAutomatedElevatorGUITests
 	
 	@Test
 	public void testCurrentPayload(FxRobot robot) {
-		wait(robot);
-		
+		wait(robot);		
 			
 		verifyThat("#5currentPayloadLabel", hasText("Current Payload"));
 		verifyThat("#5payloadTxtField", TextMatchers.hasText("650 lbs"));	
@@ -127,14 +134,13 @@ public class TestFxAutomatedElevatorGUITests
 	@Test
 	public void testEndToEnd(FxRobot robot) throws Exception
 	{
-	
 		robot.clickOn("#5floorButton5");
 		
 		Mockito.verify(mockedRmElevator,Mockito.times(1)).setTarget(0, 5);
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
 		
 		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(5);
-		
+				
 		//verifyThat("#5setButton5", NodeMatchers.isVisible());
 	}
 }

@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import sqelevator.IElevator;
 
 /**
  * Test class to verify the functionality of the elevator class.
@@ -115,6 +116,24 @@ public class ElevatorTest {
 		testElevator.updateElevatorDoorStatus();
 		assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, testElevator.getIDoorStatus());
 		assertEquals("closed", testElevator.getDoorStatus());
+		
+		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorDoorStatus(2);
+	}
+	
+	@Test
+	public void testDoorStatusOpeningThenClosing() throws java.rmi.RemoteException {
+		Elevator testElevator = new Elevator(mockedRmElevator);				
+		testElevator.setElevatorNumber(2);
+		Mockito.when(mockedRmElevator.getElevatorDoorStatus(2)).thenReturn(IElevator.ELEVATOR_DOORS_OPENING)
+									 .thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
+		
+		testElevator.updateElevatorDoorStatus();
+		assertEquals(IElevator.ELEVATOR_DOORS_OPENING, testElevator.getIDoorStatus());
+		assertEquals("opening", testElevator.getDoorStatus());
+		
+		testElevator.updateElevatorDoorStatus();
+		assertEquals(IElevator.ELEVATOR_DOORS_CLOSING, testElevator.getIDoorStatus());
+		assertEquals("closing", testElevator.getDoorStatus());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorDoorStatus(2);
 	}
