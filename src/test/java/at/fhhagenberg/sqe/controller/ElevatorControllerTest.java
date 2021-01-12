@@ -324,4 +324,15 @@ public class ElevatorControllerTest {
 		Mockito.verify(mockedElevator, Mockito.times(1)).setCommittedDirection(IElevator.ELEVATOR_DIRECTION_DOWN);
 		Mockito.verify(mockedElevator, Mockito.times(1)).setTarget(0);
 	}
+	
+	@Test
+	public void testSetAndGetUseElevatorSimFirstTrueThenFalse() throws java.rmi.RemoteException {
+		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
+		
+		testElevatorCtrl.setUseElevatorSim(true);
+		assertTrue(testElevatorCtrl.isUseElevatorSim());
+		
+		testElevatorCtrl.setUseElevatorSim(false);
+		assertFalse(testElevatorCtrl.isUseElevatorSim());
+	}
 }

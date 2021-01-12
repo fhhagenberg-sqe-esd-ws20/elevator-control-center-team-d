@@ -125,4 +125,23 @@ public class AlarmManagerTest {
 		assertEquals("Test warning 09", testAlarmManager.WarningList.get(1));
 		assertEquals(2, testAlarmManager.WarningList.size());		
 	}
+	
+	@Test
+	public void testSetRemoteConnectionErrorFromInitFalseToTrue() {
+		AlarmManager testAlarmManager = new AlarmManager();
+		
+		assertFalse(testAlarmManager.RemoteConnError.getValue());
+		testAlarmManager.setRemoteConnectionError();
+		assertTrue(testAlarmManager.RemoteConnError.getValue());		
+	}
+	
+	@Test
+	public void testResetRemoteConnectionErrorFromTrueToFalse() {
+		AlarmManager testAlarmManager = new AlarmManager();
+		testAlarmManager.setRemoteConnectionError();
+		
+		testAlarmManager.resetRemoteConnectionError();
+		
+		assertFalse(testAlarmManager.RemoteConnError.getValue());
+	}
 }
