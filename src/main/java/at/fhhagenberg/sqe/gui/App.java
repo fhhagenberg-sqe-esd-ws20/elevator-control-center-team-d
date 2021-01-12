@@ -82,7 +82,7 @@ public class App extends Application {
 		appAlarmManager = new AlarmManager();
 		modelElevator = new Elevator(remoteElevator);
 		modelBuilding = new Building(remoteElevator, appAlarmManager);
-		elevatorCtrl = new ElevatorController(remoteElevator, modelElevator, modelBuilding, appAlarmManager);
+		elevatorCtrl = new ElevatorController(modelElevator, modelBuilding, appAlarmManager);
 		updateDataTimer = new Timer();		
 		
 		elevatorCtrl.setUseElevatorSim(useElevatorSim);
