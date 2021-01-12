@@ -46,8 +46,7 @@ public class ElevatorController extends TimerTask {
 	public ObservableList<Boolean> ElevatorButtonList = FXCollections.observableArrayList();
 	public ObservableList<Boolean> ServicesFloorList = FXCollections.observableArrayList();
 
-	public ElevatorController(IWrapElevator remoteElevator, IModelElevator modelElevator, IModelBuilding modelBuilding,
-			IAlarmManager alarmManager) {
+	public ElevatorController(IModelElevator modelElevator, IModelBuilding modelBuilding, IAlarmManager alarmManager) {
 		buildingModel = modelBuilding;
 		elevatorModel = modelElevator;
 		ctrlAlarmManager = alarmManager;
@@ -88,7 +87,6 @@ public class ElevatorController extends TimerTask {
 	}
 	
 	private boolean reconnectToElevator() {
-		IWrapElevator remoteElevator;
 		if (useElevatorSim) {
 			IElevator controller;			
 			try {
@@ -104,16 +102,10 @@ public class ElevatorController extends TimerTask {
 				return false;
 			}
 			
-			remoteElevator = new ElevatorAdapter(controller);
+			IWrapElevator remoteElevator = new ElevatorAdapter(controller);
 			elevatorModel.setRemoteElevator(remoteElevator);
 			buildingModel.setRemoteElevator(remoteElevator);
-		} else {
-			// DummyElevator only for debugging
-			remoteElevator = new DummyElevator();
-			elevatorModel.setRemoteElevator(remoteElevator);
-			buildingModel.setRemoteElevator(remoteElevator);
-		}	
-		
+		}		
 		return true;
 	}	
 

@@ -80,7 +80,7 @@ public class TestFxAutomatedElevatorGUITests
 		appAlarmManager = new AlarmManager();
 		modelElevator = new Elevator(mockedRmElevator);
 		modelBuilding = new Building(mockedRmElevator, appAlarmManager);
-		elevatorCtrl = new ElevatorController(mockedRmElevator, modelElevator, modelBuilding, appAlarmManager);
+		elevatorCtrl = new ElevatorController(modelElevator, modelBuilding, appAlarmManager);
 		updateDataTimer = new Timer();	
 		
 		elevatorCtrl.setCurrViewElevatorNumber(0);
