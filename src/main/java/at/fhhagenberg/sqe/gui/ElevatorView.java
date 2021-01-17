@@ -50,8 +50,14 @@ public class ElevatorView extends GridPane {
 	private ArrayList<Button> floorButtonList = new ArrayList<Button>();
 	private ArrayList<Button> setButtonList = new ArrayList<Button>();
 	private ArrayList<Button> requestButtonList = new ArrayList<Button>();
-		
+
 	ListView<Floor> testFloorList;
+
+	private Label errorLabel;
+	private TextField errorTextField;
+
+	private Label warningLabel;
+	private TextField warningTextField;
 
 	private GridPane elevatorGrid;
 	private GridPane layoutGrid;
@@ -59,23 +65,23 @@ public class ElevatorView extends GridPane {
 	private String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
-	private String  floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
-			+ LabelSpacing * 2 + "; -fx-background-radius: 0";							
+	private String floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
 	private String floorButtonNotSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
-			+ LabelSpacing * 2 + "; -fx-background-radius: 0";	
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
 	private String floorButtonNotServiced = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #808080; -fx-stroke-width: 1; -fx-pref-width: "
-			+ LabelSpacing * 2 + "; -fx-background-radius: 0";		
-	
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
+
 	private String setButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing / 2 + "; -fx-background-radius: 0";
 	private String requestButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing + "; -fx-background-radius: 0";
 	private String floorButtonClickedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
-			+ LabelSpacing * 2 + "; -fx-background-radius: 0";	
-	private String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";	
-	private String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";	
+			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
+	private String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";
+	private String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
 	private String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
-	
+
 	private int idNumber;
 
 	EventHandler<ActionEvent> switchModeHandler = new EventHandler<ActionEvent>() {
@@ -95,12 +101,10 @@ public class ElevatorView extends GridPane {
 
 	private Node speedLabel;
 
-	
-	public GridPane getLayoutGrid()
-	{
+	public GridPane getLayoutGrid() {
 		return layoutGrid;
 	}
-	
+
 	private GridPane CreateFloors() {
 		GridPane floorPane = new GridPane();
 
@@ -113,20 +117,13 @@ public class ElevatorView extends GridPane {
 
 				for (int i = 0; i < elevatorModel.ElevatorButtonList.size(); i++) {
 					if (elevatorModel.ElevatorButtonList.get(i)) {
-						if (setButtonList.size() != 0) {
-							if (elevatorModel.ElevatorButtonList.get(i)) {
-								requestButtonList.get(i).setText("stop");
-								// setButtonList.get(i).setVisible(true);
-							} else {
-								requestButtonList.get(i).setText("");
-								// setButtonList.get(i).setVisible(false);
-							}
-						}
+						requestButtonList.get(i).setText("stop");
+					} else {
+						requestButtonList.get(i).setText("");
 					}
 				}
 			};
 		});
-		
 
 		elevatorModel.elevatorModel.getPropElevatorCurrTarget().addListener(new ChangeListener<Number>() {
 			@Override
@@ -135,27 +132,24 @@ public class ElevatorView extends GridPane {
 				setButtonList.get((Integer) oldValue).setVisible(false);
 			}
 		});
-		
-		
-		
-		
-		//change listener for current elevator position
+
+		// change listener for current elevator position
 		elevatorModel.elevatorModel.getPropElevatorCurrFloor().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				floorButtonList.get((Integer) newValue).setStyle("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
-						+ LabelSpacing * 2 + "; -fx-background-radius: 0");
-				floorButtonList.get((Integer) oldValue).setStyle("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
-						+ LabelSpacing * 2 + "; -fx-background-radius: 0");
+				floorButtonList.get((Integer) newValue).setStyle(
+						"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
+								+ LabelSpacing * 2 + "; -fx-background-radius: 0");
+				floorButtonList.get((Integer) oldValue).setStyle(
+						"-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+								+ LabelSpacing * 2 + "; -fx-background-radius: 0");
 			}
 		});
 
-		for (int i = elevatorModel.buildingModel.getFloorNumber() - 1; i >= 0; i--) 
-		{
+		for (int i = elevatorModel.buildingModel.getFloorNumber() - 1; i >= 0; i--) {
 			Button floorButton = new Button("Floor " + i);
 			Button setButton = new Button("set");
-			Button requestButton = new Button("none");
-
+			Button requestButton = new Button("");
 
 			if (elevatorModel.ServicesFloorList.get(i)) {
 				floorButton.setStyle(floorButtonNotSelectedStyle);
@@ -164,7 +158,7 @@ public class ElevatorView extends GridPane {
 				floorButton.setDisable(true);
 			}
 
-			setButton.setStyle(setButtonStyle);			
+			setButton.setStyle(setButtonStyle);
 			requestButton.setStyle(requestButtonStyle);
 
 			if (i == elevatorModel.elevatorModel.getElevatorCurrTarget()) {
@@ -183,71 +177,46 @@ public class ElevatorView extends GridPane {
 			requestButtonList.add(0, requestButton);
 
 			final int constantIndex = i;
-			
-			if (elevatorModel.buildingModel.getObservableFloorList().get(i).getFloorButtonUpProperty().getValue()) {
-				requestButton.setText("call");
-			} else {
-				requestButton.setText("none");
-			}
-			
-			
-			elevatorModel.buildingModel.getObservableFloorList().get(i).getFloorButtonUpProperty().addListener(new ChangeListener<Boolean>() {
-				@Override
-				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-					if (newValue) {
-						requestButtonList.get(constantIndex).setText("call");
-					} else {
-						requestButtonList.get(constantIndex).setText("");
-					}
-				}
-								
-			});
-			
+
 			floorButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					if (elevatorModel.setNextElevatorTarget(constantIndex))
-					{
-						if (elevatorModel.getOperationStatus() == eOperationStatus.MANUAL) 
-						{
+					if (elevatorModel.setNextElevatorTarget(constantIndex)) {
+						if (elevatorModel.getOperationStatus() == eOperationStatus.MANUAL) {
 
-							for (var elem : floorButtonList) 
-							{
+							for (var elem : floorButtonList) {
 								if (!elem.isDisabled())
-									elem.setStyle(
-											floorButtonNotSelectedStyle);
+									elem.setStyle(floorButtonNotSelectedStyle);
 							}
-							floorButton.setStyle(
-									floorButtonClickedStyle);
+							floorButton.setStyle(floorButtonClickedStyle);
 						}
 					}
 					event.consume();
 				}
 			});
-			//modeButton.setId(String.valueOf(idNumber) + "modeButton");
+			// modeButton.setId(String.valueOf(idNumber) + "modeButton");
 
 			elevatorGrid.add(requestButton, 1, positionInGrid);
 			elevatorGrid.add(floorButton, 2, positionInGrid);
 			elevatorGrid.add(setButton, 3, positionInGrid);
 			positionInGrid++;
 		}
-		
-		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle(floorButtonSelectedStyle);	
+
+		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle(floorButtonSelectedStyle);
 		return floorPane;
 	}
 
-	public ElevatorView(ElevatorController model, Stage stage) 
-	{
+	public ElevatorView(ElevatorController model, Stage stage) {
 		super();
 
 		this.elevatorModel = model;
-		
-		//this.stage = stage;
+
+		// this.stage = stage;
 		idNumber = model.buildingModel.getElevatorNumber();
 
 		modeButton = new Button("Manual");
 		modeButton.setStyle(modeButtonStyle);
-		
+
 		// set id
 		modeButton.addEventHandler(ActionEvent.ACTION, switchModeHandler);
 		modeButton.setPrefWidth(100);
@@ -266,7 +235,7 @@ public class ElevatorView extends GridPane {
 		layoutGrid.setHgap(20);
 		layoutGrid.setPadding(new Insets(20, 20, 20, 20));
 		layoutGrid.setAlignment(Pos.CENTER);
-		
+
 		GridPane.setFillWidth(modeButton, true);
 		layoutGrid.add(modeButton, 0, 0);
 		layoutGrid.add(statusButton, 1, 0);
@@ -278,28 +247,27 @@ public class ElevatorView extends GridPane {
 
 		arrowup = new Button("up");
 		arrowdown = new Button("down");
-		
-		
+
 		if (elevatorModel.elevatorModel.getCommitedDirection() == IElevator.ELEVATOR_DIRECTION_DOWN) {
 			arrowdown.setStyle(directionActiveStyle);
 			arrowup.setStyle(directionInactiveStyle);
-			
+
 		} else if (elevatorModel.elevatorModel.getCommitedDirection() == IElevator.ELEVATOR_DIRECTION_UP) {
 			arrowdown.setStyle(directionInactiveStyle);
 			arrowup.setStyle(directionActiveStyle);
 		} else {
 			arrowdown.setStyle(directionInactiveStyle);
 			arrowup.setStyle(directionInactiveStyle);
-		}		
-		
+		}
+
 		elevatorModel.elevatorModel.getPropCommitedDirection().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				if ((Integer)newValue == IElevator.ELEVATOR_DIRECTION_DOWN) {
+				if ((Integer) newValue == IElevator.ELEVATOR_DIRECTION_DOWN) {
 					arrowdown.setStyle(directionActiveStyle);
 					arrowup.setStyle(directionInactiveStyle);
-					
-				} else if ((Integer)newValue == IElevator.ELEVATOR_DIRECTION_UP) {
+
+				} else if ((Integer) newValue == IElevator.ELEVATOR_DIRECTION_UP) {
 					arrowdown.setStyle(directionInactiveStyle);
 					arrowup.setStyle(directionActiveStyle);
 				} else {
@@ -307,11 +275,10 @@ public class ElevatorView extends GridPane {
 					arrowup.setStyle(directionInactiveStyle);
 				}
 			}
-							
+
 		});
-		
-		
-		arrowdown.setPrefSize(50, 50);		
+
+		arrowdown.setPrefSize(50, 50);
 		arrowup.setPrefSize(50, 50);
 
 		HBox arrowsHbox = new HBox(arrowup, arrowdown);
@@ -327,7 +294,7 @@ public class ElevatorView extends GridPane {
 
 		payloadTxtField = new Text();
 		// payloadTxtField.setTextAlignment(TextAlignment.CENTER);
-		
+
 		payloadTxtField.textProperty().bind(model.elevatorModel.getPropElevatorWeight());
 
 		VBox payloadVbox = new VBox(currentPayloadLabel, payloadTxtField);
@@ -336,15 +303,13 @@ public class ElevatorView extends GridPane {
 
 		// layoutGrid.add(payloadVbox, 0, 2);
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 	    speed label and textfield		
 		speedLabel = new Label("Speed");
 
 		speedTxtField = new Text();
-		
+
 		speedTxtField.textProperty().bind(model.elevatorModel.getPropElevatorSpeed());
-		
 
 		VBox speedVbox = new VBox(speedLabel, speedTxtField);
 		speedVbox.setAlignment(Pos.CENTER);
@@ -352,10 +317,10 @@ public class ElevatorView extends GridPane {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //door status label and textfield		
-		
+
 		doorStatusLabel = new Label("Door Status");
 		doorStatusTxtField = new Text();
-		
+
 		doorStatusTxtField.textProperty().bind(model.elevatorModel.getPropDoorStatus());
 
 		VBox doorStatusVbox = new VBox(doorStatusLabel, doorStatusTxtField);
@@ -386,7 +351,7 @@ public class ElevatorView extends GridPane {
 
 		directionLabel.setPrefWidth(LabelSpacing);
 		requestLabel.setPrefWidth(LabelSpacing);
-		elevatorPositionLabel.setPrefWidth(LabelSpacing * 2);
+		elevatorPositionLabel.setPrefWidth(LabelSpacing * 2.00);
 		setTargetLabel.setPrefWidth(LabelSpacing);
 
 		elevatorGrid.add(directionLabel, 0, 0);
@@ -398,42 +363,57 @@ public class ElevatorView extends GridPane {
 
 		// elevatorGrid.add(CreateFloors(),2,1,3,1);
 		elevatorGrid.add(CreateFloors(), 2, 1);
-		
-		
+
 		// Test binding on floor buttons
 		testFloorList = new ListView<Floor>(model.buildingModel.getObservableFloorList());
-		//testFloorList.disa
+		// testFloorList.disa
 		testFloorList.setCellFactory(param -> new ListCell<Floor>() {
 			@Override
 			protected void updateItem(Floor floor, boolean empty) {
 				super.updateItem(floor, empty);
-			
-				
-				
+
 				if (empty || floor == null) {
 					setText(null);
-					setPrefHeight(floorButtonList.get(0).getHeight());
+					setPrefHeight(floorButtonList.get(0).getHeight() - 0.3);
 				} else {
-					setPrefHeight(floorButtonList.get(0).getHeight());
+					setPrefHeight(floorButtonList.get(0).getHeight() - 0.3);
 					if (floor.FloorButtonDown.getValue() && floor.FloorButtonUp.getValue()) {
 						setText("up/down");
-				    } else if (floor.FloorButtonDown.getValue()) {
+					} else if (floor.FloorButtonDown.getValue()) {
 						setText("down");
 					} else if (floor.FloorButtonUp.getValue()) {
 						setText("up");
 					} else {
 						setText(null);
 					}
-				}				
+				}
 			}
 		});
-		
-		testFloorList.setPrefHeight(floorButtonList.get(0).getHeight()*floorButtonList.size());
-		//testFloorList.setMinHeight(value);
-		elevatorGrid.add(testFloorList,0,1,1,floorButtonList.size());		
-		
+
+		testFloorList.setPrefHeight(floorButtonList.get(0).getHeight() * floorButtonList.size());
+
+		// testFloorList.setMinHeight(value);
+		elevatorGrid.add(testFloorList, 0, 2, 1, floorButtonList.size());
 
 		layoutGrid.add(elevatorGrid, 1, 1);
+
+		warningLabel = new Label("Warnings");
+		warningTextField = new TextField("");
+		warningTextField.setEditable(false);
+
+		errorLabel = new Label("Errors: ");
+		errorTextField = new TextField("");
+
+		errorTextField.setEditable(false);
+
+		VBox warningVBox = new VBox(warningLabel, warningTextField);
+		VBox errorVBox = new VBox(errorLabel, errorTextField);
+
+		layoutGrid.add(warningVBox, 1, 2);
+		layoutGrid.add(errorVBox, 1, 3);
+
+		warningTextField.setId(String.valueOf(idNumber) + "warningTextField");
+		errorTextField.setId(String.valueOf(idNumber) + "errorTextField");
 
 		modeButton.setId(String.valueOf(idNumber) + "modeButton");
 		statusButton.setId(String.valueOf(idNumber) + "statusButton");
@@ -444,8 +424,8 @@ public class ElevatorView extends GridPane {
 		speedTxtField.setId(String.valueOf(idNumber) + "speedTxtField");
 		doorStatusLabel.setId(String.valueOf(idNumber) + "doorStatusLabel");
 		doorStatusTxtField.setId(String.valueOf(idNumber) + "doorStatusTxtField");
-		payloadTxtField.setId(String.valueOf(idNumber)+"payloadTxtField");
+		payloadTxtField.setId(String.valueOf(idNumber) + "payloadTxtField");
 
-		add(layoutGrid, 0,0);
+		add(layoutGrid, 0, 0);
 	}
 }
