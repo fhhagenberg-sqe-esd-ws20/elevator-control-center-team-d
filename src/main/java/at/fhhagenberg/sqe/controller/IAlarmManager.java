@@ -5,6 +5,7 @@
 package at.fhhagenberg.sqe.controller;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.collections.ObservableList;
 
 /**
  * Interface for AlarmManager to handle errors and
@@ -51,4 +52,16 @@ public interface IAlarmManager {
 	 * Clears the current added warning messages
 	 */
 	public void clearWarningMessages();
+	
+	/**
+	 * Getter for observable error list
+	 * @return observable error list
+	 */
+	public ObservableList<String> getPropErrorList();
+	
+	/**
+	 * Getter for observable warning list
+	 * @return observable warning list
+	 */
+	public ObservableList<String> getPropWarningList();
 }

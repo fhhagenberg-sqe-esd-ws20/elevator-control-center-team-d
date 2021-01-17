@@ -62,4 +62,14 @@ public class AlarmManager implements IAlarmManager {
 	public void clearWarningMessages() {
 		WarningList.clear();
 	}
+	
+	@Override
+	public ObservableList<String> getPropErrorList() {
+		return ErrorList;
+	}
+	
+	@Override
+	public ObservableList<String> getPropWarningList() {
+		return WarningList;
+	}
 }
