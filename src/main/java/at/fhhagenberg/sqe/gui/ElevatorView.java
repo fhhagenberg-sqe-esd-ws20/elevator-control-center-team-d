@@ -53,6 +53,13 @@ public class ElevatorView extends GridPane {
 		
 	ListView<Floor> testFloorList;
 
+	private Label errorLabel;
+	private TextField errorTextField;
+	
+	private Label warningLabel;
+	private TextField warningTextField;
+
+
 	private GridPane elevatorGrid;
 	private GridPane layoutGrid;
 	private int LabelSpacing = 70;
@@ -101,7 +108,8 @@ public class ElevatorView extends GridPane {
 		return layoutGrid;
 	}
 	
-	private GridPane CreateFloors() {
+	private GridPane CreateFloors() 
+	{
 		GridPane floorPane = new GridPane();
 
 		int positionInGrid = 2;
@@ -154,7 +162,7 @@ public class ElevatorView extends GridPane {
 		{
 			Button floorButton = new Button("Floor " + i);
 			Button setButton = new Button("set");
-			Button requestButton = new Button("none");
+			Button requestButton = new Button("");
 
 
 			if (elevatorModel.ServicesFloorList.get(i)) {
@@ -184,25 +192,25 @@ public class ElevatorView extends GridPane {
 
 			final int constantIndex = i;
 			
-			if (elevatorModel.buildingModel.getObservableFloorList().get(i).getFloorButtonUpProperty().getValue()) {
-				requestButton.setText("call");
-			} else {
-				requestButton.setText("none");
-			}
-			
-			
-			elevatorModel.buildingModel.getObservableFloorList().get(i).getFloorButtonUpProperty().addListener(new ChangeListener<Boolean>() {
-				@Override
-				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-					if (newValue) {
-						requestButtonList.get(constantIndex).setText("call");
-					} else {
-						requestButtonList.get(constantIndex).setText("");
-					}
-				}
-								
-			});
-			
+//			if (elevatorModel.buildingModel.getObservableFloorList().get(i).getFloorButtonUpProperty().getValue()) {
+//				requestButton.setText("call");
+//			} else {
+//				requestButton.setText("");
+//			}
+//			
+//			
+//			elevatorModel.buildingModel.getObservableFloorList().get(i).getFloorButtonUpProperty().addListener(new ChangeListener<Boolean>() {
+//				@Override
+//				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//					if (newValue) {
+//						requestButtonList.get(constantIndex).setText("call");
+//					} else {
+//						requestButtonList.get(constantIndex).setText("");
+//					}
+//				}
+//								
+//			});
+//			
 			floorButton.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -386,7 +394,7 @@ public class ElevatorView extends GridPane {
 
 		directionLabel.setPrefWidth(LabelSpacing);
 		requestLabel.setPrefWidth(LabelSpacing);
-		elevatorPositionLabel.setPrefWidth(LabelSpacing * 2);
+		elevatorPositionLabel.setPrefWidth(LabelSpacing * 2.00);
 		setTargetLabel.setPrefWidth(LabelSpacing);
 
 		elevatorGrid.add(directionLabel, 0, 0);
@@ -407,14 +415,12 @@ public class ElevatorView extends GridPane {
 			@Override
 			protected void updateItem(Floor floor, boolean empty) {
 				super.updateItem(floor, empty);
-			
-				
-				
+										
 				if (empty || floor == null) {
-					setText(null);
-					setPrefHeight(floorButtonList.get(0).getHeight());
+					setText(null);				
+					setPrefHeight(floorButtonList.get(0).getHeight()-0.3);
 				} else {
-					setPrefHeight(floorButtonList.get(0).getHeight());
+					setPrefHeight(floorButtonList.get(0).getHeight()-0.3);
 					if (floor.FloorButtonDown.getValue() && floor.FloorButtonUp.getValue()) {
 						setText("up/down");
 				    } else if (floor.FloorButtonDown.getValue()) {
@@ -427,14 +433,38 @@ public class ElevatorView extends GridPane {
 				}				
 			}
 		});
+				
 		
 		testFloorList.setPrefHeight(floorButtonList.get(0).getHeight()*floorButtonList.size());
+		
+		
 		//testFloorList.setMinHeight(value);
-		elevatorGrid.add(testFloorList,0,1,1,floorButtonList.size());		
+		elevatorGrid.add(testFloorList,0,2,1,floorButtonList.size());		
 		
 
 		layoutGrid.add(elevatorGrid, 1, 1);
 
+		warningLabel = new Label("Warnings");
+		warningTextField = new TextField("");
+		warningTextField.setEditable(false);
+
+		errorLabel = new Label("Errors: ");
+		errorTextField = new TextField("");
+		
+	
+		
+		errorTextField.setEditable(false);
+		
+		
+		VBox warningVBox = new VBox(warningLabel, warningTextField);
+		VBox errorVBox = new VBox(errorLabel, errorTextField);
+		
+		layoutGrid.add(warningVBox, 1, 2);
+		layoutGrid.add(errorVBox, 1, 3);
+		
+		warningTextField.setId(String.valueOf(idNumber)+"warningTextField");
+		errorTextField.setId(String.valueOf(idNumber)+"errorTextField");
+		
 		modeButton.setId(String.valueOf(idNumber) + "modeButton");
 		statusButton.setId(String.valueOf(idNumber) + "statusButton");
 		elevDirectionLabel.setId(String.valueOf(idNumber) + "elevDirectionLabel");
