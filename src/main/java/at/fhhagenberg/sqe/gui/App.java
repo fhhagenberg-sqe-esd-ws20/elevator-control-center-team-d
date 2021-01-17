@@ -89,6 +89,8 @@ public class App extends Application {
 		elevatorCtrl.setCurrViewElevatorNumber(0);
 		initElevatorControllerTimer();		
 		
+		primaryStage.setResizable(false);
+		
 		MainView view = new MainView(elevatorCtrl, primaryStage); 			
 		
 		// On cancel button cancel update timer

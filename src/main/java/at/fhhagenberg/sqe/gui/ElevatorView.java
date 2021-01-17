@@ -35,6 +35,9 @@ import sqelevator.IElevator;
 public class ElevatorView extends GridPane {
 	private ElevatorController elevatorModel;
 	private Label emptySpacingLabel;
+	
+	
+	private ScrollPane layoutScrollPane;
 
 	private Button modeButton;
 	private Button statusButton;
@@ -52,35 +55,38 @@ public class ElevatorView extends GridPane {
 	private ArrayList<Button> requestButtonList = new ArrayList<Button>();
 
 	ListView<Floor> testFloorList;
+	
+	
 
 	private Label errorLabel;
-	private TextField errorTextField;
+	private ListView<String> errorListView;
+	
 
 	private Label warningLabel;
-	private TextField warningTextField;
+	private ListView<String> warningListView;
 
 	private GridPane elevatorGrid;
 	private GridPane layoutGrid;
 	private int LabelSpacing = 70;
-	private String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
+	private final String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
-	private String floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
+	private final String floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
-	private String floorButtonNotSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private final String floorButtonNotSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
-	private String floorButtonNotServiced = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #808080; -fx-stroke-width: 1; -fx-pref-width: "
+	private final String floorButtonNotServiced = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #808080; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
 
-	private String setButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private final String setButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing / 2 + "; -fx-background-radius: 0";
-	private String requestButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private final String requestButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing + "; -fx-background-radius: 0";
-	private String floorButtonClickedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
+	private final String floorButtonClickedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
-	private String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";
-	private String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
-	private String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
+	private final String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";
+	private final String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
+	private final String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
 
 	private int idNumber;
 
@@ -182,19 +188,13 @@ public class ElevatorView extends GridPane {
 				@Override
 				public void handle(ActionEvent event) {
 					if (elevatorModel.setNextElevatorTarget(constantIndex)) {
-						if (elevatorModel.getOperationStatus() == eOperationStatus.MANUAL) {
-
-							for (var elem : floorButtonList) {
-								if (!elem.isDisabled())
-									elem.setStyle(floorButtonNotSelectedStyle);
-							}
+						if (elevatorModel.getOperationStatus() == eOperationStatus.MANUAL) {							
 							floorButton.setStyle(floorButtonClickedStyle);
 						}
 					}
 					event.consume();
 				}
-			});
-			// modeButton.setId(String.valueOf(idNumber) + "modeButton");
+			});	
 
 			elevatorGrid.add(requestButton, 1, positionInGrid);
 			elevatorGrid.add(floorButton, 2, positionInGrid);
@@ -229,7 +229,7 @@ public class ElevatorView extends GridPane {
 		statusVbox.setAlignment(Pos.BASELINE_CENTER);
 
 		layoutGrid = new GridPane();
-
+		
 		layoutGrid.setPrefSize(800, 400);
 		layoutGrid.setVgap(20);
 		layoutGrid.setHgap(20);
@@ -239,7 +239,7 @@ public class ElevatorView extends GridPane {
 		GridPane.setFillWidth(modeButton, true);
 		layoutGrid.add(modeButton, 0, 0);
 		layoutGrid.add(statusButton, 1, 0);
-
+				
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// Elevator direction label and Buttons:
@@ -275,7 +275,6 @@ public class ElevatorView extends GridPane {
 					arrowup.setStyle(directionInactiveStyle);
 				}
 			}
-
 		});
 
 		arrowdown.setPrefSize(50, 50);
@@ -304,7 +303,7 @@ public class ElevatorView extends GridPane {
 		// layoutGrid.add(payloadVbox, 0, 2);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// 	    speed label and textfield		
+// 	    speed label and TextArea		
 		speedLabel = new Label("Speed");
 
 		speedTxtField = new Text();
@@ -316,7 +315,7 @@ public class ElevatorView extends GridPane {
 		speedVbox.setStyle(style);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//door status label and textfield		
+//door status label and TextArea		
 
 		doorStatusLabel = new Label("Door Status");
 		doorStatusTxtField = new Text();
@@ -392,28 +391,27 @@ public class ElevatorView extends GridPane {
 
 		testFloorList.setPrefHeight(floorButtonList.get(0).getHeight() * floorButtonList.size());
 
-		// testFloorList.setMinHeight(value);
 		elevatorGrid.add(testFloorList, 0, 2, 1, floorButtonList.size());
 
 		layoutGrid.add(elevatorGrid, 1, 1);
 
 		warningLabel = new Label("Warnings");
-		warningTextField = new TextField("");
-		warningTextField.setEditable(false);
+		warningListView = new ListView<String>(model.ctrlAlarmManager.getPropWarningList());		
 
 		errorLabel = new Label("Errors: ");
-		errorTextField = new TextField("");
+		errorListView = new ListView<String>(model.ctrlAlarmManager.getPropErrorList());
+		
+		errorListView.setMinHeight(100);
+		warningListView.setMinHeight(100);
 
-		errorTextField.setEditable(false);
-
-		VBox warningVBox = new VBox(warningLabel, warningTextField);
-		VBox errorVBox = new VBox(errorLabel, errorTextField);
+		VBox warningVBox = new VBox(warningLabel, warningListView);
+		VBox errorVBox = new VBox(errorLabel, errorListView);
 
 		layoutGrid.add(warningVBox, 1, 2);
 		layoutGrid.add(errorVBox, 1, 3);
 
-		warningTextField.setId(String.valueOf(idNumber) + "warningTextField");
-		errorTextField.setId(String.valueOf(idNumber) + "errorTextField");
+		warningListView.setId(String.valueOf(idNumber) + "warningTextField");
+		errorListView.setId(String.valueOf(idNumber) + "errorTextField");
 
 		modeButton.setId(String.valueOf(idNumber) + "modeButton");
 		statusButton.setId(String.valueOf(idNumber) + "statusButton");
@@ -426,6 +424,9 @@ public class ElevatorView extends GridPane {
 		doorStatusTxtField.setId(String.valueOf(idNumber) + "doorStatusTxtField");
 		payloadTxtField.setId(String.valueOf(idNumber) + "payloadTxtField");
 
-		add(layoutGrid, 0, 0);
+		
+		layoutScrollPane = new ScrollPane(layoutGrid);
+		layoutScrollPane.setPrefSize(850, 700);
+		add(layoutScrollPane, 0, 0);
 	}
 }
