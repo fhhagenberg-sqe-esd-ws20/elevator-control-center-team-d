@@ -150,6 +150,7 @@ public class ElevatorController extends TimerTask {
 				updateElevatorButtonList();			
 				updateServicesFloorList();
 				updateFloorButtons();
+				updateDoorStatusUncommited();
 				diffClockTick = elevatorModel.getClockTick() - startClockTick;
 				tryUpdateCounter++;
 			} while (diffClockTick != 0 && tryUpdateCounter < maxUpdateAttempts);
@@ -191,6 +192,13 @@ public class ElevatorController extends TimerTask {
 		elevatorModel.updateElevatorSpeed();
 		elevatorModel.updateElevatorWeight();
 		elevatorModel.updateTarget();
+	}
+	
+	private void updateDoorStatusUncommited() throws RemoteException {
+		if (elevatorModel.getElevatorPosIsTarget() && elevatorModel.getIDoorStatus() == IElevator.ELEVATOR_DOORS_OPEN &&
+				elevatorModel.getIDoorStatus() != IElevator.ELEVATOR_DIRECTION_UNCOMMITTED) {
+			elevatorModel.setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+		}
 	}
 
 	public boolean isUpdateModelData() {
