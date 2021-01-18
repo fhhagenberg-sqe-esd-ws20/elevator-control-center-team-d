@@ -196,7 +196,7 @@ public class ElevatorController extends TimerTask {
 	
 	private void updateDoorStatusUncommited() throws RemoteException {
 		if (elevatorModel.getElevatorPosIsTarget() && elevatorModel.getIDoorStatus() == IElevator.ELEVATOR_DOORS_OPEN &&
-				elevatorModel.getIDoorStatus() != IElevator.ELEVATOR_DIRECTION_UNCOMMITTED) {
+				elevatorModel.getCommitedDirection() != IElevator.ELEVATOR_DIRECTION_UNCOMMITTED) {
 			elevatorModel.setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 		}
 	}

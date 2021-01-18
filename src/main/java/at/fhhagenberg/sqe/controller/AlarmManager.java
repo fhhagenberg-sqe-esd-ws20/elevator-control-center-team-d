@@ -44,13 +44,11 @@ public class AlarmManager implements IAlarmManager {
 	@Override
 	public void addErrorMessage(String errorMessage) {
 		ErrorList.add(errorMessage);
-		//System.out.print("Error: " + errorMessage + "\n");
 	}
 
 	@Override
 	public void addWarningMessage(String warningMessage) {
 		WarningList.add(warningMessage);
-		//System.out.print("Warning: " + warningMessage + "\n");
 	}
 
 	@Override
