@@ -142,7 +142,7 @@ public class ElevatorControllerTest {
 		testElevatorCtrl.updateModelValues();
 		
 		Mockito.verify(mockedElevator, Mockito.times(2)).getElevatorButton(0);
-		assertEquals(true, testElevatorCtrl.ElevatorButtonList.get(0)); 
+		assertTrue(testElevatorCtrl.ElevatorButtonList.get(0)); 
 	}
 	
 	@Test
@@ -153,7 +153,7 @@ public class ElevatorControllerTest {
 		testElevatorCtrl.updateModelValues();
 		
 		Mockito.verify(mockedElevator, Mockito.times(2)).getServicesFloors(0);
-		assertEquals(false, testElevatorCtrl.ServicesFloorList.get(0)); 
+		assertFalse(testElevatorCtrl.ServicesFloorList.get(0)); 
 	}
 	
 	@Test
@@ -334,5 +334,29 @@ public class ElevatorControllerTest {
 		
 		testElevatorCtrl.setUseElevatorSim(false);
 		assertFalse(testElevatorCtrl.isUseElevatorSim());
+	}
+	
+	@Test
+	public void testUpdateDoorStatusUncommitedWhenDoorStatusIsUncommited() throws java.rmi.RemoteException {
+		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
+		Mockito.when(mockedElevator.getCommitedDirection()).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
+		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
+		
+		testElevatorCtrl.updateModelValues();
+		
+		Mockito.verify(mockedElevator, Mockito.never()).setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+	}
+	
+	@Test
+	public void testUpdateDoorStatusUncommitedWhenAbleToSetCommitedDirectionToUncommited() throws java.rmi.RemoteException {
+		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
+		Mockito.when(mockedElevator.getCommitedDirection()).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
+		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
+		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
+		
+		testElevatorCtrl.updateModelValues();
+		
+		Mockito.verify(mockedElevator, Mockito.times(1)).setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 	}
 }

@@ -7,6 +7,11 @@ package at.fhhagenberg.sqe.controller;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import com.sun.javafx.collections.ObservableListWrapper;
+
+import at.fhhagenberg.sqe.model.Building;
 
 /**
  * Test class to verify the functionality of the AlarmManager class.
@@ -143,5 +148,28 @@ public class AlarmManagerTest {
 		testAlarmManager.resetRemoteConnectionError();
 		
 		assertFalse(testAlarmManager.RemoteConnError.getValue());
+	}
+	
+	@Test
+	public void testGetterObservableErrorList() {
+		AlarmManager testAlarmManager = new AlarmManager();		
+		
+		testAlarmManager.addErrorMessage("Error: Test01");
+		testAlarmManager.addErrorMessage("Error: Test02");
+		
+		assertEquals(ObservableListWrapper.class, testAlarmManager.getPropErrorList().getClass());
+		assertEquals(2, testAlarmManager.getPropErrorList().size());
+		assertEquals("Error: Test02", testAlarmManager.getPropErrorList().get(1));
+	}
+	
+	@Test
+	public void testGetterObservableWarningList() {
+		AlarmManager testAlarmManager = new AlarmManager();		
+		
+		testAlarmManager.addWarningMessage("Warning: Test01");
+		
+		assertEquals(ObservableListWrapper.class, testAlarmManager.getPropWarningList().getClass());
+		assertEquals(1, testAlarmManager.getPropWarningList().size());
+		assertEquals("Warning: Test01", testAlarmManager.getPropWarningList().get(0));
 	}
 }
