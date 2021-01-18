@@ -167,4 +167,22 @@ public class BuildingTest {
 		
 		assertEquals(3, testBuilding.getElevatorNumber());
 	}
+	
+	@Test
+	public void testSetRemoteElevatorWithTwoDifferentMocks() throws java.rmi.RemoteException {
+		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(3);
+		Building testBuilding = new Building(mockedRmElevator, mockedAlarmManager);		
+		Mockito.when(mockedRmElevator.getFloorButtonDown(1)).thenReturn(false);
+		
+		testBuilding.FloorList.get(1).updateFloorButtonDown();
+		assertFalse(testBuilding.FloorList.get(1).getFloorButtonDownProperty().getValue());
+		
+		IWrapElevator mockedNewRmElevator = Mockito.mock(IWrapElevator.class);
+		Mockito.when(mockedNewRmElevator.getFloorButtonDown(1)).thenReturn(true);
+		
+		testBuilding.setRemoteElevator(mockedNewRmElevator);
+		
+		testBuilding.FloorList.get(1).updateFloorButtonDown();
+		assertTrue(testBuilding.FloorList.get(1).getFloorButtonDownProperty().getValue());
+	}
 }
