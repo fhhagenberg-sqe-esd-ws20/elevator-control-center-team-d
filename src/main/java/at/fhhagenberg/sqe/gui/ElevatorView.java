@@ -1,42 +1,26 @@
 package at.fhhagenberg.sqe.gui;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
-
-import javax.swing.GroupLayout.Alignment;
 
 import at.fhhagenberg.sqe.controller.ElevatorController;
 import at.fhhagenberg.sqe.controller.ElevatorController.eOperationStatus;
-import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.Floor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 
 public class ElevatorView extends GridPane {
 	private ElevatorController elevatorModel;
-	private Label emptySpacingLabel;
-	
-	
 	private ScrollPane layoutScrollPane;
 
 	private Button modeButton;
@@ -67,26 +51,26 @@ public class ElevatorView extends GridPane {
 
 	private GridPane elevatorGrid;
 	private GridPane layoutGrid;
-	private int LabelSpacing = 70;
+	private static int LabelSpacing = 70;
 	private final String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
-	private final String floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
-	private final String floorButtonNotSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String floorButtonNotSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
 	private final String floorButtonNotServiced = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #808080; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
 
-	private final String setButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String setButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing / 2 + "; -fx-background-radius: 0";
-	private final String requestButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String requestButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing + "; -fx-background-radius: 0";
-	private final String floorButtonClickedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String floorButtonClickedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
-	private final String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";
-	private final String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
-	private final String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
+	private static final String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";
+	private static final String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
+	private static final String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
 
 	private int idNumber;
 

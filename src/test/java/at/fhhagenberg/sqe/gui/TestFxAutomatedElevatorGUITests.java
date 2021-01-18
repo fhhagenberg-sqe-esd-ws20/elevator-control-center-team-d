@@ -23,6 +23,7 @@ import at.fhhagenberg.sqe.controller.ElevatorController.eOperationStatus;
 import at.fhhagenberg.sqe.model.Building;
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
+import javafx.beans.property.IntegerProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
@@ -57,7 +58,11 @@ public class TestFxAutomatedElevatorGUITests
 		Mockito.when(mockedRmElevator.getFloorNum()).thenReturn(10);
 		Mockito.when(mockedRmElevator.getElevatorWeight(0)).thenReturn(650);
 		Mockito.when(mockedRmElevator.getElevatorPosIsTarget(0)).thenReturn(true);
+	
+		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
+		
 		Mockito.when(mockedRmElevator.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
 		Mockito.when(mockedRmElevator.getElevatorFloor(0)).thenReturn(0);
 		Mockito.when(mockedRmElevator.getElevatorSpeed(0)).thenReturn(0);
@@ -71,7 +76,17 @@ public class TestFxAutomatedElevatorGUITests
 		Mockito.when(mockedRmElevator.getServicesFloors(0, 6)).thenReturn(true);
 		Mockito.when(mockedRmElevator.getServicesFloors(0, 7)).thenReturn(true);
 		Mockito.when(mockedRmElevator.getServicesFloors(0, 8)).thenReturn(true);
-		Mockito.when(mockedRmElevator.getServicesFloors(0, 9)).thenReturn(true);
+		Mockito.when(mockedRmElevator.getServicesFloors(0, 9)).thenReturn(false);
+		
+		Mockito.when(mockedRmElevator.getFloorButtonDown(1)).thenReturn(true);
+		Mockito.when(mockedRmElevator.getFloorButtonUp(2)).thenReturn(true);
+		
+		Mockito.when(mockedRmElevator.getFloorButtonDown(3)).thenReturn(false);
+		Mockito.when(mockedRmElevator.getFloorButtonUp(4)).thenReturn(false);
+		
+		Mockito.when(mockedRmElevator.getFloorButtonDown(5)).thenReturn(true);
+		Mockito.when(mockedRmElevator.getFloorButtonUp(5)).thenReturn(true);
+		
 		
 		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(0);
 		Mockito.when(mockedRmElevator.getClockTick()).thenReturn(100L);
@@ -86,8 +101,7 @@ public class TestFxAutomatedElevatorGUITests
 		elevatorCtrl.setCurrViewElevatorNumber(0);
 		initElevatorController();
 		
-		view = new MainView(elevatorCtrl, stage); 		
-		
+					
 		this.stage = stage;
 		
 		// On cancel button cancel update timer
@@ -99,6 +113,8 @@ public class TestFxAutomatedElevatorGUITests
 				updateDataTimer.cancel();
 			}
 		});	
+		
+		view = new MainView(elevatorCtrl, stage); 	
 	}
 	
 	private void initElevatorController() {
@@ -107,8 +123,8 @@ public class TestFxAutomatedElevatorGUITests
 	
 	
 	@Test
-	public void testChangeManualToAutomatic(FxRobot robot)
-	{		
+	public void testChangeModeButton(FxRobot robot) throws Exception
+	{							
 		Button button = (Button) stage.getScene().lookup("#1modeButton");
 		assertEquals(button.getText(), "Manual");
 		
@@ -116,11 +132,15 @@ public class TestFxAutomatedElevatorGUITests
 		assertEquals(eOperationStatus.AUTOMATIC, elevatorCtrl.getOperationStatus());
 		
 		button = (Button) stage.getScene().lookup("#1modeButton");
-		assertEquals(button.getText(), "Automatic");
+		assertEquals(button.getText(), "Automatic");			
+		
+		robot.clickOn("#1modeButton");
+		assertEquals(eOperationStatus.MANUAL, elevatorCtrl.getOperationStatus());		
+		assertEquals(button.getText(), "Manual");
 	}
-	
+
 	private void wait(FxRobot robot) {
-		robot.sleep(250); 
+		robot.sleep(500); 
 	}
 	
 	@Test
@@ -148,7 +168,9 @@ public class TestFxAutomatedElevatorGUITests
 	@Test
 	public void testEndToEndModelToGUIElevatorSpeed(FxRobot robot) throws Exception
 	{
-		Mockito.when(mockedRmElevator.getElevatorSpeed(0)).thenReturn(44);
+		//Mockito.when(mockedRmElevator.getElevatorSpeed(0)).thenReturn(44);
+		Mockito.doReturn(44).when(mockedRmElevator).getElevatorSpeed(0);
+		
 		Thread.sleep(500);
 		verifyThat("#1speedTxtField", TextMatchers.hasText("44 ft/s"));		
 	}
@@ -161,4 +183,39 @@ public class TestFxAutomatedElevatorGUITests
 		verifyThat("#1payloadTxtField", TextMatchers.hasText("100 lbs"));			
 	}
 
+	@Test
+	public void testChangeCommittedDirectionModelUpToGUI(FxRobot robot) throws Exception
+	{
+		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
+		Thread.sleep(500);
+		Button buttonUp = (Button) stage.getScene().lookup("#1arrowup");
+		Button buttonDown = (Button) stage.getScene().lookup("#1arrowdown");
+		
+		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0", buttonUp.getStyle());
+		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0", buttonDown.getStyle());		
+	}
+	
+	@Test
+	public void testChangeCommittedDirectionModelDownToGUI(FxRobot robot) throws Exception
+	{
+		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
+		Thread.sleep(500);
+		Button buttonUp = (Button) stage.getScene().lookup("#1arrowup");
+		Button buttonDown = (Button) stage.getScene().lookup("#1arrowdown");
+		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0", buttonUp.getStyle());
+		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0", buttonDown.getStyle());
+		
+	}
+	@Test
+	public void testChangeCommittedDirectionModelUncommittedToGUI(FxRobot robot) throws Exception
+	{
+		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+		Thread.sleep(500);
+		Button buttonUp = (Button) stage.getScene().lookup("#1arrowup");
+		Button buttonDown = (Button) stage.getScene().lookup("#1arrowdown");
+		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0", buttonUp.getStyle());
+		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0", buttonDown.getStyle());
+		
+	}
+	
 }
