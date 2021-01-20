@@ -1,42 +1,26 @@
 package at.fhhagenberg.sqe.gui;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
-
-import javax.swing.GroupLayout.Alignment;
 
 import at.fhhagenberg.sqe.controller.ElevatorController;
 import at.fhhagenberg.sqe.controller.ElevatorController.eOperationStatus;
-import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.Floor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import sqelevator.IElevator;
 
 public class ElevatorView extends GridPane {
 	private ElevatorController elevatorModel;
-	private Label emptySpacingLabel;
-	
-	
 	private ScrollPane layoutScrollPane;
 
 	private Button modeButton;
@@ -67,26 +51,26 @@ public class ElevatorView extends GridPane {
 
 	private GridPane elevatorGrid;
 	private GridPane layoutGrid;
-	private int LabelSpacing = 70;
-	private final String style = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
+	private static int LabelSpacing = 70;
+	private static final String STYLE = "-fx-background-color: #ffffff; " + "-fx-border-color:  #545454;\r\n"
 			+ "  -fx-border-width: 2px;\r\n" + "  -fx-border-style: solid;";
 
-	private final String floorButtonSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String FLOORBUTTONSELECTEDSTYLE = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #0000FF; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
-	private final String floorButtonNotSelectedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String FLOORBUTTONNOTSELECTEDSTYLE = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
 	private final String floorButtonNotServiced = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #808080; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
 
-	private final String setButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String SETBUTTONSTYLE = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing / 2 + "; -fx-background-radius: 0";
-	private final String requestButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String REQUESTBUTTONSTYLE = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing + "; -fx-background-radius: 0";
-	private final String floorButtonClickedStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
+	private static final String FLOORBUTTONCLICKEDSTYLE = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #006400; -fx-stroke-width: 1; -fx-pref-width: "
 			+ LabelSpacing * 2 + "; -fx-background-radius: 0";
-	private final String modeButtonStyle = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";
-	private final String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
-	private final String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
+	private static final String MODEBUTTONSTYLE = "-fx-border-width: 0; -fx-background-color: #ff0000; -fx-stroke-width: 1; -fx-stroke-width: 1;  -fx-background-radius: 0";
+	private static final String DIRECTIONACTIVESTYLE = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
+	private static final String DIRECTIONINACTIVESTYLE = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
 
 	private final String statusButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
 			+ ((LabelSpacing*8)+8) + "; -fx-background-radius: 0";
@@ -160,14 +144,14 @@ public class ElevatorView extends GridPane {
 			Button requestButton = new Button("");
 
 			if (elevatorModel.ServicesFloorList.get(i)) {
-				floorButton.setStyle(floorButtonNotSelectedStyle);
+				floorButton.setStyle(FLOORBUTTONNOTSELECTEDSTYLE);
 			} else {
 				floorButton.setStyle(floorButtonNotServiced);
 				floorButton.setDisable(true);
 			}
 
-			setButton.setStyle(setButtonStyle);
-			requestButton.setStyle(requestButtonStyle);
+			setButton.setStyle(SETBUTTONSTYLE);
+			requestButton.setStyle(REQUESTBUTTONSTYLE);
 
 			if (i == elevatorModel.elevatorModel.getElevatorCurrTarget()) {
 				setButton.setVisible(true);
@@ -191,7 +175,7 @@ public class ElevatorView extends GridPane {
 				public void handle(ActionEvent event) {
 					if (elevatorModel.setNextElevatorTarget(constantIndex)) {
 						if (elevatorModel.getOperationStatus() == eOperationStatus.MANUAL) {							
-							floorButton.setStyle(floorButtonClickedStyle);
+							floorButton.setStyle(FLOORBUTTONCLICKEDSTYLE);
 						}
 					}
 					event.consume();
@@ -204,7 +188,7 @@ public class ElevatorView extends GridPane {
 			positionInGrid++;
 		}
 
-		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle(floorButtonSelectedStyle);
+		floorButtonList.get(elevatorModel.elevatorModel.getElevatorCurrFloor()).setStyle(FLOORBUTTONSELECTEDSTYLE);
 		return floorPane;
 	}
 
@@ -217,7 +201,7 @@ public class ElevatorView extends GridPane {
 		idNumber = model.buildingModel.getElevatorNumber();
 
 		modeButton = new Button("Manual");
-		modeButton.setStyle(modeButtonStyle);
+		modeButton.setStyle(MODEBUTTONSTYLE);
 
 		// set id
 		modeButton.addEventHandler(ActionEvent.ACTION, switchModeHandler);
@@ -252,30 +236,30 @@ public class ElevatorView extends GridPane {
 		arrowdown = new Button("down");
 
 		if (elevatorModel.elevatorModel.getCommitedDirection() == IElevator.ELEVATOR_DIRECTION_DOWN) {
-			arrowdown.setStyle(directionActiveStyle);
-			arrowup.setStyle(directionInactiveStyle);
+			arrowdown.setStyle(DIRECTIONACTIVESTYLE);
+			arrowup.setStyle(DIRECTIONINACTIVESTYLE);
 
 		} else if (elevatorModel.elevatorModel.getCommitedDirection() == IElevator.ELEVATOR_DIRECTION_UP) {
-			arrowdown.setStyle(directionInactiveStyle);
-			arrowup.setStyle(directionActiveStyle);
+			arrowdown.setStyle(DIRECTIONINACTIVESTYLE);
+			arrowup.setStyle(DIRECTIONACTIVESTYLE);
 		} else {
-			arrowdown.setStyle(directionInactiveStyle);
-			arrowup.setStyle(directionInactiveStyle);
+			arrowdown.setStyle(DIRECTIONINACTIVESTYLE);
+			arrowup.setStyle(DIRECTIONINACTIVESTYLE);
 		}
 
 		elevatorModel.elevatorModel.getPropCommitedDirection().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				if ((Integer) newValue == IElevator.ELEVATOR_DIRECTION_DOWN) {
-					arrowdown.setStyle(directionActiveStyle);
-					arrowup.setStyle(directionInactiveStyle);
+					arrowdown.setStyle(DIRECTIONACTIVESTYLE);
+					arrowup.setStyle(DIRECTIONINACTIVESTYLE);
 
 				} else if ((Integer) newValue == IElevator.ELEVATOR_DIRECTION_UP) {
-					arrowdown.setStyle(directionInactiveStyle);
-					arrowup.setStyle(directionActiveStyle);
+					arrowdown.setStyle(DIRECTIONINACTIVESTYLE);
+					arrowup.setStyle(DIRECTIONACTIVESTYLE);
 				} else {
-					arrowdown.setStyle(directionInactiveStyle);
-					arrowup.setStyle(directionInactiveStyle);
+					arrowdown.setStyle(DIRECTIONINACTIVESTYLE);
+					arrowup.setStyle(DIRECTIONINACTIVESTYLE);
 				}
 			}
 		});
@@ -301,7 +285,7 @@ public class ElevatorView extends GridPane {
 
 		VBox payloadVbox = new VBox(currentPayloadLabel, payloadTxtField);
 		payloadVbox.setAlignment(Pos.CENTER);
-		payloadVbox.setStyle(style);
+		payloadVbox.setStyle(STYLE);
 
 		// layoutGrid.add(payloadVbox, 0, 2);
 
@@ -315,7 +299,7 @@ public class ElevatorView extends GridPane {
 
 		VBox speedVbox = new VBox(speedLabel, speedTxtField);
 		speedVbox.setAlignment(Pos.CENTER);
-		speedVbox.setStyle(style);
+		speedVbox.setStyle(STYLE);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //door status label and TextArea		
@@ -326,7 +310,7 @@ public class ElevatorView extends GridPane {
 		doorStatusTxtField.textProperty().bind(model.elevatorModel.getPropDoorStatus());
 
 		VBox doorStatusVbox = new VBox(doorStatusLabel, doorStatusTxtField);
-		doorStatusVbox.setStyle(style);
+		doorStatusVbox.setStyle(STYLE);
 		doorStatusVbox.setAlignment(Pos.CENTER);
 
 		layoutGrid.add(doorStatusVbox, 0, 4);
@@ -341,7 +325,7 @@ public class ElevatorView extends GridPane {
 
 		elevatorGrid = new GridPane();
 		elevatorGrid.setHgap(10);
-		elevatorGrid.setStyle(style);
+		elevatorGrid.setStyle(STYLE);
 
 		elevatorGrid.setPadding(new Insets(2, 2, 2, 2));
 
