@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -23,15 +22,12 @@ import at.fhhagenberg.sqe.controller.ElevatorController.eOperationStatus;
 import at.fhhagenberg.sqe.model.Building;
 import at.fhhagenberg.sqe.model.Elevator;
 import at.fhhagenberg.sqe.model.IWrapElevator;
-import javafx.beans.property.IntegerProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sqelevator.IElevator;
 
-import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.TextMatchers;
 
 
@@ -126,17 +122,17 @@ public class TestFxAutomatedElevatorGUITests
 	public void testChangeModeButton(FxRobot robot) throws Exception
 	{							
 		Button button = (Button) stage.getScene().lookup("#1modeButton");
-		assertEquals(button.getText(), "Manual");
+		assertEquals("Manual",button.getText());
 		
 		robot.clickOn("#1modeButton");		
 		assertEquals(eOperationStatus.AUTOMATIC, elevatorCtrl.getOperationStatus());
 		
 		button = (Button) stage.getScene().lookup("#1modeButton");
-		assertEquals(button.getText(), "Automatic");			
+		assertEquals("Automatic",button.getText());			
 		
 		robot.clickOn("#1modeButton");
 		assertEquals(eOperationStatus.MANUAL, elevatorCtrl.getOperationStatus());		
-		assertEquals(button.getText(), "Manual");
+		assertEquals("Manual",button.getText());
 	}
 
 	private void wait(FxRobot robot) {
@@ -156,7 +152,7 @@ public class TestFxAutomatedElevatorGUITests
 	{		
 		robot.clickOn("#1floorButton5");
 		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(5);
-		Thread.sleep(500);
+		wait(robot);
 					
 		Mockito.verify(mockedRmElevator,Mockito.times(1)).setTarget(0, 5);
 		Mockito.verify(mockedRmElevator, Mockito.times(1)).setCommittedDirection(0, IElevator.ELEVATOR_DIRECTION_UP);
@@ -168,10 +164,8 @@ public class TestFxAutomatedElevatorGUITests
 	@Test
 	public void testEndToEndModelToGUIElevatorSpeed(FxRobot robot) throws Exception
 	{
-		//Mockito.when(mockedRmElevator.getElevatorSpeed(0)).thenReturn(44);
 		Mockito.doReturn(44).when(mockedRmElevator).getElevatorSpeed(0);
-		
-		Thread.sleep(500);
+		wait(robot);		
 		verifyThat("#1speedTxtField", TextMatchers.hasText("44 ft/s"));		
 	}
 	
@@ -179,7 +173,7 @@ public class TestFxAutomatedElevatorGUITests
 	public void testEndToEndModelToGUIElevatorWeight(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getElevatorWeight(0)).thenReturn(100);
-		Thread.sleep(500);
+		wait(robot);		
 		verifyThat("#1payloadTxtField", TextMatchers.hasText("100 lbs"));			
 	}
 
@@ -187,7 +181,7 @@ public class TestFxAutomatedElevatorGUITests
 	public void testChangeCommittedDirectionModelUpToGUI(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
-		Thread.sleep(500);
+		wait(robot);
 		Button buttonUp = (Button) stage.getScene().lookup("#1arrowup");
 		Button buttonDown = (Button) stage.getScene().lookup("#1arrowdown");
 		
@@ -199,7 +193,7 @@ public class TestFxAutomatedElevatorGUITests
 	public void testChangeCommittedDirectionModelDownToGUI(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
-		Thread.sleep(500);
+		wait(robot);
 		Button buttonUp = (Button) stage.getScene().lookup("#1arrowup");
 		Button buttonDown = (Button) stage.getScene().lookup("#1arrowdown");
 		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0", buttonUp.getStyle());
@@ -210,7 +204,7 @@ public class TestFxAutomatedElevatorGUITests
 	public void testChangeCommittedDirectionModelUncommittedToGUI(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
-		Thread.sleep(500);
+		wait(robot);
 		Button buttonUp = (Button) stage.getScene().lookup("#1arrowup");
 		Button buttonDown = (Button) stage.getScene().lookup("#1arrowdown");
 		assertEquals("-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0", buttonUp.getStyle());
