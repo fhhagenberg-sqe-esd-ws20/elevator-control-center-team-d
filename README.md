@@ -49,6 +49,19 @@ mvn clean package
 The resulting archive (`.jar` file) is in the `target` directory.
 
 
-### Test Concept
+### Test concept
 
+Generally we used unit tests and testfx tests to ensure the product quality of our product. Most of the automated tests are 
+white box tests. We used the coverage information from jacoco to look for missing test cases. We used Mockito to create 
+mocks for the modules which are used from the module under test. We also used dependency injection to test all modules.
+The written tests can be divided into the following parts:
 
+- Model tests: Unit tests to verify the functionality
+- Controller tests: Unit tests to verify the functionality
+	- Reconnection tests to test the correct beavior in a case of a remote error
+- GUI tests: Tests with the TestFx framework
+	- End-To-End tests from the GUI to the interface and in the other direction
+
+To ensure the code quality we used also the static analysis tool sonar cloud. Github actions was used to execute the tests when 
+a pull-request or a push to the master branch has been carried out. On every automated build a jacoco report was created and 
+stored as an artifact. For reviews we used GitHub pull-requests. 
