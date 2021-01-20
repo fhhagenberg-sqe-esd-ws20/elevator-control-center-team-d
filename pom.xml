@@ -5,7 +5,7 @@
 
 	<groupId>at.fhhagenberg.sqe.esd.ws20</groupId>
 	<artifactId>ecc-team-d</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,10 +72,10 @@
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.3</version>
+				<version>0.0.5</version>
 				<configuration>
 					<launcher>launcher</launcher>
-					<mainClass>at.fhhagenberg.sqe.gui.App</mainClass>
+					<mainClass>at.fhhagenberg.sqe.gui.Main</mainClass>
 				</configuration>
 			</plugin>
 		 <plugin>
@@ -102,6 +102,28 @@
 						<exclude>at/fhhagenberg/sqe/model/Dummy*</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>at.fhhagenberg.sqe.gui.Main</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

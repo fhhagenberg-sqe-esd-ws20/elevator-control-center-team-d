@@ -24,7 +24,7 @@ import sqelevator.IElevator;
 public class App extends Application {
 	
 	private final long updateDataIntervallMsec = 100;
-	public final boolean useElevatorSim = false;
+	public final boolean useElevatorSim = true;
 	
 	private IElevator controller;	
 	private IWrapElevator remoteElevator;
