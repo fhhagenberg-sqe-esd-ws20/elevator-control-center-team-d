@@ -47,7 +47,7 @@ public class TestFxAutomatedElevatorGUITests
     private Stage stage;
 	
 	@Start
-	public void start(Stage stage)throws Exception
+	void start(Stage stage)throws Exception
 	{		
 		mockedRmElevator = Mockito.mock(IWrapElevator.class);
 		Mockito.when(mockedRmElevator.getElevatorNum()).thenReturn(1);
@@ -119,7 +119,7 @@ public class TestFxAutomatedElevatorGUITests
 	
 	
 	@Test
-	public void testChangeModeButton(FxRobot robot) throws Exception
+	void testChangeModeButton(FxRobot robot) throws Exception
 	{							
 		Button button = (Button) stage.getScene().lookup("#1modeButton");
 		assertEquals("Manual",button.getText());
@@ -140,7 +140,7 @@ public class TestFxAutomatedElevatorGUITests
 	}
 	
 	@Test
-	public void testCurrentPayload(FxRobot robot) {
+	void testCurrentPayload(FxRobot robot) {
 		wait(robot);		
 			
 		verifyThat("#1currentPayloadLabel", hasText("Current Payload"));
@@ -148,7 +148,7 @@ public class TestFxAutomatedElevatorGUITests
 	}
 
 	@Test
-	public void testEndToEndGUIToModel(FxRobot robot) throws Exception
+	void testEndToEndGUIToModel(FxRobot robot) throws Exception
 	{		
 		robot.clickOn("#1floorButton5");
 		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(5);
@@ -162,7 +162,7 @@ public class TestFxAutomatedElevatorGUITests
 	}
 	
 	@Test
-	public void testEndToEndModelToGUIElevatorSpeed(FxRobot robot) throws Exception
+	void testEndToEndModelToGUIElevatorSpeed(FxRobot robot) throws Exception
 	{
 		Mockito.doReturn(44).when(mockedRmElevator).getElevatorSpeed(0);
 		wait(robot);		
@@ -170,7 +170,7 @@ public class TestFxAutomatedElevatorGUITests
 	}
 	
 	@Test
-	public void testEndToEndModelToGUIElevatorWeight(FxRobot robot) throws Exception
+	void testEndToEndModelToGUIElevatorWeight(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getElevatorWeight(0)).thenReturn(100);
 		wait(robot);		
@@ -178,7 +178,7 @@ public class TestFxAutomatedElevatorGUITests
 	}
 
 	@Test
-	public void testChangeCommittedDirectionModelUpToGUI(FxRobot robot) throws Exception
+	void testChangeCommittedDirectionModelUpToGUI(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
 		wait(robot);
@@ -190,7 +190,7 @@ public class TestFxAutomatedElevatorGUITests
 	}
 	
 	@Test
-	public void testChangeCommittedDirectionModelDownToGUI(FxRobot robot) throws Exception
+	void testChangeCommittedDirectionModelDownToGUI(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
 		wait(robot);
@@ -201,7 +201,7 @@ public class TestFxAutomatedElevatorGUITests
 		
 	}
 	@Test
-	public void testChangeCommittedDirectionModelUncommittedToGUI(FxRobot robot) throws Exception
+	void testChangeCommittedDirectionModelUncommittedToGUI(FxRobot robot) throws Exception
 	{
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 		wait(robot);
