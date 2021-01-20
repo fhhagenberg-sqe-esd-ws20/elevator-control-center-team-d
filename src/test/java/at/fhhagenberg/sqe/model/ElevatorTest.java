@@ -23,7 +23,7 @@ import sqelevator.IElevator;
  *
  */
 @ExtendWith(MockitoExtension.class)
-public class ElevatorTest {	
+class ElevatorTest {	
 	@Mock
 	private IWrapElevator mockedRmElevator;
 	
@@ -33,7 +33,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testSetInvalidElevatorNumber() throws java.rmi.RemoteException {
+	void testSetInvalidElevatorNumber() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);		
 		
 		Exception exception = assertThrows(IllegalArgumentException.class, () -> { testElevator.setElevatorNumber(4); });
@@ -43,7 +43,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetElevatorNumberSetNumberOneTime() throws java.rmi.RemoteException {
+	void testGetElevatorNumberSetNumberOneTime() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);
 		testElevator.setElevatorNumber(3);
 		
@@ -51,7 +51,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetElevatorNumberSetNumberTwoTimes() throws java.rmi.RemoteException {
+	void testGetElevatorNumberSetNumberTwoTimes() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);
 		testElevator.setElevatorNumber(3);
 		testElevator.setElevatorNumber(0);
@@ -60,7 +60,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testElevatorPosIsTargetYesThenNo() throws java.rmi.RemoteException {
+	void testElevatorPosIsTargetYesThenNo() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getElevatorPosIsTarget(2)).thenReturn(Boolean.TRUE)
@@ -73,23 +73,23 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testCommitedDirectionUpThenDown() throws java.rmi.RemoteException {
+	void testCommitedDirectionUpThenDown() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP)
 									 .thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
 		
 		testElevator.updateCommittedDirection();
-		assertEquals(IElevator.ELEVATOR_DIRECTION_UP, testElevator.CommitedDirection.getValue());
+		assertEquals(IElevator.ELEVATOR_DIRECTION_UP, testElevator.commitedDirection.getValue());
 		
 		testElevator.updateCommittedDirection();		
-		assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, testElevator.CommitedDirection.getValue());
+		assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, testElevator.commitedDirection.getValue());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getCommittedDirection(0);
 	}
 	
 	@Test
-	public void testElevatorButtonZeroFloorAndThirdFloor() throws java.rmi.RemoteException {
+	void testElevatorButtonZeroFloorAndThirdFloor() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(1);
 		Mockito.when(mockedRmElevator.getElevatorButton(1, 0)).thenReturn(Boolean.TRUE);
@@ -103,7 +103,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testDoorStatusOpenThenClosed() throws java.rmi.RemoteException {
+	void testDoorStatusOpenThenClosed() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getElevatorDoorStatus(2)).thenReturn(IElevator.ELEVATOR_DOORS_OPEN)
@@ -121,7 +121,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testDoorStatusOpeningThenClosing() throws java.rmi.RemoteException {
+	void testDoorStatusOpeningThenClosing() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getElevatorDoorStatus(2)).thenReturn(IElevator.ELEVATOR_DOORS_OPENING)
@@ -139,7 +139,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testDoorStatusInvalidState() throws java.rmi.RemoteException {
+	void testDoorStatusInvalidState() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getElevatorDoorStatus(2)).thenReturn(10);
@@ -150,22 +150,22 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testElevatorCurrentFloorZeroThenSecond() throws java.rmi.RemoteException {
+	void testElevatorCurrentFloorZeroThenSecond() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(3);
 		Mockito.when(mockedRmElevator.getElevatorFloor(3)).thenReturn(0).thenReturn(2);
 		
 		testElevator.updateElevatorFloor();
-		assertEquals(0, testElevator.ElevatorCurrFloor.getValue());
+		assertEquals(0, testElevator.elevatorCurrFloor.getValue());
 		
 		testElevator.updateElevatorFloor();
-		assertEquals(2, testElevator.ElevatorCurrFloor.getValue());
+		assertEquals(2, testElevator.elevatorCurrFloor.getValue());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getElevatorFloor(3);
 	}
 	
 	@Test
-	public void testElevatorSpeedWithTwoDifferentSpeedValues() throws java.rmi.RemoteException {
+	void testElevatorSpeedWithTwoDifferentSpeedValues() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getElevatorSpeed(2)).thenReturn(0).thenReturn(12);
@@ -180,7 +180,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testElevatorWeightWithTwoDifferentWeightValues() throws java.rmi.RemoteException {
+	void testElevatorWeightWithTwoDifferentWeightValues() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getElevatorWeight(2)).thenReturn(210).thenReturn(102);
@@ -195,7 +195,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testServiceFloorNoThenYes() throws java.rmi.RemoteException {
+	void testServiceFloorNoThenYes() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(1);
 		Mockito.when(mockedRmElevator.getServicesFloors(1, 2)).thenReturn(Boolean.FALSE);
@@ -209,22 +209,22 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testElevatorCurrentTargetWithTwoDifferentTargets() throws java.rmi.RemoteException {
+	void testElevatorCurrentTargetWithTwoDifferentTargets() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);				
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getTarget(2)).thenReturn(0).thenReturn(5);
 		
 		testElevator.updateTarget();
-		assertEquals(0, testElevator.ElevatorCurrTarget.getValue());
+		assertEquals(0, testElevator.elevatorCurrTarget.getValue());
 		
 		testElevator.updateTarget();
-		assertEquals(5, testElevator.ElevatorCurrTarget.getValue());
+		assertEquals(5, testElevator.elevatorCurrTarget.getValue());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getTarget(2);
 	}
 	
 	@Test
-	public void testClockTickWithTwoDifferentValues() throws java.rmi.RemoteException {
+	void testClockTickWithTwoDifferentValues() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(2);
 		Mockito.when(mockedRmElevator.getClockTick()).thenReturn(1120025L).thenReturn(1120156L);
@@ -236,7 +236,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testSetCommitedDirectionUpThenUncommited() throws java.rmi.RemoteException {
+	void testSetCommitedDirectionUpThenUncommited() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(2);
 		
@@ -248,7 +248,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testSetTargetWithTwoDifferentTargets() throws java.rmi.RemoteException {
+	void testSetTargetWithTwoDifferentTargets() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		
@@ -260,7 +260,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetElevatorWeightFromTwoDifferentElevators() throws java.rmi.RemoteException {
+	void testGetElevatorWeightFromTwoDifferentElevators() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getElevatorWeight(0)).thenReturn(75);
@@ -278,7 +278,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetterCommitedDirection() throws java.rmi.RemoteException {
+	void testGetterCommitedDirection() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
@@ -291,7 +291,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetterDoorStatus() throws java.rmi.RemoteException {
+	void testGetterDoorStatus() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
@@ -305,7 +305,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetterElevatorCurrFloor() throws java.rmi.RemoteException {
+	void testGetterElevatorCurrFloor() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getElevatorFloor(0)).thenReturn(5);
@@ -318,7 +318,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetterElevatorSpeed() throws java.rmi.RemoteException {
+	void testGetterElevatorSpeed() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getElevatorSpeed(0)).thenReturn(14);
@@ -332,7 +332,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetterElevatorWeight() throws java.rmi.RemoteException {
+	void testGetterElevatorWeight() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getElevatorWeight(0)).thenReturn(412);
@@ -346,7 +346,7 @@ public class ElevatorTest {
 	}
 	
 	@Test
-	public void testGetterElevatorCurrTarget() throws java.rmi.RemoteException {
+	void testGetterElevatorCurrTarget() throws java.rmi.RemoteException {
 		Elevator testElevator = new Elevator(mockedRmElevator);	
 		testElevator.setElevatorNumber(0);
 		Mockito.when(mockedRmElevator.getTarget(0)).thenReturn(2);

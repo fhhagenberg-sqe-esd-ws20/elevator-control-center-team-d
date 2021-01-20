@@ -102,13 +102,11 @@ public class ElevatorView extends GridPane {
 
 		int positionInGrid = 2;
 
-		elevatorModel.ElevatorButtonList.addListener(new ListChangeListener<Boolean>() {
+		elevatorModel.elevatorButtonList.addListener(new ListChangeListener<Boolean>() {
 			@Override
 			public void onChanged(Change<? extends Boolean> c) {
-				// TODO Auto-generated method stub
-
-				for (int i = 0; i < elevatorModel.ElevatorButtonList.size(); i++) {
-					if (elevatorModel.ElevatorButtonList.get(i)) {
+				for (int i = 0; i < elevatorModel.elevatorButtonList.size(); i++) {
+					if (elevatorModel.elevatorButtonList.get(i)) {
 						requestButtonList.get(i).setText("stop");
 					} else {
 						requestButtonList.get(i).setText("");
@@ -143,7 +141,7 @@ public class ElevatorView extends GridPane {
 			Button setButton = new Button("set");
 			Button requestButton = new Button("");
 
-			if (elevatorModel.ServicesFloorList.get(i)) {
+			if (elevatorModel.servicesFloorList.get(i)) {
 				floorButton.setStyle(FLOORBUTTONNOTSELECTEDSTYLE);
 			} else {
 				floorButton.setStyle(floorButtonNotServiced);
@@ -363,11 +361,11 @@ public class ElevatorView extends GridPane {
 					setPrefHeight(floorButtonList.get(0).getHeight() - 0.3);
 				} else {
 					setPrefHeight(floorButtonList.get(0).getHeight() - 0.3);
-					if (floor.FloorButtonDown.getValue() && floor.FloorButtonUp.getValue()) {
+					if (floor.floorButtonDown.getValue() && floor.floorButtonUp.getValue()) {
 						setText("up/down");
-					} else if (floor.FloorButtonDown.getValue()) {
+					} else if (floor.floorButtonDown.getValue()) {
 						setText("down");
-					} else if (floor.FloorButtonUp.getValue()) {
+					} else if (floor.floorButtonUp.getValue()) {
 						setText("up");
 					} else {
 						setText(null);

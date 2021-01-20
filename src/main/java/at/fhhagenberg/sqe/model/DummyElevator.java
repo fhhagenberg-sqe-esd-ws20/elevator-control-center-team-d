@@ -150,18 +150,9 @@ public class DummyElevator implements IWrapElevator {
 		
 		return false;
 	}
-	
-	private Boolean testTarget = false;
 
 	@Override
-	public int getTarget(int elevatorNumber) throws RemoteException {
-//		if (testTarget) {
-//			testTarget = false;
-//			return 1;
-//		}else {
-//			testTarget = true;
-//			return 5;
-//		}		
+	public int getTarget(int elevatorNumber) throws RemoteException {	
 		return 5;
 	}
 

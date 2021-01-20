@@ -18,58 +18,56 @@ import javafx.collections.ObservableList;
  */
 public class AlarmManager implements IAlarmManager {
 
-	public ObservableList<String> ErrorList = FXCollections.observableArrayList();
-	public ObservableList<String> WarningList = FXCollections.observableArrayList();
-	public BooleanProperty RemoteConnError = new SimpleBooleanProperty();
+	public ObservableList<String> errorList = FXCollections.observableArrayList();
+	public ObservableList<String> warningList = FXCollections.observableArrayList();
+	public BooleanProperty remoteConnError = new SimpleBooleanProperty();
 	
 	public AlarmManager() {
-		RemoteConnError.set(false);
+		remoteConnError.set(false);
 	}
 	
 	@Override
 	public void setRemoteConnectionError() {
-		RemoteConnError.set(true);
+		remoteConnError.set(true);
 	}
 	
 	@Override
 	public void resetRemoteConnectionError() {
-		RemoteConnError.set(false);
+		remoteConnError.set(false);
 	}
 	
 	@Override
 	public BooleanProperty getPropRemoteConnError() {
-		return RemoteConnError;
+		return remoteConnError;
 	}
 	
 	@Override
 	public void addErrorMessage(String errorMessage) {
-		ErrorList.add(errorMessage);
-		//System.out.print("Error: " + errorMessage + "\n");
+		errorList.add(errorMessage);
 	}
 
 	@Override
 	public void addWarningMessage(String warningMessage) {
-		WarningList.add(warningMessage);
-		//System.out.print("Warning: " + warningMessage + "\n");
+		warningList.add(warningMessage);
 	}
 
 	@Override
 	public void clearErrorMessages() {
-		ErrorList.clear();
+		errorList.clear();
 	}
 
 	@Override
 	public void clearWarningMessages() {
-		WarningList.clear();
+		warningList.clear();
 	}
 	
 	@Override
 	public ObservableList<String> getPropErrorList() {
-		return ErrorList;
+		return errorList;
 	}
 	
 	@Override
 	public ObservableList<String> getPropWarningList() {
-		return WarningList;
+		return warningList;
 	}
 }

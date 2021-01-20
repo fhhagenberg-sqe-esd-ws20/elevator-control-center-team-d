@@ -28,7 +28,7 @@ import sqelevator.IElevator;
  *
  */
 @ExtendWith(MockitoExtension.class)
-public class ElevatorControllerTest {
+class ElevatorControllerTest {
 	@Mock
 	private IWrapElevator mockedRmElevator;
 	
@@ -49,7 +49,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testInitializeUsedControllerObjects() throws java.rmi.RemoteException {	
+	void testInitializeUsedControllerObjects() throws java.rmi.RemoteException {	
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
 		assertNotNull(testElevatorCtrl.buildingModel);
@@ -58,31 +58,31 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testInitializeElevatorButtonListValuesAndSize() throws java.rmi.RemoteException {
+	void testInitializeElevatorButtonListValuesAndSize() throws java.rmi.RemoteException {
 		Mockito.when(mockedBuilding.getFloorNumber()).thenReturn(2);
 		Mockito.when(mockedElevator.getElevatorButton(0)).thenReturn(true);
 		Mockito.when(mockedElevator.getElevatorButton(1)).thenReturn(false);
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
-		assertTrue(testElevatorCtrl.ElevatorButtonList.get(0));
-		assertFalse(testElevatorCtrl.ElevatorButtonList.get(1));
-		assertEquals(2, testElevatorCtrl.ElevatorButtonList.size());
+		assertTrue(testElevatorCtrl.elevatorButtonList.get(0));
+		assertFalse(testElevatorCtrl.elevatorButtonList.get(1));
+		assertEquals(2, testElevatorCtrl.elevatorButtonList.size());
 	}
 	
 	@Test
-	public void testInitializeServiceFloorListValuesAndSize() throws java.rmi.RemoteException {
+	void testInitializeServiceFloorListValuesAndSize() throws java.rmi.RemoteException {
 		Mockito.when(mockedBuilding.getFloorNumber()).thenReturn(2);
 		Mockito.when(mockedElevator.getServicesFloors(0)).thenReturn(false);
 		Mockito.when(mockedElevator.getServicesFloors(1)).thenReturn(true);
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
-		assertFalse(testElevatorCtrl.ServicesFloorList.get(0));
-		assertTrue(testElevatorCtrl.ServicesFloorList.get(1));
-		assertEquals(2, testElevatorCtrl.ServicesFloorList.size());
+		assertFalse(testElevatorCtrl.servicesFloorList.get(0));
+		assertTrue(testElevatorCtrl.servicesFloorList.get(1));
+		assertEquals(2, testElevatorCtrl.servicesFloorList.size());
 	}
 	
 	@Test
-	public void testSetCurrentViewElevatorNumberZero() throws java.rmi.RemoteException {
+	void testSetCurrentViewElevatorNumberZero() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
 		testElevatorCtrl.setCurrViewElevatorNumber(0);
@@ -91,7 +91,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testRemoteErrorSetCurrentElevatorNumber() throws java.rmi.RemoteException {
+	void testRemoteErrorSetCurrentElevatorNumber() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.doThrow(new java.rmi.RemoteException("Communication error")).when(mockedElevator).setElevatorNumber(0);
 		
@@ -101,7 +101,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testIllegalArgumentSetCurrentElevatorNumber() throws java.rmi.RemoteException {
+	void testIllegalArgumentSetCurrentElevatorNumber() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.doThrow(new IllegalArgumentException("Elevator number invalid")).when(mockedElevator).setElevatorNumber(1);
 		
@@ -111,7 +111,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testTimerRunMethodWithDeactivatedUpdate() throws java.rmi.RemoteException {
+	void testTimerRunMethodWithDeactivatedUpdate() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		testElevatorCtrl.setUpdateModelData(false);
 		
@@ -121,7 +121,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testUpdateModelValuesCheckUpdateElevatorModel() throws java.rmi.RemoteException {
+	void testUpdateModelValuesCheckUpdateElevatorModel() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);	
 		
 		testElevatorCtrl.updateModelValues();
@@ -135,29 +135,29 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testUpdateModelValuesCheckUpdateElevatorButtonList() throws java.rmi.RemoteException {
+	void testUpdateModelValuesCheckUpdateElevatorButtonList() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getElevatorButton(0)).thenReturn(true);
 		
 		testElevatorCtrl.updateModelValues();
 		
 		Mockito.verify(mockedElevator, Mockito.times(2)).getElevatorButton(0);
-		assertEquals(true, testElevatorCtrl.ElevatorButtonList.get(0)); 
+		assertTrue(testElevatorCtrl.elevatorButtonList.get(0)); 
 	}
 	
 	@Test
-	public void testUpdateModelValuesCheckUpdateServicesFloorList() throws java.rmi.RemoteException {
+	void testUpdateModelValuesCheckUpdateServicesFloorList() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getServicesFloors(0)).thenReturn(false);
 		
 		testElevatorCtrl.updateModelValues();
 		
 		Mockito.verify(mockedElevator, Mockito.times(2)).getServicesFloors(0);
-		assertEquals(false, testElevatorCtrl.ServicesFloorList.get(0)); 
+		assertFalse(testElevatorCtrl.servicesFloorList.get(0)); 
 	}
 	
 	@Test
-	public void testUpdateModelValuesCheckUpdateFloorButtons() throws java.rmi.RemoteException {
+	void testUpdateModelValuesCheckUpdateFloorButtons() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedRmElevator.getFloorButtonDown(0)).thenReturn(false);
 		Mockito.when(mockedRmElevator.getFloorButtonUp(0)).thenReturn(true);
@@ -166,12 +166,12 @@ public class ElevatorControllerTest {
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getFloorButtonDown(0);
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getFloorButtonUp(0);
-		assertFalse(testElevatorCtrl.buildingModel.getObservableFloorList().get(0).FloorButtonDown.getValue());
-		assertTrue(testElevatorCtrl.buildingModel.getObservableFloorList().get(0).FloorButtonUp.getValue());
+		assertFalse(testElevatorCtrl.buildingModel.getObservableFloorList().get(0).floorButtonDown.getValue());
+		assertTrue(testElevatorCtrl.buildingModel.getObservableFloorList().get(0).floorButtonUp.getValue());
 	}
 	
 	@Test
-	public void testUpdateModelValuesErrorInClockTickThreeTimes() throws java.rmi.RemoteException {
+	void testUpdateModelValuesErrorInClockTickThreeTimes() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getClockTick()).thenReturn(120001L).thenReturn(120005L).thenReturn(120001L).thenReturn(120005L).thenReturn(120001L).thenReturn(120005L);
 		
@@ -182,7 +182,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testUpdateModelValuesErrorRemoteException() throws java.rmi.RemoteException {
+	void testUpdateModelValuesErrorRemoteException() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.doThrow(new java.rmi.RemoteException("Communication error")).when(mockedElevator).updateElevatorSpeed();
 		
@@ -192,14 +192,14 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testInitUpdateModelDataIsActivated() throws java.rmi.RemoteException {
+	void testInitUpdateModelDataIsActivated() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
 		assertTrue(testElevatorCtrl.isUpdateModelData());
 	}
 	
 	@Test
-	public void testSetAndGetUpdateModelDataFromTrueToFalse() throws java.rmi.RemoteException {
+	void testSetAndGetUpdateModelDataFromTrueToFalse() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
 		assertTrue(testElevatorCtrl.isUpdateModelData());
@@ -210,14 +210,14 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testInitOperationStatusManual() throws java.rmi.RemoteException {
+	void testInitOperationStatusManual() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
 		assertEquals(eOperationStatus.MANUAL, testElevatorCtrl.getOperationStatus());
 	}
 	
 	@Test
-	public void testSetAndGetOperationStatusFromManualToAutomaticAndBack() throws java.rmi.RemoteException {
+	void testSetAndGetOperationStatusFromManualToAutomaticAndBack() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
 		assertEquals(eOperationStatus.MANUAL, testElevatorCtrl.getOperationStatus());
@@ -232,7 +232,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetFromAutomaticMode() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetFromAutomaticMode() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		testElevatorCtrl.switchOperationStatus();
 		
@@ -242,7 +242,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetWhenElevatorPosIsNotTarget() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetWhenElevatorPosIsNotTarget() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(false);
 		
@@ -252,7 +252,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetWhenElevatorSpeedIsNotZero() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetWhenElevatorSpeedIsNotZero() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
 		Mockito.when(mockedElevator.getIElevatorSpeed()).thenReturn(15);
@@ -263,7 +263,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetWhenDoorStatusIsNotOpen() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetWhenDoorStatusIsNotOpen() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
 		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
@@ -275,7 +275,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetWhenRemoteErrorOccurs() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetWhenRemoteErrorOccurs() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.doThrow(new java.rmi.RemoteException("Communication error")).when(mockedElevator).getElevatorPosIsTarget();
 		
@@ -285,7 +285,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetWhenNextTargetIsEqualToElevatorCurrentFloor() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetWhenNextTargetIsEqualToElevatorCurrentFloor() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
 		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
@@ -298,7 +298,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetWhenCommitedDirectionIsUp() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetWhenCommitedDirectionIsUp() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
 		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
@@ -312,7 +312,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetNextElevatorTargetWhenCommitedDirectionIsDown() throws java.rmi.RemoteException {
+	void testSetNextElevatorTargetWhenCommitedDirectionIsDown() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
 		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
@@ -326,7 +326,7 @@ public class ElevatorControllerTest {
 	}
 	
 	@Test
-	public void testSetAndGetUseElevatorSimFirstTrueThenFalse() throws java.rmi.RemoteException {
+	void testSetAndGetUseElevatorSimFirstTrueThenFalse() throws java.rmi.RemoteException {
 		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
 		
 		testElevatorCtrl.setUseElevatorSim(true);
@@ -334,5 +334,29 @@ public class ElevatorControllerTest {
 		
 		testElevatorCtrl.setUseElevatorSim(false);
 		assertFalse(testElevatorCtrl.isUseElevatorSim());
+	}
+	
+	@Test
+	void testUpdateDoorStatusUncommitedWhenDoorStatusIsUncommited() throws java.rmi.RemoteException {
+		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
+		Mockito.when(mockedElevator.getCommitedDirection()).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
+		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
+		
+		testElevatorCtrl.updateModelValues();
+		
+		Mockito.verify(mockedElevator, Mockito.never()).setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+	}
+	
+	@Test
+	void testUpdateDoorStatusUncommitedWhenAbleToSetCommitedDirectionToUncommited() throws java.rmi.RemoteException {
+		ElevatorController testElevatorCtrl = new ElevatorController(mockedElevator, mockedBuilding, mockedAlarmManager);
+		Mockito.when(mockedElevator.getCommitedDirection()).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
+		Mockito.when(mockedElevator.getElevatorPosIsTarget()).thenReturn(true);
+		Mockito.when(mockedElevator.getIDoorStatus()).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
+		
+		testElevatorCtrl.updateModelValues();
+		
+		Mockito.verify(mockedElevator, Mockito.times(1)).setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 	}
 }

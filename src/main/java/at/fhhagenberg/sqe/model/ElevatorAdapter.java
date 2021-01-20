@@ -22,13 +22,8 @@ public class ElevatorAdapter implements IWrapElevator {
 	}
 
 	@Override
-	public boolean getElevatorPosIsTarget(int elevatorNumber) throws RemoteException {
-		
-		if (mRemoteElevator.getElevatorFloor(elevatorNumber) == mRemoteElevator.getTarget(elevatorNumber)) {
-			return true;
-		}
-		
-		return false;
+	public boolean getElevatorPosIsTarget(int elevatorNumber) throws RemoteException {		
+		return mRemoteElevator.getElevatorFloor(elevatorNumber) == mRemoteElevator.getTarget(elevatorNumber);
 	}
 
 	@Override

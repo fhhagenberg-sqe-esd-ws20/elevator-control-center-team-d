@@ -29,7 +29,7 @@ import sqelevator.IElevator;
  *
  */
 @ExtendWith(MockitoExtension.class)
-public class ReconnectRemoteErrorTest {
+class ReconnectRemoteErrorTest {
 	@Mock
 	private IAlarmManager mockedAlarmManager;
 	
@@ -49,7 +49,7 @@ public class ReconnectRemoteErrorTest {
 	}
 	
 	@Test
-	public void testReconnectOfRMIAfterRemoteException() throws Exception {
+	void testReconnectOfRMIAfterRemoteException() throws Exception {
 		// AlarmManager property for remote error to activate the change listener which activates the reconnect
 		BooleanProperty testRemoteConnectionErrorFlag = new SimpleBooleanProperty(false);
 		Mockito.when(mockedAlarmManager.getPropRemoteConnError()).thenReturn(testRemoteConnectionErrorFlag);
@@ -72,7 +72,7 @@ public class ReconnectRemoteErrorTest {
 	}
 	
 	@Test
-	public void testRemoteConnectionListenerWithChangeFromSetErrorToResetedError() throws Exception {
+	void testRemoteConnectionListenerWithChangeFromSetErrorToResetedError() throws Exception {
 		// AlarmManager property for remote error to activate the change listener which activates the reconnect
 		BooleanProperty testRemoteConnectionErrorFlag = new SimpleBooleanProperty(true);
 		Mockito.when(mockedAlarmManager.getPropRemoteConnError()).thenReturn(testRemoteConnectionErrorFlag);

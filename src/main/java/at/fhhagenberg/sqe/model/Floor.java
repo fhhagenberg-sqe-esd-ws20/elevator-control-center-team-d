@@ -20,8 +20,8 @@ public class Floor {
 	private int mFloorNumber;
 	
 	// Model properties for GUI binding
-	public BooleanProperty FloorButtonDown = new SimpleBooleanProperty();
-	public BooleanProperty FloorButtonUp = new SimpleBooleanProperty();
+	public BooleanProperty floorButtonDown = new SimpleBooleanProperty();
+	public BooleanProperty floorButtonUp = new SimpleBooleanProperty();
 	
 	
 	public Floor(IWrapElevator remoteElevator, int floorNumber) {
@@ -38,19 +38,19 @@ public class Floor {
 	}
 	
 	public void updateFloorButtonDown() throws java.rmi.RemoteException {
-		FloorButtonDown.setValue(mRemoteElevator.getFloorButtonDown(mFloorNumber));
+		floorButtonDown.setValue(mRemoteElevator.getFloorButtonDown(mFloorNumber));
 	}
 	
 	public void updateFloorButtonUp() throws java.rmi.RemoteException {
-		FloorButtonUp.setValue(mRemoteElevator.getFloorButtonUp(mFloorNumber));
+		floorButtonUp.setValue(mRemoteElevator.getFloorButtonUp(mFloorNumber));
 	}
 	
 	public BooleanProperty getFloorButtonDownProperty() {
-		return FloorButtonDown;
+		return floorButtonDown;
 	}
 	
 	public BooleanProperty getFloorButtonUpProperty() {
-		return FloorButtonUp;
+		return floorButtonUp;
 	}
 	
 	public static Callback<Floor, Observable[]> extractor() {

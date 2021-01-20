@@ -18,49 +18,49 @@ import org.mockito.junit.jupiter.MockitoExtension;
  *
  */
 @ExtendWith(MockitoExtension.class)
-public class FloorTest {
+class FloorTest {
 	@Mock
 	private IWrapElevator mockedRmElevator;
 	
 	@Test
-	public void testSetAndGetFloorNumber() {
+	void testSetAndGetFloorNumber() {
 		Floor testFloor = new Floor(mockedRmElevator, 1);
 		
 		assertEquals(1, testFloor.getFloorNumber());
 	}
 	
 	@Test
-	public void testFloorButtonDownSetThenNotSet() throws java.rmi.RemoteException {
+	void testFloorButtonDownSetThenNotSet() throws java.rmi.RemoteException {
 		Floor testFloor = new Floor(mockedRmElevator, 2);
 		Mockito.when(mockedRmElevator.getFloorButtonDown(2)).thenReturn(Boolean.TRUE)
 		                             .thenReturn(Boolean.FALSE);
 		
 		testFloor.updateFloorButtonDown();
-		assertTrue(testFloor.FloorButtonDown.getValue());
+		assertTrue(testFloor.floorButtonDown.getValue());
 		
 		testFloor.updateFloorButtonDown();
-		assertFalse(testFloor.FloorButtonDown.getValue());
+		assertFalse(testFloor.floorButtonDown.getValue());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getFloorButtonDown(2);
 	}
 	
 	@Test
-	public void testFloorButtonUpSetThenNotSet() throws java.rmi.RemoteException {
+	void testFloorButtonUpSetThenNotSet() throws java.rmi.RemoteException {
 		Floor testFloor = new Floor(mockedRmElevator, 0);
 		Mockito.when(mockedRmElevator.getFloorButtonUp(0)).thenReturn(Boolean.TRUE)
 		                             .thenReturn(Boolean.FALSE);
 		
 		testFloor.updateFloorButtonUp();
-		assertTrue(testFloor.FloorButtonUp.getValue());
+		assertTrue(testFloor.floorButtonUp.getValue());
 		
 		testFloor.updateFloorButtonUp();
-		assertFalse(testFloor.FloorButtonUp.getValue());
+		assertFalse(testFloor.floorButtonUp.getValue());
 		
 		Mockito.verify(mockedRmElevator, Mockito.times(2)).getFloorButtonUp(0);
 	}
 	
 	@Test
-	public void testGetPropertyFloorButtonDown() throws java.rmi.RemoteException {
+	void testGetPropertyFloorButtonDown() throws java.rmi.RemoteException {
 		Floor testFloor = new Floor(mockedRmElevator, 0);
 		Mockito.when(mockedRmElevator.getFloorButtonDown(0)).thenReturn(Boolean.TRUE);
 		testFloor.updateFloorButtonDown();
@@ -69,7 +69,7 @@ public class FloorTest {
 	}
 	
 	@Test
-	public void testGetPropertyFloorButtonUp() throws java.rmi.RemoteException {
+	void testGetPropertyFloorButtonUp() throws java.rmi.RemoteException {
 		Floor testFloor = new Floor(mockedRmElevator, 1);
 		Mockito.when(mockedRmElevator.getFloorButtonUp(1)).thenReturn(Boolean.FALSE);
 		testFloor.updateFloorButtonUp();

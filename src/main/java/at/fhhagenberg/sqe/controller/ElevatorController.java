@@ -27,14 +27,14 @@ import sqelevator.IElevator;
  */
 public class ElevatorController extends TimerTask {
 
-	static public final String remoteAddress = "rmi://localhost/ElevatorSim";
+	public static final String RemoteAddress = "rmi://localhost/ElevatorSim";
 	
 	private boolean useElevatorSim = false;
 	private boolean updateModelData = false;
 
 	public enum eOperationStatus {
 		MANUAL, AUTOMATIC
-	};
+	}
 
 	private eOperationStatus operationStatus;
 
@@ -43,8 +43,8 @@ public class ElevatorController extends TimerTask {
 	public IAlarmManager ctrlAlarmManager;
 
 	// Properties for GUI binding
-	public ObservableList<Boolean> ElevatorButtonList = FXCollections.observableArrayList();
-	public ObservableList<Boolean> ServicesFloorList = FXCollections.observableArrayList();
+	public ObservableList<Boolean> elevatorButtonList = FXCollections.observableArrayList();
+	public ObservableList<Boolean> servicesFloorList = FXCollections.observableArrayList();
 
 	public ElevatorController(IModelElevator modelElevator, IModelBuilding modelBuilding, IAlarmManager alarmManager) {
 		buildingModel = modelBuilding;
@@ -61,8 +61,8 @@ public class ElevatorController extends TimerTask {
 
 	private void initStatusLists() {
 		for (int i = 0; i < buildingModel.getFloorNumber(); i++) {
-			ElevatorButtonList.add(Boolean.FALSE);
-			ServicesFloorList.add(Boolean.TRUE);
+			elevatorButtonList.add(Boolean.FALSE);
+			servicesFloorList.add(Boolean.TRUE);
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class ElevatorController extends TimerTask {
 					ctrlAlarmManager.resetRemoteConnectionError();
 					setUpdateModelData(true);
 				}
-			};
+			}
 		});
 	}
 	
@@ -93,7 +93,7 @@ public class ElevatorController extends TimerTask {
 		if (useElevatorSim) {
 			IElevator controller;			
 			try {
-				controller = (IElevator)Naming.lookup(ElevatorController.remoteAddress);
+				controller = (IElevator)Naming.lookup(ElevatorController.RemoteAddress);
 			} catch (NotBoundException e) {
 				ctrlAlarmManager.addErrorMessage("Connection binding error (reconnect to elevator): " + e.getMessage());
 				return false;
@@ -167,14 +167,14 @@ public class ElevatorController extends TimerTask {
 	}
 
 	private void updateElevatorButtonList() throws RemoteException {
-		for (int i = 0; i < ElevatorButtonList.size(); i++) {
-			ElevatorButtonList.set(i, elevatorModel.getElevatorButton(i));
+		for (int i = 0; i < elevatorButtonList.size(); i++) {
+			elevatorButtonList.set(i, elevatorModel.getElevatorButton(i));
 		}
 	}
 
 	private void updateServicesFloorList() throws RemoteException {
-		for (int i = 0; i < ServicesFloorList.size(); i++) {
-			ServicesFloorList.set(i, elevatorModel.getServicesFloors(i));
+		for (int i = 0; i < servicesFloorList.size(); i++) {
+			servicesFloorList.set(i, elevatorModel.getServicesFloors(i));
 		}
 	}
 
@@ -196,7 +196,7 @@ public class ElevatorController extends TimerTask {
 	
 	private void updateDoorStatusUncommited() throws RemoteException {
 		if (elevatorModel.getElevatorPosIsTarget() && elevatorModel.getIDoorStatus() == IElevator.ELEVATOR_DOORS_OPEN &&
-				elevatorModel.getIDoorStatus() != IElevator.ELEVATOR_DIRECTION_UNCOMMITTED) {
+				elevatorModel.getCommitedDirection() != IElevator.ELEVATOR_DIRECTION_UNCOMMITTED) {
 			elevatorModel.setCommittedDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
 		}
 	}
@@ -218,10 +218,10 @@ public class ElevatorController extends TimerTask {
 	 */
 	public void switchOperationStatus() {
 		if (operationStatus.equals(eOperationStatus.MANUAL)) {
-			// TODO: start automatic control -> run AutomaticHandler
+			// Start automatic control -> run AutomaticHandler
 			operationStatus = eOperationStatus.AUTOMATIC;
 		} else {
-			// TODO: stop automatic control -> stop AutomaticHandler
+			// Stop automatic control -> stop AutomaticHandler
 			operationStatus = eOperationStatus.MANUAL;
 		}
 	}

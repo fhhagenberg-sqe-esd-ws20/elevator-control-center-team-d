@@ -24,7 +24,7 @@ import sqelevator.IElevator;
 public class App extends Application {
 	
 	private final long updateDataIntervallMsec = 100;
-	public final boolean useElevatorSim = false;
+	public final boolean useElevatorSim = true;
 	
 	private IElevator controller;	
 	private IWrapElevator remoteElevator;
@@ -51,7 +51,7 @@ public class App extends Application {
 	private boolean connectToElevator() {
 		if (useElevatorSim) {
 			try {
-				controller = (IElevator)Naming.lookup(ElevatorController.remoteAddress);
+				controller = (IElevator)Naming.lookup(ElevatorController.RemoteAddress);
 			} catch (NotBoundException e) {
 				showConnectionAlert("Connection binding error!" ,e.getMessage());
 				return false;
