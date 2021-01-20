@@ -88,6 +88,8 @@ public class ElevatorView extends GridPane {
 	private final String directionActiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FF0000; -fx-stroke-width: 1; -fx-background-radius: 0";
 	private final String directionInactiveStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #FFFFFF; -fx-stroke-width: 1; -fx-background-radius: 0";
 
+	private final String statusButtonStyle = "-fx-border-width: 1; -fx-border-style: solid; -fx-background-color: #90ee90; -fx-stroke-width: 1; -fx-pref-width: "
+			+ ((LabelSpacing*8)+8) + "; -fx-background-radius: 0";
 	private int idNumber;
 
 	EventHandler<ActionEvent> switchModeHandler = new EventHandler<ActionEvent>() {
@@ -225,6 +227,7 @@ public class ElevatorView extends GridPane {
 		modeVbox.setAlignment(Pos.BASELINE_CENTER);
 
 		statusButton = new Button("Status");
+		statusButton.setStyle(statusButtonStyle);
 		VBox statusVbox = new VBox(statusButton);
 		statusVbox.setAlignment(Pos.BASELINE_CENTER);
 
@@ -238,7 +241,7 @@ public class ElevatorView extends GridPane {
 
 		GridPane.setFillWidth(modeButton, true);
 		layoutGrid.add(modeButton, 0, 0);
-		layoutGrid.add(statusButton, 1, 0);
+		layoutGrid.add(statusVbox, 1, 0);
 				
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
