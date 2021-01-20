@@ -21,12 +21,12 @@ public class Elevator implements IModelElevator {
 	private IWrapElevator mRemoteElevator;	
 	
 	// Model properties for GUI binding
-	public IntegerProperty CommitedDirection = new SimpleIntegerProperty();
-	public StringProperty DoorStatus = new SimpleStringProperty();
-	public IntegerProperty ElevatorCurrFloor = new SimpleIntegerProperty();
-	public StringProperty ElevatorSpeed = new SimpleStringProperty();
-	public StringProperty ElevatorWeight = new SimpleStringProperty();
-	public IntegerProperty ElevatorCurrTarget = new SimpleIntegerProperty();
+	public IntegerProperty commitedDirection = new SimpleIntegerProperty();
+	public StringProperty doorStatus = new SimpleStringProperty();
+	public IntegerProperty elevatorCurrFloor = new SimpleIntegerProperty();
+	public StringProperty elevatorSpeed = new SimpleStringProperty();
+	public StringProperty elevatorWeight = new SimpleStringProperty();
+	public IntegerProperty elevatorCurrTarget = new SimpleIntegerProperty();
 	
 	// Save integers for string properties
 	private int iDoorStatus;
@@ -65,7 +65,7 @@ public class Elevator implements IModelElevator {
 	
 	@Override
 	public void updateCommittedDirection() throws java.rmi.RemoteException {
-		CommitedDirection.setValue(mRemoteElevator.getCommittedDirection(mElevatorNumber));
+		commitedDirection.setValue(mRemoteElevator.getCommittedDirection(mElevatorNumber));
 	}
 	
 	@Override
@@ -78,33 +78,33 @@ public class Elevator implements IModelElevator {
 		iDoorStatus = mRemoteElevator.getElevatorDoorStatus(mElevatorNumber);
 		
 		if (iDoorStatus == IElevator.ELEVATOR_DOORS_CLOSED) {
-			DoorStatus.setValue("closed");
+			doorStatus.setValue("closed");
 		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_OPEN) {
-			DoorStatus.setValue("open");
+			doorStatus.setValue("open");
 		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_OPENING) {
-			DoorStatus.setValue("opening");
+			doorStatus.setValue("opening");
 		} else if (iDoorStatus == IElevator.ELEVATOR_DOORS_CLOSING) {
-			DoorStatus.setValue("closing");
+			doorStatus.setValue("closing");
 		} else {
-			DoorStatus.setValue("undefined");
+			doorStatus.setValue("undefined");
 		}
 	}
 	
 	@Override
 	public void updateElevatorFloor() throws java.rmi.RemoteException {
-		ElevatorCurrFloor.setValue(mRemoteElevator.getElevatorFloor(mElevatorNumber));
+		elevatorCurrFloor.setValue(mRemoteElevator.getElevatorFloor(mElevatorNumber));
 	}
 	
 	@Override
 	public void updateElevatorSpeed() throws java.rmi.RemoteException {	
 		iElevatorSpeed = mRemoteElevator.getElevatorSpeed(mElevatorNumber);
-		ElevatorSpeed.setValue(String.valueOf(iElevatorSpeed) + " ft/s");
+		elevatorSpeed.setValue(String.valueOf(iElevatorSpeed) + " ft/s");
 	}
 	
 	@Override
 	public void updateElevatorWeight() throws java.rmi.RemoteException {
 		iElevatorWeight = mRemoteElevator.getElevatorWeight(mElevatorNumber);
-		ElevatorWeight.setValue(String.valueOf(iElevatorWeight) + " lbs");
+		elevatorWeight.setValue(String.valueOf(iElevatorWeight) + " lbs");
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class Elevator implements IModelElevator {
 	
 	@Override
 	public void updateTarget() throws java.rmi.RemoteException {
-		ElevatorCurrTarget.setValue(mRemoteElevator.getTarget(mElevatorNumber));
+		elevatorCurrTarget.setValue(mRemoteElevator.getTarget(mElevatorNumber));
 	}
 	
 	@Override
@@ -134,62 +134,62 @@ public class Elevator implements IModelElevator {
 	
 	@Override
 	public IntegerProperty getPropCommitedDirection() {
-		return CommitedDirection;
+		return commitedDirection;
 	}
 	
 	@Override
 	public StringProperty getPropDoorStatus() {
-		return DoorStatus;
+		return doorStatus;
 	}
 	
 	@Override
 	public IntegerProperty getPropElevatorCurrFloor() {
-		return ElevatorCurrFloor;
+		return elevatorCurrFloor;
 	}
 	
 	@Override
 	public StringProperty getPropElevatorSpeed() {
-		return ElevatorSpeed;
+		return elevatorSpeed;
 	}
 	
 	@Override
 	public StringProperty getPropElevatorWeight() {
-		return ElevatorWeight;
+		return elevatorWeight;
 	}
 	
 	@Override
 	public IntegerProperty getPropElevatorCurrTarget() {
-		return ElevatorCurrTarget;
+		return elevatorCurrTarget;
 	}
 	
 	@Override
 	public int getCommitedDirection() {
-		return CommitedDirection.getValue();
+		return commitedDirection.getValue();
 	}
 	
 	@Override
 	public String getDoorStatus() {
-		return DoorStatus.getValue();
+		return doorStatus.getValue();
 	}
 	
 	@Override
 	public int getElevatorCurrFloor() {
-		return ElevatorCurrFloor.getValue();
+		return elevatorCurrFloor.getValue();
 	}
 	
 	@Override
 	public String getElevatorSpeed() {
-		return ElevatorSpeed.getValue();
+		return elevatorSpeed.getValue();
 	}
 	
 	@Override
 	public String getElevatorWeight() {
-		return ElevatorWeight.getValue();
+		return elevatorWeight.getValue();
 	}
 	
 	@Override
 	public int getElevatorCurrTarget() {
-		return ElevatorCurrTarget.getValue();
+		return elevatorCurrTarget.getValue();
 	}
 	
 	@Override

@@ -23,9 +23,9 @@ public class Building implements IModelBuilding {
 	private IAlarmManager mAlarmManager;
 	
 	// Model properties for GUI binding
-	public IntegerProperty FloorNumber = new SimpleIntegerProperty();
-	public IntegerProperty ElevatorNumber = new SimpleIntegerProperty();
-	public ObservableList<Floor> FloorList = FXCollections.observableArrayList(Floor.extractor());
+	public IntegerProperty floorNumber = new SimpleIntegerProperty();
+	public IntegerProperty elevatorNumber = new SimpleIntegerProperty();
+	public ObservableList<Floor> floorList = FXCollections.observableArrayList(Floor.extractor());
 	
 	
 	public Building(IWrapElevator remoteElevator, IAlarmManager alarmManager) {
@@ -39,57 +39,57 @@ public class Building implements IModelBuilding {
 	public void setRemoteElevator(IWrapElevator remoteElevator) {
 		mRemoteElevator = remoteElevator;
 		
-		for (var floor : FloorList) {
+		for (var floor : floorList) {
 			floor.setRemoteElevator(remoteElevator);
 		}
 	}
 	
 	private void initBuildingInformation() {
 		try {
-			FloorNumber.setValue(mRemoteElevator.getFloorNum());
-			ElevatorNumber.setValue(mRemoteElevator.getElevatorNum());
+			floorNumber.setValue(mRemoteElevator.getFloorNum());
+			elevatorNumber.setValue(mRemoteElevator.getElevatorNum());
 		} catch (RemoteException e) {
-			FloorNumber.setValue(0);
-			ElevatorNumber.setValue(0);
+			floorNumber.setValue(0);
+			elevatorNumber.setValue(0);
 			mAlarmManager.addErrorMessage("Remote error (init building information): " + e.getMessage());
 			mAlarmManager.setRemoteConnectionError();
 		}	
 		
-		if (FloorNumber.getValue() < 0) {
-			FloorNumber.setValue(0);
+		if (floorNumber.getValue() < 0) {
+			floorNumber.setValue(0);
 		}
 		
-		if (ElevatorNumber.getValue() < 0) {
-			ElevatorNumber.setValue(0);
+		if (elevatorNumber.getValue() < 0) {
+			elevatorNumber.setValue(0);
 		}
 		
-		for (int i = 0; i < FloorNumber.getValue(); i++) {
-			FloorList.add(0, new Floor(mRemoteElevator, i));
+		for (int i = 0; i < floorNumber.getValue(); i++) {
+			floorList.add(0, new Floor(mRemoteElevator, i));
 		}
 	}
 	
 	@Override
 	public IntegerProperty getPropFloorNumber() {
-		return FloorNumber;
+		return floorNumber;
 	}
 	
 	@Override
 	public IntegerProperty getPropElevatorNumber() {
-		return ElevatorNumber;
+		return elevatorNumber;
 	}
 	
 	@Override
 	public ObservableList<Floor> getObservableFloorList() {
-		return FloorList;
+		return floorList;
 	}
 	
 	@Override
 	public int getFloorNumber() {
-		return FloorNumber.getValue();
+		return floorNumber.getValue();
 	}
 	
 	@Override
 	public int getElevatorNumber() {
-		return ElevatorNumber.getValue();
+		return elevatorNumber.getValue();
 	}
 }

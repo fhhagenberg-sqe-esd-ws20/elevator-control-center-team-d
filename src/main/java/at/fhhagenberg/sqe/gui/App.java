@@ -51,7 +51,7 @@ public class App extends Application {
 	private boolean connectToElevator() {
 		if (useElevatorSim) {
 			try {
-				controller = (IElevator)Naming.lookup(ElevatorController.remoteAddress);
+				controller = (IElevator)Naming.lookup(ElevatorController.RemoteAddress);
 			} catch (NotBoundException e) {
 				showConnectionAlert("Connection binding error!" ,e.getMessage());
 				return false;

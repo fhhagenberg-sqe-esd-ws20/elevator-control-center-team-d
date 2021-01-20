@@ -33,7 +33,7 @@ import org.testfx.matcher.control.TextMatchers;
 
 @ExtendWith(ApplicationExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class TestFxAutomatedElevatorGUITests 
+class TestFxAutomatedElevatorGUITests 
 {
 	private MainView view;
 	

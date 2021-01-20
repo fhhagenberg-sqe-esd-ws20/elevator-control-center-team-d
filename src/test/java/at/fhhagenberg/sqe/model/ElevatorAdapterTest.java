@@ -22,12 +22,12 @@ import sqelevator.IElevator;
  *
  */
 @ExtendWith(MockitoExtension.class)
-public class ElevatorAdapterTest {
+class ElevatorAdapterTest {
 	@Mock
 	private IElevator mockedElevator;
 	
 	@Test
-	public void testGetElevatorPosIsTargetWhenElevatorPosIsTarget() throws Exception {
+	void testGetElevatorPosIsTargetWhenElevatorPosIsTarget() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorFloor(2)).thenReturn(4);
 		Mockito.when(mockedElevator.getTarget(2)).thenReturn(4);
@@ -39,7 +39,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetElevatorPosIsTargetWhenElevatorPosIsNotTarget() throws Exception {
+	void testGetElevatorPosIsTargetWhenElevatorPosIsNotTarget() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorFloor(3)).thenReturn(2);
 		Mockito.when(mockedElevator.getTarget(3)).thenReturn(4);
@@ -51,7 +51,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetCommitedDirectionUpThenUncommited() throws Exception {
+	void testGetCommitedDirectionUpThenUncommited() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getCommittedDirection(1)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP)
 					 .thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
@@ -63,7 +63,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetElevatorButtonPressedThenNotPressedOnDifferentFloors() throws Exception {
+	void testGetElevatorButtonPressedThenNotPressedOnDifferentFloors() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorButton(1, 4)).thenReturn(true);
 		Mockito.when(mockedElevator.getElevatorButton(1, 2)).thenReturn(false);
@@ -76,7 +76,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetElevatorDoorStatusOpenThenClosed() throws Exception {
+	void testGetElevatorDoorStatusOpenThenClosed() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_OPEN)
 					 .thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
@@ -88,7 +88,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetElevatorFloorZeroThenFloorFive() throws Exception {
+	void testGetElevatorFloorZeroThenFloorFive() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorFloor(0)).thenReturn(0).thenReturn(5);
 		
@@ -99,7 +99,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetElevatorNumWithOneElevatorAndFourElevators() throws Exception {
+	void testGetElevatorNumWithOneElevatorAndFourElevators() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorNum()).thenReturn(1).thenReturn(4);
 		
@@ -110,7 +110,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetElevatorSpeedWithZeroSpeedAndPositiveValue() throws Exception {
+	void testGetElevatorSpeedWithZeroSpeedAndPositiveValue() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorSpeed(1)).thenReturn(0).thenReturn(17);
 		
@@ -121,7 +121,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetElevatorWeightWithZeroWeightAndPositiveValue() throws Exception {
+	void testGetElevatorWeightWithZeroWeightAndPositiveValue() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getElevatorWeight(8)).thenReturn(0).thenReturn(1361);
 		
@@ -132,7 +132,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetFloorButtonDownActiveThenInactive() throws Exception {
+	void testGetFloorButtonDownActiveThenInactive() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getFloorButtonDown(2)).thenReturn(true).thenReturn(false);
 		
@@ -143,7 +143,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetFloorButtonUpInactiveThenActive() throws Exception {
+	void testGetFloorButtonUpInactiveThenActive() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getFloorButtonUp(3)).thenReturn(false).thenReturn(true);
 		
@@ -154,7 +154,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetFloorNumWithTwoDifferentFloorNumbers() throws Exception {
+	void testGetFloorNumWithTwoDifferentFloorNumbers() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getFloorNum()).thenReturn(15).thenReturn(4);
 		
@@ -165,7 +165,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetServicesFloorsWhenFirstServedAndSecondNotServed() throws Exception {
+	void testGetServicesFloorsWhenFirstServedAndSecondNotServed() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getServicesFloors(0, 1)).thenReturn(true);
 		Mockito.when(mockedElevator.getServicesFloors(0, 2)).thenReturn(false);
@@ -178,7 +178,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetTargetWithTwoDifferentTargets() throws Exception {
+	void testGetTargetWithTwoDifferentTargets() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getTarget(0)).thenReturn(4).thenReturn(7);
 		
@@ -189,7 +189,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testGetClockTickWithTwoDifferentClockTicks() throws Exception {
+	void testGetClockTickWithTwoDifferentClockTicks() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.when(mockedElevator.getClockTick()).thenReturn(15542L).thenReturn(415L);
 		
@@ -200,7 +200,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testSetCommittedDirectionWithTwoDifferentDirections() throws Exception {
+	void testSetCommittedDirectionWithTwoDifferentDirections() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		
 		testElevatorAdapter.setCommittedDirection(2, IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
@@ -211,7 +211,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testSetTargetWithTwoDifferentTargets() throws Exception {
+	void testSetTargetWithTwoDifferentTargets() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		
 		testElevatorAdapter.setTarget(0, 9);
@@ -222,7 +222,7 @@ public class ElevatorAdapterTest {
 	}
 	
 	@Test
-	public void testSetTargetAndGetRemoteException() throws Exception {
+	void testSetTargetAndGetRemoteException() throws Exception {
 		ElevatorAdapter testElevatorAdapter = new ElevatorAdapter(mockedElevator);
 		Mockito.doThrow(new RemoteException("Communication error")).when(mockedElevator).setTarget(2, 10);
 		
